@@ -1,0 +1,52 @@
+.orders-page{
+    max-width: 900px;
+    margin: auto;
+    padding: 40px;
+}
+
+.orders-page h1{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.order-card{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.order-product{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-total{
+    text-align: right;
+    margin-top: 20px;
+}
+
+.delivery-info{
+    margin-top: 25px;
+}
+
+@media (max-width: 600px){
+    .orders-page{
+        padding: 20px 10px;
+    }
+
+    .order-card{
+        padding: 20px;
+    }
+
+    .order-product{
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .order-total{
+        text-align: left;
+    }
+}

@@ -1,0 +1,22 @@
+.products-page{
+    padding: 40px;
+    text-align: center;
+}
+
+.products-page h1{
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.products-page p{
+    font-size: 18px;
+}
+
+/* For the product container list */
+.product-container{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}

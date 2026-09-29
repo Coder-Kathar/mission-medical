@@ -1,0 +1,119 @@
+/* main view css code */
+
+.hero{
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.hero-content{
+    max-width: 700px;
+}
+
+.hero h1{
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p{
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.hero button{
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+}
+
+/* category view css code */
+.categories{
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.categories h2{
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.category-container{
+    display:flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.category-card{
+    width: 220px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.category-card h3{
+    margin-bottom: 10px;
+}
+
+.category-card p{
+    margin: 0;
+}
+
+/* Product view css code */
+.products{
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.products h2{
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.product-container{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product-card{
+    width: 220px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.product-card h3{
+    margin-bottom: 15px;
+}
+
+.product-card p{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.product-card button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Style for Shooping Button */
+.shop-button{
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
