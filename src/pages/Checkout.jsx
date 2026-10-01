@@ -32,14 +32,28 @@ function Checkout(){
 
     const handlePlaceOrder = () => {
 
-        if(
-            name.trim() === "" ||
-            phone.trim() === "" ||
-            address.trim() === "" ||
-            city.trim() === "" ||
-            pincode.trim() === "" 
-        ){
-            alert("Please fill in all delivery details.");
+        if(name.trim() === ""){
+            alert("Please enter your full name.");
+            return;
+        }
+
+        if(phone.trim() === ""){
+            alert("Please enter your phone number.");
+            return;
+        }
+
+        if(address.trim() === ""){
+            alert("Please enter your delivery address.");
+            return;
+        }
+
+        if(city.trim() === ""){
+            alert("Please enter your city.");
+            return;
+        }
+
+        if(pincode.trim() === ""){
+            alert("Please enter your pincode.");
             return;
         }
 
