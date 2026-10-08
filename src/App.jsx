@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import CartProvider from "./context/CartContext";
 import AuthProvider from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RequestCart from "./pages/RequestCart";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -18,6 +19,7 @@ import Profile from "./pages/Profile";
 
 function App() {
   return (
+    
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
@@ -31,6 +33,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/request" element={<RequestCart/>}/>
             <Route path="/orders" 
                     element={
                         <ProtectedRoute>

@@ -1,81 +1,98 @@
-/* Style for the Company name and Links */
-.navbar{
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background-color: white;
-    border-bottom: 1px solid #ddd;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
 }
 
-.logo{
+/* Logo */
+.logo {
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 700;
+    color: var(--primary-color);
 }
 
-.nav-links{
+/* Navigation links */
+.nav-links {
     display: flex;
     align-items: center;
     gap: 25px;
 }
 
-.nav-links a{
+.nav-links a {
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
-.nav-links a:hover{
-    color: #007bff;
+.nav-links a:hover {
+    color: var(--primary-color);
 }
 
-/* Styles for the Search box */
-.search-box{
+/* Search box */
+.search-box {
     display: flex;
     align-items: center;
 }
 
-.search-box input{
-    padding: 8px 12px;
+.search-box input {
+    padding: 9px 12px;
     width: 200px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px 0 0 20px;
     outline: none;
-    color: #333;
-    background-color: white;
+    color: var(--text-color);
+    background-color: var(--white);
 }
 
-.search-box button{
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-left: none;
-    border-radius: 0 5px 5px 0;
-    background-color: #f5f5f5;
-    cursor: pointer;
+.search-box input:focus {
+    border-color: var(--accent-color);
 }
 
-.nav-links button{
-    padding: 8px 14px;
+.search-box button {
+    padding: 9px 13px;
     border: none;
-    border-radius: 5px;
+    border-radius: 0 20px 20px 0;
+    background-color: var(--primary-color);
+    color: var(--white);
     cursor: pointer;
 }
 
-@media (max-width: 768px){
+/* Navigation buttons */
+.nav-links button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--button-radius);
+    background-color: var(--primary-color);
+    color: var(--white);
+    cursor: pointer;
+    font-family: inherit;
+}
 
-    .navbar{
+.nav-links button:hover {
+    background-color: var(--accent-color);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .navbar {
         flex-direction: column;
         gap: 15px;
         padding: 15px 20px;
     }
 
-    .nav-links{
+    .nav-links {
         flex-wrap: wrap;
         justify-content: center;
         gap: 15px;
     }
 
-    .search-box input{
+    .search-box input {
         width: 160px;
     }
 }

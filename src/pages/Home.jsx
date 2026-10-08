@@ -1,12 +1,8 @@
 import "./Home.css";
 import products from "../data/products";
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
 
 function Home(){
-
-    const {addToCart} = useContext(CartContext);
 
     return (
         <main>
@@ -49,16 +45,25 @@ function Home(){
                 </div>
             </section>
 
-            {/* Products Establishment */}
+            {/* Popular Products */}
             <section className="products">
-                <h2>Popular Products</h2>
+                <h2>Frequently Requested Medicines</h2>
 
                 <div className="product-container">
                     {products.map((product) => (
                         <div className="product-card" key={product.id}>
                             <h3>{product.name}</h3>
-                            <p>₹{product.price}</p>
-                            <button onClick={() => addToCart(product)}>Add to Cart</button>
+
+                            <p>
+                                {product.description || "Healthcare product"}
+                            </p>
+
+                            <Link
+                                to={`/products/${product.id}`}
+                                className="shop-button"
+                            >
+                                View Product
+                            </Link>
                         </div>
                     ))}
                 </div>
