@@ -5,6 +5,7 @@ import CartProvider from "./context/CartContext";
 import AuthProvider from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RequestCart from "./pages/RequestCart";
+import RequestPreview from "./pages/RequestPreview";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -34,6 +35,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/request" element={<RequestCart/>}/>
+            <Route path="/request-preview" element={<RequestPreview/>}/>
             <Route path="/orders" 
                     element={
                         <ProtectedRoute>
