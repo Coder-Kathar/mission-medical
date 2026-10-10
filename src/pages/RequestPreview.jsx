@@ -4,7 +4,7 @@ import { RequestContext } from "../context/RequestContext";
 
 function RequestPreview(){
 
-    const { requestItems } = useContext(RequestContext);
+    const { requestItems, setRequestItems } = useContext(RequestContext);
 
     const [customerName, setCustomerName] = useState("");
     const [mobileNumber, setMobileNumber] = useState("");
@@ -12,6 +12,13 @@ function RequestPreview(){
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [orderId, setOrderId] = useState("");
     const [prescription, setPrescription] = useState(null);
+
+    const [lastRequest, setLastRequest] = useState(() => {
+        const savedRequest = localStorage.getItem("lastRequest");
+        return savedRequest ? JSON.parse(savedRequest) : null;
+    });
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -44,6 +51,25 @@ function RequestPreview(){
             alert("Please upload a prescription for Drug product");
             return;
         }
+
+        localStorage.setItem(
+            "lastRequest",
+            JSON.stringify({
+                customerName,
+                mobileNumber,
+                deliveryAddress,
+                requestItems,
+                createdAt: new Date().toISOString()
+            })
+        );
+
+        setLastRequest({
+            customerName,
+            mobileNumber,
+            deliveryAddress,
+            requestItems,
+            createdAt: new Date().toISOString()
+        });
         setOrderId(`MM${Date.now()}`);
         setIsSubmitted(true);
     };
@@ -52,6 +78,57 @@ function RequestPreview(){
 
         <main className="request-page">
             <h1>Review Your Request</h1>
+
+            {lastRequest && !isSubmitted && (
+                <div className="request-item">
+                    <h2>Your Previous Request</h2>
+
+                    <p>Customer: {lastRequest.customerName}</p>
+                    <p>Mobile: {lastRequest.mobileNumber}</p>
+                    <p>Address: {lastRequest.deliveryAddress}</p>
+
+                    <h3>Products</h3>
+
+                    {lastRequest.requestItems.map((item, index) => (
+                        <p key={index}>
+                            {item.name} - {item.quantity} {item.quantityType}
+                        </p>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setCustomerName(lastRequest.customerName);
+                            setMobileNumber(lastRequest.mobileNumber);
+                            setDeliveryAddress(lastRequest.deliveryAddress);
+                            setShowConfirmation(true);
+                        }}>
+                        Use Previous Details
+                    </button>
+                </div>
+            )}
+
+            {showConfirmation && (
+                <div>
+                    <p>Would you like to create a new request using your previous products?</p>
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setRequestItems(lastRequest.requestItems);
+                            setShowConfirmation(false);
+                            alert("Previous products loaded. Review your request before submitting.");
+                        }}>
+                        Confirm
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => setShowConfirmation(false)}>
+                        Cancel
+                    </button>
+                </div>
+            )}
 
             {isSubmitted && (
                 <div className="request-item">
@@ -77,7 +154,7 @@ function RequestPreview(){
                 </div>
             )}
 
-            {requestItems.length === 0 ? (
+            {requestItems.length === 0  && !isSubmitted ? (
                 <>
                     <p>Your request is empty.</p>
                     <Link to="/products">Browse Products</Link>

@@ -1,9 +1,12 @@
 import "./Products.css";
 import ProductCard from "../components/ProductCard";
-import products from "../data/products";
+import { useContext } from "react";
+import { ProductContext } from "../context/ProductContext";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 function Products(){
+
+    const {products} = useContext(ProductContext);
 
     const navigate = useNavigate();
 

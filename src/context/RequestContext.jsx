@@ -6,17 +6,26 @@ export function RequestProvider({ children }){
     const [requestItems, setRequestItems] = useState([]);
 
     const addToRequest = (product, quantity, quantityType) => {
+        setRequestItems((currentItems) => {
+            const existingIndex = currentItems.findIndex(
+                (item) =>
+                    item.id === product.id &&
+                    item.quantityType === quantityType
+            );
 
-        const item = {
-            ...product,
-            quantity,
-            quantityType
-        };
+            if (existingIndex !== -1) {
+                return currentItems.map((item, index) =>
+                    index === existingIndex
+                        ? { ...item, quantity: item.quantity + quantity }
+                        : item
+                );
+            }
 
-        setRequestItems((currentItems) => [
-            ...currentItems,
-            item
-        ]);
+            return [
+                ...currentItems,
+                { ...product, quantity, quantityType }
+            ];
+        });
     };
 
     const removeFromRequest = (index) => {
@@ -45,6 +54,7 @@ export function RequestProvider({ children }){
         <RequestContext.Provider
             value={{
                 requestItems,
+                setRequestItems,
                 addToRequest,
                 removeFromRequest,
                 updateRequestQuantity,
