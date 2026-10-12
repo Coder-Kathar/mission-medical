@@ -9,29 +9,29 @@ function Login(){
 
     const { login } = useContext(AuthContext);
 
-    const [email, setEmail] = useState("");
+    const [mobileNumber, setMobileNumber] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLogin = (e) => {
         e.preventDefault();
 
-        if(email.trim() === "" || password.trim() === ""){
-            alert("Please enter email and password.");
+        if(mobileNumber.trim() === "" || password.trim() === ""){
+            alert("Please enter mobile number and password.");
             return;
         }
 
-        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-            alert("Please enter a valid email address.");
+        if(!/^\d{10}$/.test(mobileNumber)){
+            alert("Please enter a valid 10-digit mobile number.");
             return;
         }
 
-        if(password.length < 8){
-            alert("Password must be at least 8 characters.");
+        if (password.length < 8) {
+            alert("Password must contain at least 8 characters.");
             return;
         }
 
         login({
-            email : email
+            mobileNumber
         });
 
         alert("Login successful!");
@@ -48,10 +48,10 @@ function Login(){
 
                 <form className="login-form" onSubmit={handleLogin}>
 
-                    <input type="email" 
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="tel" 
+                            placeholder="10 - digit mobile number"
+                            value={mobileNumber}
+                            onChange={(e) => setMobileNumber(e.target.value)}/>
 
                     <input type="password"
                             placeholder="Password" 

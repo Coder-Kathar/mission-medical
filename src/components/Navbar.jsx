@@ -47,7 +47,7 @@ function Navbar(){
                     Cart ({cart.reduce((total, item) => total + item.quantity, 0)})
                 </Link>
                 
-                <Link to="/orders">Orders</Link>
+                <Link to="/request">Request</Link>
                 
                 <Link to="/profile">Profile</Link>
                 

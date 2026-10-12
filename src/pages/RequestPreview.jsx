@@ -44,7 +44,7 @@ function RequestPreview(){
         }
 
         const needsPrescription = requestItems.some(
-            (item) => item.category === "drug"
+            (item) => item.requiresPrescription === true
         );
 
         if(needsPrescription && !prescription){
@@ -132,8 +132,13 @@ function RequestPreview(){
 
             {isSubmitted && (
                 <div className="request-item">
-                    <h2>Request Prepared Successfully!</h2>
-                    <p>Order ID: {orderId}</p>
+                    <h2>Request Submitted Successfully!</h2>
+                    <p><strong>Order ID:</strong> {orderId}</p>
+                    <p><strong>Status:</strong> Pending</p>
+                    <p>
+                        Your request is ready for pharmacy review.
+                        The pharmacy will contact you to confirm availability and delivery.
+                    </p>
                     <p>Customer Name: {customerName}</p>
                     <p>Mobile Number: {mobileNumber}</p>
                     <p>Delivery Address: {deliveryAddress}</p>
@@ -147,8 +152,6 @@ function RequestPreview(){
                                 ` (${item.quantity * item.tabletsPerStrip} tablets)`}
                         </p>
                     ))}
-
-                    <p>Your request is ready for confirmation.</p>
 
                     <Link to="/products">Continue Shopping</Link>
                 </div>
@@ -209,13 +212,20 @@ function RequestPreview(){
                                 onChange={(e) => setDeliveryAddress(e.target.value)}
                                 required/>
 
-                            <label htmlFor="prescription">Upload Prescription(if required)</label>
-                            <input 
+                           
+                            <label htmlFor="prescription">
+                                Upload Prescription (required only when specified)
+                            </label>
+
+                            <input
                                 type="file"
                                 id="prescription"
                                 accept="image/*"
-                                onChange={(e) => setPrescription(e.target.files[0] || null)} />
-                            
+                                onChange={(e) =>
+                                    setPrescription(e.target.files[0] || null)
+                                }
+                            />
+
                             <button type="submit">Submit Request</button>
                         
                         </form>

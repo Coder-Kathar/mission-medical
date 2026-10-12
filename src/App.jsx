@@ -7,6 +7,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import RequestCart from "./pages/RequestCart";
 import RequestPreview from "./pages/RequestPreview";
 import { ProductProvider } from "./context/ProductContext";
+import { RequestProvider } from "./context/RequestContext";
+import OTPVerification from "./pages/OTPVerification";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -24,43 +26,46 @@ import Admin from "./pages/Admin";
 function App() {
   return (
     
-    <ProductProvider>
-      <AuthProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <Navbar />
+    <RequestProvider>
+      <ProductProvider>
+        <AuthProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <Navbar />
 
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:id" element={<ProductDetails />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/request" element={<RequestCart/>}/>
-              <Route path="/request-preview" element={<RequestPreview/>}/>
-              <Route path="/worker" element={<Worker/>}/>
-              <Route path="/admin" element={<Admin/>}/>
-              <Route path="/orders" 
-                      element={
-                          <ProtectedRoute>
-                              <Orders/>
-                          </ProtectedRoute>
-                        } />
-              <Route path="/profile" 
-                      element={
-                          <ProtectedRoute>
-                              <Profile/>
-                          </ProtectedRoute>
-                        } />
-            </Routes>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<ProductDetails />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/request" element={<RequestCart/>}/>
+                <Route path="/request-preview" element={<RequestPreview/>}/>
+                <Route path="/worker" element={<Worker/>}/>
+                <Route path="/admin" element={<Admin/>}/>
+                <Route path="/verify-otp" element={<OTPVerification/>}/>
+                <Route path="/orders" 
+                        element={
+                            <ProtectedRoute>
+                                <Orders/>
+                            </ProtectedRoute>
+                          } />
+                <Route path="/profile" 
+                        element={
+                            <ProtectedRoute>
+                                <Profile/>
+                            </ProtectedRoute>
+                          } />
+              </Routes>
 
-            <Footer/>
-          </BrowserRouter>
-        </CartProvider>
-      </AuthProvider>
-    </ProductProvider>
+              <Footer/>
+            </BrowserRouter>
+          </CartProvider>
+        </AuthProvider>
+      </ProductProvider>
+    </RequestProvider>
   );
 }
 

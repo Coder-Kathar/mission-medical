@@ -22,8 +22,18 @@ export function ProductProvider({ children }) {
         );
     };
 
+    const updateProduct = (updatedProduct) => {
+        setProducts((currentProducts) => 
+            currentProducts.map((product) => 
+                product.id === updatedProduct.id
+                ? {...product, ...updatedProduct}
+                : product
+            )
+        );
+    };
+
     return (
-        <ProductContext.Provider value={{ products, addProduct, deleteProduct }}>
+        <ProductContext.Provider value={{ products, addProduct, deleteProduct, updateProduct }}>
             {children}
         </ProductContext.Provider>
     );
