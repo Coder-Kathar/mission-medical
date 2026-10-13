@@ -2,6 +2,7 @@ import paracetamolImage from "../assets/paracetamol.jpg";
 import vitaminCImage from "../assets/vitamin-c.jpg";
 import sanitizerImage from "../assets/hand-sanitizer.jpg";
 import babyLotionImage from "../assets/baby-lotion.webp";
+import drugImage from "../assets/Drug.jpg";
 
 const products = [
     {
@@ -49,6 +50,18 @@ const products = [
         quantityType: "piece",
         requiresPrescription: false,
     },
+
+    {
+        id: 5,
+        name: "Drug Product",
+        category: "drug",
+        description: "Needs doctor advise to intake",
+        usage: "Kind of medical purpose",
+        image: drugImage,
+        quantityType: "tablet",
+        tabletsPerStrip: 10,
+        requiresPrescription: true,
+    },    
 ];
 
 export default products;

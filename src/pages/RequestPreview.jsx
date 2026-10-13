@@ -52,6 +52,24 @@ function RequestPreview(){
             return;
         }
 
+        const newOrder = {
+            id: `MM${Date.now()}`,
+            date: new Date().toLocaleString(),
+            customerName,
+            mobileNumber,
+            deliveryAddress,
+            requestItems,
+            status: "Pending"
+        };
+
+        const existingOrders =
+            JSON.parse(localStorage.getItem("orders")) || [];
+
+        existingOrders.push(newOrder);
+
+        localStorage.setItem("orders", JSON.stringify(existingOrders));
+        setOrderId(newOrder.id);
+
         localStorage.setItem(
             "lastRequest",
             JSON.stringify({
@@ -70,7 +88,6 @@ function RequestPreview(){
             requestItems,
             createdAt: new Date().toISOString()
         });
-        setOrderId(`MM${Date.now()}`);
         setIsSubmitted(true);
     };
 

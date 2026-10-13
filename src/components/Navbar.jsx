@@ -1,15 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { useContext, useState } from "react";
-import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 
 
 function Navbar(){
 
     const {user, logout} = useContext(AuthContext);
-
-    const {cart} = useContext(CartContext);
 
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -42,10 +39,6 @@ function Navbar(){
                             }}/>
                     <button onClick={handleSearch}>🔍</button>
                 </div>
-
-                <Link to="/cart">
-                    Cart ({cart.reduce((total, item) => total + item.quantity, 0)})
-                </Link>
                 
                 <Link to="/request">Request</Link>
                 
