@@ -1,0 +1,92 @@
+.request-preview-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px 40px;
+    color: #1F2937;
+}
+
+.request-preview-page h1,
+.request-preview-page h2,
+.request-preview-page h3 {
+    color: #0F6B4F;
+}
+
+.request-preview-page h1 {
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+.request-preview-page section {
+    background: #FFFFFF;
+    padding: 24px;
+    margin: 22px 0;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.request-preview-page input:not([type="file"]),
+.request-preview-page textarea,
+.request-preview-page select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 14px;
+    margin: 8px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.request-preview-page textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.request-preview-page input:focus,
+.request-preview-page textarea:focus,
+.request-preview-page select:focus {
+    outline: 2px solid #159A7C;
+    outline-offset: 1px;
+}
+
+.request-preview-page input[type="file"] {
+    display: block;
+    max-width: 100%;
+    margin: 12px 0;
+}
+
+.request-preview-page button {
+    padding: 11px 18px;
+    margin: 8px 8px 8px 0;
+    border: none;
+    border-radius: 8px;
+    background: #0F6B4F;
+    color: #FFFFFF;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.request-preview-page button:hover {
+    background: #0B543E;
+}
+
+.request-preview-page button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .request-preview-page {
+        margin: 20px auto;
+        padding: 0 14px 28px;
+    }
+
+    .request-preview-page section {
+        padding: 18px;
+    }
+
+    .request-preview-page h1 {
+        font-size: 26px;
+    }
+}

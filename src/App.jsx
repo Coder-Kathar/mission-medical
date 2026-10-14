@@ -8,6 +8,8 @@ import RequestPreview from "./pages/RequestPreview";
 import { ProductProvider } from "./context/ProductContext";
 import { RequestProvider } from "./context/RequestContext";
 import OTPVerification from "./pages/OTPVerification";
+import AdminOrders from "./pages/AdminOrders";
+import AdminProducts from "./pages/AdminProducts";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -40,6 +42,8 @@ function App() {
                 <Route path="/worker" element={<Worker/>}/>
                 <Route path="/admin" element={<Admin/>}/>
                 <Route path="/verify-otp" element={<OTPVerification/>}/>
+                <Route path="/admin/orders" element={<AdminOrders/>}/>
+                <Route path="/admin/products" element={<AdminProducts/>}/>
                 <Route path="/orders" 
                         element={
                             <ProtectedRoute>

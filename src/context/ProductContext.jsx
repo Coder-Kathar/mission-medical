@@ -1,11 +1,25 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import initialProducts from "../data/products";
 
 export const ProductContext = createContext();
 
 export function ProductProvider({ children }) {
-    const [products, setProducts] = useState(initialProducts);
 
+    const [products, setProducts] = useState(() => {
+        const savedProducts = localStorage.getItem("missionMedicalProducts");
+        
+        return savedProducts
+        ? JSON.parse(savedProducts)
+        : initialProducts;
+    });
+    
+    useEffect(() => {
+        localStorage.setItem(
+            "missionMedicalProducts",
+            JSON.stringify(products)
+        );
+    }, [products]);
+    
     const addProduct = (newProduct) => {
         setProducts((currentProducts) => [
             ...currentProducts,

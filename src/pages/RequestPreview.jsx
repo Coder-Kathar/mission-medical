@@ -1,10 +1,15 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { RequestContext } from "../context/RequestContext";
+import "./RequestPreview.css";
 
 function RequestPreview(){
 
     const { requestItems, setRequestItems } = useContext(RequestContext);
+
+    const needsPrescription = requestItems.some(
+        (item) => item.requiresPrescription === true
+    );
 
     const [customerName, setCustomerName] = useState("");
     const [mobileNumber, setMobileNumber] = useState("");
@@ -20,8 +25,12 @@ function RequestPreview(){
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
+    const [submittedItems, setSubmittedItems] = useState([]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if(isSubmitted) return;
 
         if(requestItems.length === 0){
             alert("Please add at least one product to your request.");
@@ -43,10 +52,6 @@ function RequestPreview(){
             return;
         }
 
-        const needsPrescription = requestItems.some(
-            (item) => item.requiresPrescription === true
-        );
-
         if(needsPrescription && !prescription){
             alert("Please upload a prescription for Drug product");
             return;
@@ -59,6 +64,7 @@ function RequestPreview(){
             mobileNumber,
             deliveryAddress,
             requestItems,
+            prescriptionName: prescription?.name || null,
             status: "Pending"
         };
 
@@ -88,12 +94,15 @@ function RequestPreview(){
             requestItems,
             createdAt: new Date().toISOString()
         });
+
+        setSubmittedItems(requestItems);
         setIsSubmitted(true);
+        setRequestItems([]);
     };
 
     return(
 
-        <main className="request-page">
+        <main className="request-preview-page">
             <h1>Review Your Request</h1>
 
             {lastRequest && !isSubmitted && (
@@ -152,17 +161,22 @@ function RequestPreview(){
                     <h2>Request Submitted Successfully!</h2>
                     <p><strong>Order ID:</strong> {orderId}</p>
                     <p><strong>Status:</strong> Pending</p>
+                    {prescription && (
+                        <p>
+                            <strong>Prescription Attached:</strong> {prescription.name}
+                        </p>
+                    )}
                     <p>
                         Your request is ready for pharmacy review.
                         The pharmacy will contact you to confirm availability and delivery.
                     </p>
-                    <p>Customer Name: {customerName}</p>
-                    <p>Mobile Number: {mobileNumber}</p>
-                    <p>Delivery Address: {deliveryAddress}</p>
+                    <p><strong>Customer Name: </strong>{customerName}</p>
+                    <p><strong>Mobile Number: </strong>{mobileNumber}</p>
+                    <p><strong>Delivery Address: </strong>{deliveryAddress}</p>
 
                     <h3>Requested Products</h3>
 
-                    {requestItems.map((item, index) => (
+                    {submittedItems.map((item, index) => (
                         <p key={index}>
                             {item.name} - {item.quantity} {item.quantityType}
                             {item.quantityType === "strip" && 
@@ -231,19 +245,32 @@ function RequestPreview(){
 
                            
                             <label htmlFor="prescription">
-                                Upload Prescription (required only when specified)
+                                {needsPrescription
+                                    ? "Prescription required for Drug products *"
+                                    : "Upload Prescription (optional)"}
                             </label>
 
                             <input
                                 type="file"
                                 id="prescription"
                                 accept="image/*"
+                                required={needsPrescription}
                                 onChange={(e) =>
                                     setPrescription(e.target.files[0] || null)
                                 }
                             />
 
-                            <button type="submit">Submit Request</button>
+                            {prescription && (
+                                <p className="prescription-file-name">
+                                    Selected file: {prescription.name}
+                                </p>
+                            )}
+
+
+                            <button type="submit" 
+                                    disabled={isSubmitted}>
+                                Submit Request
+                            </button>
                         
                         </form>
                     )}

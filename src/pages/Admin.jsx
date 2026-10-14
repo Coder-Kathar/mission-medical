@@ -9,11 +9,9 @@ function Admin() {
     const [editingProduct, setEditingProduct] = useState(null);
     const [editName, setEditName] = useState("");
     const [editCategory, setEditCategory] = useState("medicines");
-    const [editRequiresPrescription, setEditRequiresPrescription] = useState(false);
 
     const [productName, setProductName] = useState("");
     const [category, setCategory] = useState("medicines");
-    const [requiresPrescription, setRequiresPrescription] = useState(false);
 
     const [productDescription, setProductDescription] = useState("");
     const [productImage, setProductImage] = useState("");
@@ -76,8 +74,7 @@ function Admin() {
                 category === "medicines" || category === "drug"
                     ? Number(tabletsPerStrip)
                     : undefined,
-            requiresPrescription:
-                category === "drug" ? requiresPrescription : false,
+            requiresPrescription: category === "drug",
         };
 
         addProduct(newProduct);
@@ -88,7 +85,6 @@ function Admin() {
         setProductDescription("");
         setProductImage("");
         setCategory("medicines");
-        setRequiresPrescription(false);
         setTabletsPerStrip("10");
     };
 
@@ -96,7 +92,6 @@ function Admin() {
         setEditingProduct(product);
         setEditName(product.name);
         setEditCategory(product.category);
-        setEditRequiresPrescription(product.requiresPrescription || false);
         setEditDescription(product.description || "");
         setEditImage(product.image || "");
         setEditQuantityType(product.quantityType || "tablet");
@@ -118,8 +113,7 @@ function Admin() {
                 editCategory === "medicines" || editCategory === "drug"
                     ? Number(editTabletsPerStrip)
                     : undefined,
-            requiresPrescription:
-                editCategory === "drug" ? editRequiresPrescription : false,
+            requiresPrescription: editCategory === "drug",
             description: editDescription.trim(),
             image: editImage.trim(),
         });
@@ -214,7 +208,6 @@ function Admin() {
                             const selectedCategory = e.target.value;
 
                             setCategory(selectedCategory);
-                            setRequiresPrescription(selectedCategory === "drug");
                         }}
                         >
                         <option value="medicines">Medicine</option>
@@ -234,19 +227,6 @@ function Admin() {
                             onChange={(e) => setTabletsPerStrip(e.target.value)}
                             required
                         />
-                    )}
-
-                    {category === "drug" && (
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={requiresPrescription}
-                                onChange={(e) =>
-                                    setRequiresPrescription(e.target.checked)
-                                }
-                            />
-                            Requires prescription
-                        </label>
                     )}
 
                     <button type="submit">Add Product</button>
@@ -314,7 +294,6 @@ function Admin() {
                             onChange={(e) => {
                                 const selectedCategory = e.target.value;
                                 setEditCategory(selectedCategory);
-                                setEditRequiresPrescription(selectedCategory === "drug");
                             }}
                         >
                             <option value="medicines">Medicine</option>
@@ -343,19 +322,6 @@ function Admin() {
                                     required
                                 />
                             </>
-                        )}
-
-                        {editCategory === "drug" && (
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={editRequiresPrescription}
-                                    onChange={(e) =>
-                                        setEditRequiresPrescription(e.target.checked)
-                                    }
-                                />
-                                Requires prescription
-                            </label>
                         )}
 
                         <button type="submit">Save Changes</button>
