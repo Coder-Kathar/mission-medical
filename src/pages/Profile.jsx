@@ -1,64 +1,111 @@
 import "./Profile.css";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useLocation } from "react-router-dom";
 
-function Profile(){
+function Profile() {
+    const { user } = useContext(AuthContext);
 
-    const [isEditing, setIsEditing] = useState(false);
+    const [name, setName] = useState(user?.name || "");
+    const [email, setEmail] = useState(user?.email || "");
+    const [phone, setPhone] = useState(
+        user?.mobileNumber || user?.phone || ""
+    );
+    const [address, setAddress] = useState(user?.address || "");
 
-    const [name, setName] = useState("Alex");
-    const [email, setEmail] = useState("alex@gmail.com");
-    const [phone, setPhone] = useState("9876543210");
-    const [address, setAddress] = useState("Chennai, Tamil Nadu");
+    const location = useLocation();
+    const [isEditing, setIsEditing] = useState(
+        location.state?.editMode === true
+    );
+
+    useEffect(() => {
+        setName(user?.name || "");
+        setEmail(user?.email || "");
+        setPhone(user?.mobileNumber || user?.phone || "");
+        setAddress(user?.address || "");
+    }, [user]);
+
+    useEffect(() => {
+        setIsEditing(location.state?.editMode === true);
+    }, [location.key, location.state]);
 
     const handleSave = () => {
+        if (!name.trim() || !/^\d{10}$/.test(phone.trim()) || !address.trim()) {
+            alert("Please enter a valid name, 10-digit mobile number, and address.");
+            return;
+        }
+
+        // Persistence will be connected to AuthContext/backend later.
         setIsEditing(false);
-        alert("Profile updated successfully!");
+        alert("Profile form validated. Saving to your account is not connected yet.");
     };
 
     return (
         <main className="profile-page">
-
             <div className="profile-card">
-
                 <h1>My Profile</h1>
 
                 {isEditing ? (
                     <>
                         <div className="profile-form">
-
-                            <input type="text"
+                            <label>
+                                Name
+                                <input
+                                    type="text"
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)} />
-                            
-                            <input type="email"
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </label>
+
+                            <label>
+                                Email
+                                <input
+                                    type="email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)} />
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </label>
 
-                            <input type="text"
+                            <label>
+                                Mobile Number
+                                <input
+                                    type="tel"
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)} />
+                                    onChange={(e) => setPhone(e.target.value)}
+                                />
+                            </label>
 
-                            <textarea value={address}
-                                        onChange={(e) => setAddress(e.target.value)}/>
+                            <label>
+                                Delivery Address
+                                <textarea
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                />
+                            </label>
                         </div>
 
-                        <button onClick={handleSave}>
-                            Save Changes
+                        <button onClick={handleSave}>Save Changes</button>
+                        <button
+                            className="profile-cancel-button"
+                            onClick={() => setIsEditing(false)}
+                        >
+                            Cancel
                         </button>
                     </>
                 ) : (
                     <>
-                    <div className="profile-info">
+                        <div className="profile-info">
+                            <p><strong>Name:</strong> {name || "Not provided"}</p>
+                            <p><strong>Email:</strong> {email || "Not provided"}</p>
+                            <p><strong>Phone:</strong> {phone || "Not provided"}</p>
+                            <p><strong>Address:</strong> {address || "Not provided"}</p>
+                        </div>
 
-                        <p><strong>Name:</strong> {name}</p>
-                        <p><strong>Email:</strong> {email}</p>
-                        <p><strong>Phone:</strong> {phone}</p>
-                        <p><strong>Address:</strong> {address}</p>
-                    </div>
-
-                    <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+                        <button onClick={() => setIsEditing(true)}>
+                            Edit Profile
+                        </button>
                     </>
-            )}
+                )}
             </div>
         </main>
     );

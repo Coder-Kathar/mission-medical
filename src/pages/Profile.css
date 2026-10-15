@@ -66,3 +66,20 @@
         padding: 25px 20px;
     }
 }
+
+.profile-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.profile-card button + button {
+    margin-top: 10px;
+}
+
+.profile-card .profile-cancel-button {
+    background: #E8F5EF;
+    color: #0F6B4F;
+}

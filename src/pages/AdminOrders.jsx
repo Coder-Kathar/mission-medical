@@ -7,6 +7,9 @@ function AdminOrders() {
     const [filter, setFilter] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const ordersPerPage = 10;
+
     const filteredOrders = orders.filter((order) => {
         const matchesStatus =
             filter === "All" || order.status === filter;
@@ -17,6 +20,17 @@ function AdminOrders() {
 
         return matchesStatus && matchesOrderId;
     });
+
+    const totalPages = Math.ceil(
+        filteredOrders.length / ordersPerPage
+    );
+
+    const startIndex = (currentPage - 1) * ordersPerPage;
+
+    const currentOrders = filteredOrders.slice(
+        startIndex,
+        startIndex + ordersPerPage
+    );
 
     const totalOrders = orders.length;
 
@@ -55,12 +69,18 @@ function AdminOrders() {
                     type="text"
                     placeholder="Search by Order ID..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setCurrentPage(1);
+                    }}
                 />
 
                 <select
                     value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
+                    onChange={(e) => {
+                        setFilter(e.target.value);
+                        setCurrentPage(1);
+                    }}
                 >
                     <option value="All">All Requests</option>
                     <option value="Pending">Pending</option>
@@ -75,7 +95,7 @@ function AdminOrders() {
                     <p>Try changing your search or status filter.</p>
                 </div>
             ) : (
-                filteredOrders.map((order) => (
+                currentOrders.map((order) => (
                     <div className="order-card" key={order.id}>
                         <div className="order-card-header">
                             <h2>Order ID: {order.id}</h2>
@@ -136,6 +156,32 @@ function AdminOrders() {
                         ))}
                     </div>
                 ))
+            )}
+
+            {filteredOrders.length > 0 && (
+                <div className="pagination">
+                    <button
+                        disabled={currentPage === 1}
+                        onClick={() =>
+                            setCurrentPage((page) => page - 1)
+                        }
+                    >
+                        Previous
+                    </button>
+
+                    <span>
+                        Page {currentPage} of {totalPages}
+                    </span>
+
+                    <button
+                        disabled={currentPage >= totalPages}
+                        onClick={() =>
+                            setCurrentPage((page) => page + 1)
+                        }
+                    >
+                        Next
+                    </button>
+                </div>
             )}
         </main>
     );

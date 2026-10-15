@@ -10,6 +10,9 @@ import { RequestProvider } from "./context/RequestContext";
 import OTPVerification from "./pages/OTPVerification";
 import AdminOrders from "./pages/AdminOrders";
 import AdminProducts from "./pages/AdminProducts";
+import LoginSelection from "./pages/LoginSelection";
+import AdminLogin from "./pages/AdminLogin";
+import WorkerLogin from "./pages/WorkerLogin";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -35,19 +38,27 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<LoginSelection />} />
+                <Route path="/customer-login" element={<Login/>}/>
                 <Route path="/register" element={<Register />} />
-                <Route path="/request" element={<RequestCart/>}/>
+                <Route path="/request" 
+                        element={
+                          <ProtectedRoute>
+                            <RequestCart/>
+                          </ProtectedRoute>
+                        }/>
                 <Route path="/request-preview" element={<RequestPreview/>}/>
                 <Route path="/worker" element={<Worker/>}/>
                 <Route path="/admin" element={<Admin/>}/>
                 <Route path="/verify-otp" element={<OTPVerification/>}/>
                 <Route path="/admin/orders" element={<AdminOrders/>}/>
                 <Route path="/admin/products" element={<AdminProducts/>}/>
+                <Route path="/admin-login" element={<AdminLogin />} />
+                <Route path="/worker-login" element={<WorkerLogin />} />
                 <Route path="/orders" 
                         element={
                             <ProtectedRoute>
-                                <Orders/>
+                              <Orders/>
                             </ProtectedRoute>
                           } />
                 <Route path="/profile" 

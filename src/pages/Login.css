@@ -1,57 +1,103 @@
-.login-page{
+.login-page {
     min-height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
+    background: #F8FAF9;
+    font-family: "Poppins", sans-serif;
 }
 
-.login-card{
+.login-card {
     width: 100%;
     max-width: 400px;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: white;
+    padding: 35px 30px;
+    border: 1px solid #DCE7E1;
+    border-radius: 16px;
+    background: #FFFFFF;
+    box-shadow: 0 8px 25px rgba(15, 107, 79, 0.08);
+    box-sizing: border-box;
 }
 
-.login-card h1{
+.login-card h1 {
     text-align: center;
-    margin-bottom: 25px;
+    color: #0F6B4F;
+    font-size: 28px;
+    margin: 0 0 28px;
 }
 
-.login-form{
+.login-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
-.login-form input{
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
+.login-form input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.login-form button{
-    padding: 12px;
+.login-form input:focus {
+    border-color: #159A7C;
+    box-shadow: 0 0 0 3px rgba(21, 154, 124, 0.12);
+}
+
+.login-form button {
+    padding: 13px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    background: #0F6B4F;
+    color: #FFFFFF;
     font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
 }
 
-.login-card p{
+.login-form button:hover {
+    background: #0B543E;
+}
+
+.login-form button:active {
+    transform: scale(0.98);
+}
+
+.login-card p {
     text-align: center;
-    margin-top: 20px;
+    color: #64748B;
+    font-size: 14px;
+    margin-top: 22px;
 }
 
-@media (max-width: 600px){
-    .login-page{
+.login-card p a {
+    color: #0F6B4F;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-card p a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .login-page {
+        min-height: 65vh;
         padding: 30px 15px;
     }
 
-    .login-card{
-        padding: 25px 20px;
+    .login-card {
+        padding: 28px 20px;
+    }
+
+    .login-card h1 {
+        font-size: 24px;
     }
 }

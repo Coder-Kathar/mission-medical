@@ -1,6 +1,7 @@
 import "./Admin.css";
 import { useState, useContext } from "react";
 import { ProductContext } from "../context/ProductContext";
+import { Link } from "react-router-dom";
 
 function Admin() {
 
@@ -56,6 +57,9 @@ function Admin() {
     );
 
     const [filterStatus, setFilterStatus] = useState("all");
+
+    const [ordersPage, setOrdersPage] = useState(1);
+    const ordersPerPage = 10;
 
     const handleAddProduct = (e) => {
         e.preventDefault();
@@ -150,6 +154,17 @@ function Admin() {
         );
     });
 
+    const totalOrderPages = Math.ceil(
+        filteredOrders.length / ordersPerPage
+    );
+
+    const ordersStartIndex = (ordersPage - 1) * ordersPerPage;
+
+    const currentOrders = filteredOrders.slice(
+        ordersStartIndex,
+        ordersStartIndex + ordersPerPage
+    );
+
     return (
         <main className="admin-page">
             <h1>Admin Dashboard</h1>
@@ -175,6 +190,17 @@ function Admin() {
                     <h3>Total Products</h3>
                     <p>{products.length}</p>
                 </div>
+
+                <Link to="/admin/orders" className="admin-card admin-navigation-card">
+                    <div>
+                        <h3>Manage Orders</h3>
+                        <p>View requests and update delivery status.</p>
+                    </div>
+
+                    <span className="admin-navigation-action">
+                        Open Orders →
+                    </span>
+                </Link>
             </section>
 
             <section className="admin-card">
@@ -336,7 +362,14 @@ function Admin() {
                 )}
 
                 {filteredProducts.length === 0 ? (
-                    <p>No products match your search.</p>
+                    <div className="empty-orders">
+                        <h3>No products found</h3>
+                        <p>
+                            {products.length === 0
+                                ? "Products will appear here when you add them."
+                                : "Try changing your search or category filter."}
+                        </p>
+                    </div>
                 ) : (
                     <>
                         <div className="admin-products-table-wrapper">
@@ -491,7 +524,10 @@ function Admin() {
 
                     <select
                         value={filterStatus}
-                        onChange={(e) => setFilterStatus(e.target.value)}
+                        onChange={(e) => {
+                            setFilterStatus(e.target.value);
+                            setOrdersPage(1);
+                        }}
                     >
                         <option value="all">All Orders</option>
                         <option value="Pending">Pending Orders</option>
@@ -499,8 +535,15 @@ function Admin() {
                     </select>
                 </div>
 
-                {orders.length === 0 ? (
-                    <p>No customer orders available.</p>
+                {filteredOrders.length === 0 ? (
+                    <div className="empty-orders">
+                        <h3>No orders found</h3>
+                        <p>
+                            {orders.length === 0
+                                ? "Customer orders will appear here when someone places a request."
+                                : "No orders match the selected status. Try choosing another filter."}
+                        </p>
+                    </div>
                 ) : (
                     <div className="admin-products-table-wrapper">
                         <table className="admin-products-table">
@@ -517,7 +560,7 @@ function Admin() {
                             </thead>
 
                             <tbody>
-                                {filteredOrders.map((order) => (
+                                {currentOrders.map((order) => (
                                     <tr key={order.id}>
                                         <td>{order.id}</td>
                                         <td>{order.customerName || "N/A"}</td>
@@ -548,6 +591,44 @@ function Admin() {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+                )}
+
+                {filteredOrders.length > 0 && (
+                    <div className="admin-products-pagination">
+                        <span>
+                            Showing {ordersStartIndex + 1}–
+                            {Math.min(
+                                ordersStartIndex + ordersPerPage,
+                                filteredOrders.length
+                            )} of {filteredOrders.length} orders
+                        </span>
+
+                        <div className="admin-product-actions">
+                            <button
+                                type="button"
+                                disabled={ordersPage <= 1}
+                                onClick={() =>
+                                    setOrdersPage((page) => page - 1)
+                                }
+                            >
+                                Previous
+                            </button>
+
+                            <span>
+                                Page {ordersPage} of {totalOrderPages}
+                            </span>
+
+                            <button
+                                type="button"
+                                disabled={ordersPage >= totalOrderPages}
+                                onClick={() =>
+                                    setOrdersPage((page) => page + 1)
+                                }
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                 )}
             </section>
