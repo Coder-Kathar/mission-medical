@@ -1,153 +1,57 @@
 import "./Admin.css";
-import { useState, useContext } from "react";
-import { ProductContext } from "../context/ProductContext";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { ProductContext } from "../context/ProductContext";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+} from "recharts";
 
 function Admin() {
+    const { products } = useContext(ProductContext);
 
-    const { addProduct, products, deleteProduct, updateProduct } = useContext(ProductContext);
-
-    const [editingProduct, setEditingProduct] = useState(null);
-    const [editName, setEditName] = useState("");
-    const [editCategory, setEditCategory] = useState("medicines");
-
-    const [productName, setProductName] = useState("");
-    const [category, setCategory] = useState("medicines");
-
-    const [productDescription, setProductDescription] = useState("");
-    const [productImage, setProductImage] = useState("");
-
-    const [editDescription, setEditDescription] = useState("");
-    const [editImage, setEditImage] = useState("");
-
-    const [editQuantityType, setEditQuantityType] = useState("tablet");
-    const [editTabletsPerStrip, setEditTabletsPerStrip] = useState("10");
-
-    const [tabletsPerStrip, setTabletsPerStrip] = useState("10");
-
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filterCategory, setFilterCategory] = useState("all");
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const [selectedOrder, setSelectedOrder] = useState(null);
-
-    const productsPerPage = 10;
-
-    const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-
-    const matchesCategory =
-        filterCategory === "all" ||
-        product.category === filterCategory;
-
-        return matchesSearch && matchesCategory;
-    });
-
-    const totalPages = Math.ceil(
-        filteredProducts.length / productsPerPage
+    const orders = JSON.parse(
+        localStorage.getItem("orders") || "[]"
     );
-
-    const startIndex = (currentPage - 1) * productsPerPage;
-
-    const currentProducts = filteredProducts.slice(
-        startIndex,
-        startIndex + productsPerPage
-    );
-
-    const [filterStatus, setFilterStatus] = useState("all");
-
-    const [ordersPage, setOrdersPage] = useState(1);
-    const ordersPerPage = 10;
-
-    const handleAddProduct = (e) => {
-        e.preventDefault();
-
-        const newProduct = {
-            name: productName,
-            category,
-            description: productDescription.trim(),
-            usage: "",
-            image: productImage.trim(),
-            quantityType: category === "medicines" || category === "drug"
-                ? "tablet"
-                : "piece",
-
-            tabletsPerStrip:
-                category === "medicines" || category === "drug"
-                    ? Number(tabletsPerStrip)
-                    : undefined,
-            requiresPrescription: category === "drug",
-        };
-
-        addProduct(newProduct);
-
-        alert(`Product added: ${productName}`);
-
-        setProductName("");
-        setProductDescription("");
-        setProductImage("");
-        setCategory("medicines");
-        setTabletsPerStrip("10");
-    };
-
-    const handleEditClick = (product) => {
-        setEditingProduct(product);
-        setEditName(product.name);
-        setEditCategory(product.category);
-        setEditDescription(product.description || "");
-        setEditImage(product.image || "");
-        setEditQuantityType(product.quantityType || "tablet");
-        setEditTabletsPerStrip(String(product.tabletsPerStrip || 10));
-    };
-
-    const handleSaveEdit = (e) => {
-        e.preventDefault();
-
-        updateProduct({
-            ...editingProduct,
-            name: editName.trim(),
-            category: editCategory,
-            quantityType:
-                editCategory === "medicines" || editCategory === "drug"
-                    ? editQuantityType
-                    : "piece",
-            tabletsPerStrip:
-                editCategory === "medicines" || editCategory === "drug"
-                    ? Number(editTabletsPerStrip)
-                    : undefined,
-            requiresPrescription: editCategory === "drug",
-            description: editDescription.trim(),
-            image: editImage.trim(),
-        });
-
-        setEditingProduct(null);
-        alert("Product updated successfully!");
-    };
-
-    const orders = JSON.parse(localStorage.getItem("orders") || "[]");
 
     const totalOrders = orders.length;
-    
+
     const pendingOrders = orders.filter(
-        (order) => order.status === "Pending"
+        (order) => (order.status || "Pending") === "Pending"
     ).length;
 
     const deliveredOrders = orders.filter(
         (order) => order.status === "Delivered"
     ).length;
-    
-    const getTotalItems = (order) => {
-        const items = order.requestItems || order.items || [];
 
-        return items.reduce(
-            (total, item) => total + Number(item.quantity || 0),
-            0
+    const orderStatusData = [
+        { status: "Pending", count: pendingOrders },
+        { status: "Delivered", count: deliveredOrders },
+    ];
+
+    const [filterStatus, setFilterStatus] = useState("all");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+
+    const ordersPerPage = 10;
+
+    // Newest orders first
+    const newestFirstOrders = [...orders].sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+
+        return (
+            (Number.isNaN(dateB) ? 0 : dateB) -
+            (Number.isNaN(dateA) ? 0 : dateA)
         );
-    };
+    });
 
-    const filteredOrders = orders.filter((order) => {
+    const filteredOrders = newestFirstOrders.filter((order) => {
         return (
             filterStatus === "all" ||
             (order.status || "Pending") === filterStatus
@@ -158,18 +62,28 @@ function Admin() {
         filteredOrders.length / ordersPerPage
     );
 
-    const ordersStartIndex = (ordersPage - 1) * ordersPerPage;
+    const startIndex = (currentPage - 1) * ordersPerPage;
 
     const currentOrders = filteredOrders.slice(
-        ordersStartIndex,
-        ordersStartIndex + ordersPerPage
+        startIndex,
+        startIndex + ordersPerPage
     );
+
+    const getTotalItems = (order) => {
+        const items = order.requestItems || order.items || [];
+
+        return items.reduce(
+            (total, item) => total + Number(item.quantity || 0),
+            0
+        );
+    };
 
     return (
         <main className="admin-page">
             <h1>Admin Dashboard</h1>
             <p>Manage products, customer requests, and deliveries.</p>
 
+            {/* Summary Cards */}
             <section className="admin-cards">
                 <div className="admin-card">
                     <h3>Total Orders</h3>
@@ -190,11 +104,31 @@ function Admin() {
                     <h3>Total Products</h3>
                     <p>{products.length}</p>
                 </div>
+            </section>
 
-                <Link to="/admin/orders" className="admin-card admin-navigation-card">
+            {/* Management Navigation */}
+            <section className="admin-cards">
+                <Link
+                    to="/admin/products"
+                    className="admin-card admin-navigation-card"
+                >
+                    <div>
+                        <h3>Manage Products</h3>
+                        <p>Add, edit, search, and delete products.</p>
+                    </div>
+
+                    <span className="admin-navigation-action">
+                        Open Products →
+                    </span>
+                </Link>
+
+                <Link
+                    to="/admin/orders"
+                    className="admin-card admin-navigation-card"
+                >
                     <div>
                         <h3>Manage Orders</h3>
-                        <p>View requests and update delivery status.</p>
+                        <p>Review orders and manage deliveries.</p>
                     </div>
 
                     <span className="admin-navigation-action">
@@ -203,322 +137,9 @@ function Admin() {
                 </Link>
             </section>
 
-            <section className="admin-card">
-                <h2>Add New Product</h2>
-
-                <form onSubmit={handleAddProduct}>
-                    <input
-                        type="text"
-                        placeholder="Product Name"
-                        value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
-                        required
-                    />
-
-                    <textarea
-                        placeholder="Product Description"
-                        value={productDescription}
-                        onChange={(e) => setProductDescription(e.target.value)}
-                    />
-
-                    <input
-                        type="text"
-                        placeholder="Product Image URL"
-                        value={productImage}
-                        onChange={(e) => setProductImage(e.target.value)}
-                    />
-
-                    <select
-                        value={category}
-                        onChange={(e) => {
-                            const selectedCategory = e.target.value;
-
-                            setCategory(selectedCategory);
-                        }}
-                        >
-                        <option value="medicines">Medicine</option>
-                        <option value="drug">Drug</option>
-                        <option value="skin-care">Skin Care</option>
-                        <option value="vitamins">Vitamins & Supplements</option>
-                        <option value="personal-care">Personal Care</option>
-                        <option value="baby-care">Baby Care</option>
-                    </select>
-
-                    {(category === "medicines" || category === "drug") && (
-                        <input
-                            type="number"
-                            min="1"
-                            placeholder="Tablets per strip"
-                            value={tabletsPerStrip}
-                            onChange={(e) => setTabletsPerStrip(e.target.value)}
-                            required
-                        />
-                    )}
-
-                    <button type="submit">Add Product</button>
-                </form>
-            </section>
-
-            <section className="admin-card">
-                <h2>Manage Products</h2>
-
-                <div className="admin-products-toolbar">
-                    <input
-                        type="text"
-                        placeholder="Search products by name..."
-                        value={searchTerm}
-                        onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                            setCurrentPage(1);
-                        }}
-                    />
-
-                    <select
-                        value={filterCategory}
-                        onChange={(e) => {
-                            setFilterCategory(e.target.value);
-                            setCurrentPage(1);
-                        }}
-                    >
-                        <option value="all">All Categories</option>
-                        <option value="medicines">Medicine</option>
-                        <option value="drug">Drug</option>
-                        <option value="skin-care">Skin Care</option>
-                        <option value="vitamins">Vitamins & Supplements</option>
-                        <option value="personal-care">Personal Care</option>
-                        <option value="baby-care">Baby Care</option>
-                    </select>
-                </div>
+            {/* Customer Orders Table - Next Step */}
                 
-                {editingProduct && (
-                    <form onSubmit={handleSaveEdit}>
-                        <h3>Edit Product</h3>
-
-                        <input
-                            type="text"
-                            placeholder="Product Name"
-                            value={editName}
-                            onChange={(e) => setEditName(e.target.value)}
-                            required
-                        />
-
-                        <textarea
-                            placeholder="Product Description"
-                            value={editDescription}
-                            onChange={(e) => setEditDescription(e.target.value)}
-                        />
-
-                        <input
-                            type="text"
-                            placeholder="Product Image URL"
-                            value={editImage}
-                            onChange={(e) => setEditImage(e.target.value)}
-                        />
-
-                        <select
-                            value={editCategory}
-                            onChange={(e) => {
-                                const selectedCategory = e.target.value;
-                                setEditCategory(selectedCategory);
-                            }}
-                        >
-                            <option value="medicines">Medicine</option>
-                            <option value="drug">Drug</option>
-                            <option value="skin-care">Skin Care</option>
-                            <option value="vitamins">Vitamins & Supplements</option>
-                            <option value="personal-care">Personal Care</option>
-                            <option value="baby-care">Baby Care</option>
-                        </select>
-
-                        {(editCategory === "medicines" || editCategory === "drug") && (
-                            <>
-                                <select
-                                    value={editQuantityType}
-                                    onChange={(e) => setEditQuantityType(e.target.value)}
-                                >
-                                    <option value="tablet">Tablet / Strip</option>
-                                </select>
-
-                                <input
-                                    type="number"
-                                    min="1"
-                                    placeholder="Tablets per strip"
-                                    value={editTabletsPerStrip}
-                                    onChange={(e) => setEditTabletsPerStrip(e.target.value)}
-                                    required
-                                />
-                            </>
-                        )}
-
-                        <button type="submit">Save Changes</button>
-
-                        <button
-                            type="button"
-                            onClick={() => setEditingProduct(null)}
-                        >
-                            Cancel
-                        </button>
-                    </form>
-                )}
-
-                {filteredProducts.length === 0 ? (
-                    <div className="empty-orders">
-                        <h3>No products found</h3>
-                        <p>
-                            {products.length === 0
-                                ? "Products will appear here when you add them."
-                                : "Try changing your search or category filter."}
-                        </p>
-                    </div>
-                ) : (
-                    <>
-                        <div className="admin-products-table-wrapper">
-                            <table className="admin-products-table">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Category</th>
-                                        <th>Prescription</th>
-                                        <th>Quantity Details</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {currentProducts.map((product) => (
-                                        <tr key={product.id}>
-                                            <td className="product-name">
-                                                {product.name}
-                                            </td>
-
-                                            <td>{product.category}</td>
-
-                                            <td>
-                                                <span
-                                                    className={`prescription-status ${
-                                                        product.requiresPrescription
-                                                            ? "prescription-required"
-                                                            : ""
-                                                    }`}
-                                                >
-                                                    {product.requiresPrescription
-                                                        ? "Required"
-                                                        : "Not required"}
-                                                </span>
-                                            </td>
-
-                                            <td>
-                                                {product.quantityType === "tablet"
-                                                    ? `${product.tabletsPerStrip || 10} tablets/strip`
-                                                    : "Pieces"}
-                                            </td>
-
-                                            <td>
-                                                <div className="admin-product-actions">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleEditClick(product)}
-                                                    >
-                                                        Edit
-                                                    </button>
-
-                                                    <button
-                                                        type="button"
-                                                        className="delete-button"
-                                                        onClick={() => {
-                                                            if (
-                                                                window.confirm(
-                                                                    `Delete ${product.name}?`
-                                                                )
-                                                            ) {
-                                                                deleteProduct(product.id);
-                                                            }
-                                                        }}
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {selectedOrder && (
-                            <div className="order-modal-overlay">
-                                <div className="order-modal">
-                                    <h2>Order Details</h2>
-
-                                    <p><strong>Order ID:</strong> {selectedOrder.id}</p>
-                                    <p><strong>Customer:</strong> {selectedOrder.customerName || "N/A"}</p>
-                                    <p><strong>Mobile:</strong> {selectedOrder.mobileNumber || "N/A"}</p>
-                                    <p><strong>Address:</strong> {selectedOrder.deliveryAddress || "N/A"}</p>
-                                    <p><strong>Status:</strong> {selectedOrder.status || "Pending"}</p>
-
-                                    <h3>Requested Products</h3>
-
-                                    {(selectedOrder.requestItems || selectedOrder.items || []).map(
-                                        (item, index) => (       
-                                            <p key={item.id || index} className="order-item-details">
-                                                <strong>{item.name || item.productName || "Product"}</strong>
-                                                <span>— Quantity: {item.quantity}</span>
-                                                <span>
-                                                    — Prescription:{" "}
-                                                    {item.requiresPrescription ? "Required" : "Not required"}
-                                                </span>
-                                            </p>
-                                        )
-                                    )}
-
-                                    <button
-                                        type="button"
-                                        onClick={() => setSelectedOrder(null)}
-                                    >
-                                        Close
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="admin-products-pagination">
-                            <span>
-                                Showing {startIndex + 1}–
-                                {Math.min(
-                                    startIndex + productsPerPage,
-                                    filteredProducts.length
-                                )}{" "}
-                                of {filteredProducts.length} products
-                            </span>
-
-                            <div className="admin-product-actions">
-                                <button
-                                    type="button"
-                                    disabled={currentPage <= 1}
-                                    onClick={() => setCurrentPage((page) => page - 1)}
-                                >
-                                    Previous
-                                </button>
-
-                                <span>
-                                    Page {currentPage} of {totalPages}
-                                </span>
-
-                                <button
-                                    type="button"
-                                    disabled={currentPage >= totalPages}
-                                    onClick={() => setCurrentPage((page) => page + 1)}
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        </div>
-                    </>
-                )}
-            </section>
-                        
             <section className="admin-card">
-                
                 <div className="orders-header">
                     <h2>Manage Customer Orders</h2>
 
@@ -526,7 +147,7 @@ function Admin() {
                         value={filterStatus}
                         onChange={(e) => {
                             setFilterStatus(e.target.value);
-                            setOrdersPage(1);
+                            setCurrentPage(1);
                         }}
                     >
                         <option value="all">All Orders</option>
@@ -538,99 +159,209 @@ function Admin() {
                 {filteredOrders.length === 0 ? (
                     <div className="empty-orders">
                         <h3>No orders found</h3>
-                        <p>
-                            {orders.length === 0
-                                ? "Customer orders will appear here when someone places a request."
-                                : "No orders match the selected status. Try choosing another filter."}
-                        </p>
+                        <p>Customer orders will appear here when available.</p>
                     </div>
                 ) : (
-                    <div className="admin-products-table-wrapper">
-                        <table className="admin-products-table">
-                            <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Customer</th>
-                                    <th>Mobile</th>
-                                    <th>Order Date</th>
-                                    <th>Total Items</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {currentOrders.map((order) => (
-                                    <tr key={order.id}>
-                                        <td>{order.id}</td>
-                                        <td>{order.customerName || "N/A"}</td>
-                                        <td>{order.mobileNumber || "N/A"}</td>
-                                        <td>{order.date || "N/A"}</td>
-                                        <td>{getTotalItems(order)}</td>
-                                        <td>
-                                            <span
-                                                className={`order-status ${
-                                                    order.status === "Delivered"
-                                                        ? "order-delivered"
-                                                        : "order-pending"
-                                                }`}
-                                            >
-                                                {order.status || "Pending"}
-                                            </span>
-                                        </td>                                        
-                                        <td>
-                                            <button
-                                                type="button"
-                                                className="view-details-button"
-                                                onClick={() => setSelectedOrder(order)}
-                                            >
-                                                View Details
-                                            </button>
-                                        </td>
+                    <>
+                        <div className="admin-products-table-wrapper">
+                            <table className="admin-products-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Mobile</th>
+                                        <th>Order Date</th>
+                                        <th>Total Items</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                                </thead>
 
-                {filteredOrders.length > 0 && (
-                    <div className="admin-products-pagination">
-                        <span>
-                            Showing {ordersStartIndex + 1}–
-                            {Math.min(
-                                ordersStartIndex + ordersPerPage,
-                                filteredOrders.length
-                            )} of {filteredOrders.length} orders
-                        </span>
+                                <tbody>
+                                    {currentOrders.map((order) => (
+                                        <tr key={order.id}>
+                                            <td>{order.id}</td>
+                                            <td>{order.customerName || "N/A"}</td>
+                                            <td>{order.mobileNumber || "N/A"}</td>
+                                            <td>{order.date || "N/A"}</td>
+                                            <td>{getTotalItems(order)}</td>
+                                            <td>
+                                                <span
+                                                    className={`order-status ${
+                                                        order.status === "Delivered"
+                                                            ? "order-delivered"
+                                                            : "order-pending"
+                                                    }`}
+                                                >
+                                                    {order.status || "Pending"}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="view-details-button"
+                                                    onClick={() => setSelectedOrder(order)}
+                                                >
+                                                    View Details
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
 
-                        <div className="admin-product-actions">
-                            <button
-                                type="button"
-                                disabled={ordersPage <= 1}
-                                onClick={() =>
-                                    setOrdersPage((page) => page - 1)
-                                }
-                            >
-                                Previous
-                            </button>
-
+                        <div className="admin-products-pagination">
                             <span>
-                                Page {ordersPage} of {totalOrderPages}
+                                Showing {startIndex + 1}–
+                                {Math.min(
+                                    startIndex + ordersPerPage,
+                                    filteredOrders.length
+                                )} of {filteredOrders.length} orders
                             </span>
 
+                            <div className="admin-product-actions">
+                                <button
+                                    type="button"
+                                    disabled={currentPage <= 1}
+                                    onClick={() =>
+                                        setCurrentPage((page) => page - 1)
+                                    }
+                                >
+                                    Previous
+                                </button>
+
+                                <span>
+                                    Page {currentPage} of {totalOrderPages}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    disabled={currentPage >= totalOrderPages}
+                                    onClick={() =>
+                                        setCurrentPage((page) => page + 1)
+                                    }
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {selectedOrder && (
+                    <div className="order-modal-overlay">
+                        <div className="order-modal">
+                            <h2>Order Details</h2>
+
+                            <p><strong>Order ID:</strong> {selectedOrder.id}</p>
+                            <p><strong>Customer:</strong> {selectedOrder.customerName || "N/A"}</p>
+                            <p><strong>Mobile:</strong> {selectedOrder.mobileNumber || "N/A"}</p>
+                            <p><strong>Address:</strong> {selectedOrder.deliveryAddress || "N/A"}</p>
+                            <p><strong>Date:</strong> {selectedOrder.date || "N/A"}</p>
+                            <p><strong>Status:</strong> {selectedOrder.status || "Pending"}</p>
+                            <p>
+                                <strong>Prescription:</strong>{" "}
+                                {selectedOrder.prescriptionName || "Not attached"}
+                            </p>
+
+                            <h3>Requested Products</h3>
+
+                            {(selectedOrder.requestItems || selectedOrder.items || []).map(
+                                (item, index) => (
+                                    <p
+                                        key={item.id || index}
+                                        className="order-item-details"
+                                    >
+                                        <strong>{item.name || item.productName || "Product"}</strong>
+                                        {" — Quantity: "}
+                                        {item.quantity}
+                                        {" "}
+                                        {item.quantityType || "pieces"}
+                                    </p>
+                                )
+                            )}
+
                             <button
                                 type="button"
-                                disabled={ordersPage >= totalOrderPages}
-                                onClick={() =>
-                                    setOrdersPage((page) => page + 1)
-                                }
+                                onClick={() => setSelectedOrder(null)}
                             >
-                                Next
+                                Close
                             </button>
                         </div>
                     </div>
                 )}
+            </section>
+
+            {/* Order Status Visualization */}
+            <section className="admin-card order-chart-card">
+            <div className="chart-heading">
+                <div>
+                    <h2>Order Status Overview</h2>
+                    <p>Track your customer orders at a glance.</p>
+                </div>
+
+                <span className="chart-total">
+                    {totalOrders} Total Orders
+                </span>
+            </div>
+
+            <div className="order-chart-container">
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                        data={orderStatusData}
+                        margin={{ top: 15, right: 15, left: 0, bottom: 5 }}
+                        barSize={65}
+                    >
+                        <CartesianGrid
+                            strokeDasharray="4 4"
+                            vertical={false}
+                            stroke="#E5E7EB"
+                        />
+                        <XAxis
+                            dataKey="status"
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{ fill: "#4B5563", fontSize: 13 }}
+                        />
+                        <YAxis
+                            allowDecimals={false}
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{ fill: "#6B7280", fontSize: 12 }}
+                        />
+                        <Tooltip
+                            cursor={{ fill: "#E8F5EF" }}
+                            contentStyle={{
+                                borderRadius: "10px",
+                                border: "1px solid #D1D5DB",
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                            }}
+                        />
+                        <Bar
+                            dataKey="count"
+                            name="Orders"
+                            fill="#159A7C"
+                            radius={[8, 8, 0, 0]}
+                            minPointSize={0}
+                        />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
+
+            <div className="chart-legend">
+                <span><i className="legend-dot pending-dot"></i> Pending: {pendingOrders}</span>
+                <span><i className="legend-dot delivered-dot"></i> Delivered: {deliveredOrders}</span>
+            </div>
+        </section>
+
+            {/* Analytics - Later */}
+            <section className="admin-card">
+                <h2>Order Analytics</h2>
+                <p>
+                    Detailed order trends and demand analytics will
+                    be added here.
+                </p>
             </section>
         </main>
     );

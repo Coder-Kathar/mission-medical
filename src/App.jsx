@@ -6,7 +6,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import RequestCart from "./pages/RequestCart";
 import RequestPreview from "./pages/RequestPreview";
 import { ProductProvider } from "./context/ProductContext";
-import { RequestProvider } from "./context/RequestContext";
 import OTPVerification from "./pages/OTPVerification";
 import AdminOrders from "./pages/AdminOrders";
 import AdminProducts from "./pages/AdminProducts";
@@ -28,52 +27,50 @@ import Admin from "./pages/Admin";
 function App() {
   return (
     
-    <RequestProvider>
-      <ProductProvider>
-        <AuthProvider>
-            <BrowserRouter>
-              <Navbar />
+    <ProductProvider>
+      <AuthProvider>
+          <BrowserRouter>
+            <Navbar />
 
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:id" element={<ProductDetails />} />
-                <Route path="/login" element={<LoginSelection />} />
-                <Route path="/customer-login" element={<Login/>}/>
-                <Route path="/register" element={<Register />} />
-                <Route path="/request" 
-                        element={
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/:id" element={<ProductDetails />} />
+              <Route path="/login" element={<LoginSelection />} />
+              <Route path="/customer-login" element={<Login/>}/>
+              <Route path="/register" element={<Register />} />
+              <Route path="/request" 
+                      element={
+                        <ProtectedRoute>
+                          <RequestCart/>
+                        </ProtectedRoute>
+                      }/>
+              <Route path="/request-preview" element={<RequestPreview/>}/>
+              <Route path="/worker" element={<Worker/>}/>
+              <Route path="/admin" element={<Admin/>}/>
+              <Route path="/verify-otp" element={<OTPVerification/>}/>
+              <Route path="/admin/orders" element={<AdminOrders/>}/>
+              <Route path="/admin/products" element={<AdminProducts/>}/>
+              <Route path="/admin-login" element={<AdminLogin />} />
+              <Route path="/worker-login" element={<WorkerLogin />} />
+              <Route path="/orders" 
+                      element={
                           <ProtectedRoute>
-                            <RequestCart/>
+                            <Orders/>
                           </ProtectedRoute>
-                        }/>
-                <Route path="/request-preview" element={<RequestPreview/>}/>
-                <Route path="/worker" element={<Worker/>}/>
-                <Route path="/admin" element={<Admin/>}/>
-                <Route path="/verify-otp" element={<OTPVerification/>}/>
-                <Route path="/admin/orders" element={<AdminOrders/>}/>
-                <Route path="/admin/products" element={<AdminProducts/>}/>
-                <Route path="/admin-login" element={<AdminLogin />} />
-                <Route path="/worker-login" element={<WorkerLogin />} />
-                <Route path="/orders" 
-                        element={
-                            <ProtectedRoute>
-                              <Orders/>
-                            </ProtectedRoute>
-                          } />
-                <Route path="/profile" 
-                        element={
-                            <ProtectedRoute>
-                                <Profile/>
-                            </ProtectedRoute>
-                          } />
-              </Routes>
+                        } />
+              <Route path="/profile" 
+                      element={
+                          <ProtectedRoute>
+                              <Profile/>
+                          </ProtectedRoute>
+                        } />
+            </Routes>
 
-              <Footer/>
-            </BrowserRouter>
-        </AuthProvider>
-      </ProductProvider>
-    </RequestProvider>
+            <Footer/>
+          </BrowserRouter>
+      </AuthProvider>
+    </ProductProvider>
   );
 }
 
