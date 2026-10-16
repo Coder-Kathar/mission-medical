@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { UserRound } from "lucide-react";
 
 function Navbar() {
     const { user, logout } = useContext(AuthContext);
@@ -64,9 +65,18 @@ function Navbar() {
                                 setMenuOpen(false);
                             }}
                         >
-                            {user.name?.charAt(0)?.toUpperCase() ||
-                                user.mobileNumber?.charAt(0) ||
-                                "U"}
+                            <button
+                                type="button"
+                                className="profile-avatar"
+                                aria-label="Open profile menu"
+                                aria-expanded={profileOpen}
+                                onClick={() => {
+                                    setProfileOpen(!profileOpen);
+                                    setMenuOpen(false);
+                                }}
+                            >
+                                <UserRound size={23} strokeWidth={1.7} />
+                            </button>
                         </button>
 
                         {profileOpen && (
