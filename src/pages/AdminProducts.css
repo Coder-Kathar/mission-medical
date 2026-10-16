@@ -224,11 +224,6 @@
 }
 
 
-/* Delete button — destructive action */
-.admin-products-page button:nth-of-type(2) {
-    /* Don't use this selector globally; use the specific selector below. */
-}
-
 /* Product card buttons */
 .admin-product-card button:last-child {
     background-color: #DC2626;
