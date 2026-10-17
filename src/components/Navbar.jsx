@@ -3,6 +3,8 @@ import "./Navbar.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { UserRound } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
+import { useEffect } from "react";
 
 function Navbar() {
     const { user, logout } = useContext(AuthContext);
@@ -10,6 +12,21 @@ function Navbar() {
     const [searchTerm, setSearchTerm] = useState("");
     const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
+
+    const [theme, setTheme] = useState(
+        () => localStorage.getItem("theme") || "light"
+    );
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme((currentTheme) =>
+            currentTheme === "light" ? "dark" : "light"
+        );
+    };
 
     const navigate = useNavigate();
 
@@ -34,7 +51,7 @@ function Navbar() {
     return (
         <nav className="navbar">
             <Link to="/" className="logo" onClick={closeMenus}>
-                Mission Medical
+                Makkal Marunthagam
             </Link>
 
             <div className="search-box">
@@ -53,6 +70,21 @@ function Navbar() {
             </div>
 
             <div className="navbar-actions">
+
+                <button
+                    type="button"
+                    className="theme-toggle"
+                    onClick={toggleTheme}
+                    aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+                    title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+                >
+                    {theme === "light" ? (
+                        <Moon size={21} />
+                    ) : (
+                        <Sun size={21} />
+                    )}
+                </button>
+
                 {user ? (
                     <div className="profile-wrapper">
                         <button
@@ -65,18 +97,7 @@ function Navbar() {
                                 setMenuOpen(false);
                             }}
                         >
-                            <button
-                                type="button"
-                                className="profile-avatar"
-                                aria-label="Open profile menu"
-                                aria-expanded={profileOpen}
-                                onClick={() => {
-                                    setProfileOpen(!profileOpen);
-                                    setMenuOpen(false);
-                                }}
-                            >
-                                <UserRound size={23} strokeWidth={1.7} />
-                            </button>
+                            <UserRound size={23} strokeWidth={1.7} />
                         </button>
 
                         {profileOpen && (

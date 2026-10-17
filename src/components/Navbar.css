@@ -13,9 +13,10 @@
 .logo {
     flex-shrink: 0;
     color: var(--primary-color);
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .search-box {
@@ -95,6 +96,25 @@
     background-color: #F3F4F6;
 }
 
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--secondary-color);
+}
+
 .menu-toggle {
     display: flex;
     flex-direction: column;
@@ -168,7 +188,7 @@
     }
 
     .logo {
-        font-size: 19px;
+        font-size: 17px;
     }
 
     .navbar-actions {

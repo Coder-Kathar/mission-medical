@@ -1,16 +1,17 @@
-.request-page{
+.request-page {
     max-width: 900px;
     margin: 40px auto;
     padding: 20px;
 }
 
-.request-page h1{
+.request-page h1 {
     color: var(--primary-color);
     margin-bottom: 25px;
 }
 
-.request-item{
+.request-item {
     background-color: var(--white);
+    color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -18,57 +19,131 @@
     box-shadow: var(--shadow);
 }
 
-.request-item h3{
+.request-item h3 {
     color: var(--primary-color);
     margin-bottom: 12px;
 }
 
-.request-item p{
+.request-item p {
+    color: var(--text-color);
     margin-bottom: 12px;
 }
 
-.request-item .quantity-controls{
+.request-item .quantity-controls {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 15px;
 }
 
-.request-item .quantity-controls button,
-.remove-button{
-    padding: 8px 14px;
+/* Quantity buttons */
+.request-item .quantity-controls button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #159A7C;
+    color: #FFFFFF;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: 12px;
+
     font-family: inherit;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
 }
 
-.request-item .quantity-controls button{
-    background: var(--secondary-color);
-    color: var(--primary-color);
+.request-item .quantity-controls button:hover:not(:disabled) {
+    background-color: #34D399;
+    color: #111827;
 }
 
-.request-item .quantity-controls button:disabled{
-    opacity: 0.5;
+.request-item .quantity-controls button:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
 }
 
-.remove-button{
-    background: #FEE2E2;
+/* Remove button */
+.remove-button {
+    padding: 8px 14px;
+    background-color: #FEE2E2;
     color: #B91C1C;
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    cursor: pointer;
 }
 
+/* Continue browsing and review buttons */
 .continue-browsing {
     display: inline-block;
     margin-bottom: 25px;
     padding: 10px 20px;
+
     background-color: var(--primary-color);
-    color: var(--white);
+    color: #FFFFFF;
+
     border-radius: var(--button-radius);
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    text-decoration: none;
+
     transition: background-color 0.2s ease;
 }
 
 .continue-browsing:hover {
-    background-color: var(--accent-color);
+    background-color: #34D399;
+    color: #111827;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .request-page {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .request-item {
+        padding: 16px;
+    }
+}
+
+.request-item select {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.request-item select option {
+    background-color: var(--white);
+    color: var(--text-color);
+}
+
+.request-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.request-actions .continue-browsing {
+    margin-bottom: 0;
+}
+
+@media (max-width: 480px) {
+    .request-actions {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 }

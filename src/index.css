@@ -15,6 +15,19 @@
   --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
+/* Dark theme */
+[data-theme="dark"] {
+  --primary-color: #159A7C;
+  --secondary-color: #1F352F;
+  --accent-color: #34D399;
+  --background-color: #111827;
+  --text-color: #F3F4F6;
+  --white: #1F2937;
+  --border-color: #374151;
+
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
 * {
   margin: 0;
   padding: 0;

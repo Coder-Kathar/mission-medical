@@ -23,15 +23,17 @@ function RequestCart() {
         <main className="request-page">
             <h1>Request</h1>
 
-            <Link to="/products" className="continue-browsing">
-                + Add More Products
-            </Link>
-
-            {requestItems.length > 0 && (
-                <Link to="/request-preview" className="continue-browsing">
-                    Review Request →
+            <div className="request-actions">
+                <Link to="/products" className="continue-browsing">
+                    + Add More Products
                 </Link>
-            )}
+
+                {requestItems.length > 0 && (
+                    <Link to="/request-preview" className="continue-browsing">
+                        Review Request →
+                    </Link>
+                )}
+            </div>
 
             {requestItems.length === 0 ? (
                 <p>No products added to your request.</p>
@@ -102,7 +104,7 @@ function RequestCart() {
                                         }
                                         disabled={item.quantity <= 1}
                                     >
-                                        -
+                                        <strong>-</strong>
                                     </button>
 
                                     <span>{item.quantity}</span>
@@ -115,7 +117,7 @@ function RequestCart() {
                                             )
                                         }
                                     >
-                                        +
+                                        <strong>+</strong>
                                     </button>
                                 </div>
 

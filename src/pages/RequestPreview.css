@@ -1,14 +1,15 @@
+
 .request-preview-page {
     max-width: 900px;
     margin: 40px auto;
     padding: 0 20px 40px;
-    color: #1F2937;
+    color: var(--text-color);
 }
 
 .request-preview-page h1,
 .request-preview-page h2,
 .request-preview-page h3 {
-    color: #0F6B4F;
+    color: var(--primary-color);
 }
 
 .request-preview-page h1 {
@@ -16,13 +17,20 @@
     font-size: 32px;
 }
 
-.request-preview-page section {
-    background: #FFFFFF;
+.request-preview-page section,
+.request-preview-page .request-item {
+    background: var(--white);
+    color: var(--text-color);
     padding: 24px;
     margin: 22px 0;
-    border: 1px solid #E5E7EB;
+    border: 1px solid var(--border-color);
     border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow);
+}
+
+.request-preview-page p {
+    color: var(--text-color);
+    margin: 8px 0;
 }
 
 .request-preview-page input:not([type="file"]),
@@ -32,20 +40,23 @@
     width: 100%;
     padding: 12px 14px;
     margin: 8px 0;
-    border: 1px solid #D1D5DB;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font: inherit;
+    background: var(--background-color);
+    color: var(--text-color);
 }
 
-.request-preview-page textarea {
-    min-height: 90px;
-    resize: vertical;
+.request-preview-page input::placeholder,
+.request-preview-page textarea::placeholder {
+    color: var(--text-color);
+    opacity: 0.65;
 }
 
 .request-preview-page input:focus,
 .request-preview-page textarea:focus,
 .request-preview-page select:focus {
-    outline: 2px solid #159A7C;
+    outline: 2px solid var(--accent-color);
     outline-offset: 1px;
 }
 
@@ -53,6 +64,13 @@
     display: block;
     max-width: 100%;
     margin: 12px 0;
+    color: var(--text-color);
+}
+
+.request-preview-page label {
+    display: block;
+    margin-top: 12px;
+    color: var(--text-color);
 }
 
 .request-preview-page button {
@@ -60,7 +78,7 @@
     margin: 8px 8px 8px 0;
     border: none;
     border-radius: 8px;
-    background: #0F6B4F;
+    background: var(--primary-color);
     color: #FFFFFF;
     font: inherit;
     font-weight: 600;
@@ -68,12 +86,28 @@
 }
 
 .request-preview-page button:hover {
-    background: #0B543E;
+    background: var(--accent-color);
 }
 
 .request-preview-page button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+.request-preview-page a {
+    display: inline-block;
+    margin: 10px 8px 10px 0;
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.request-preview-page a:hover {
+    color: var(--primary-color);
+}
+
+.request-preview-page .prescription-file-name {
+    overflow-wrap: anywhere;
+    color: var(--text-color);
 }
 
 @media (max-width: 600px) {
@@ -82,7 +116,8 @@
         padding: 0 14px 28px;
     }
 
-    .request-preview-page section {
+    .request-preview-page section,
+    .request-preview-page .request-item {
         padding: 18px;
     }
 
