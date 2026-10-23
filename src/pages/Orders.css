@@ -30,12 +30,17 @@
     font-family: inherit;
     font-size: 15px;
     color: var(--text-color);
-    background: var(--white);
+    background: var(--background-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 12px 14px;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.orders-page select option {
+    background: var(--white);
+    color: var(--text-color);
 }
 
 .orders-page input {
@@ -77,7 +82,8 @@
     color: var(--text-color);
 }
 
-.order-card h2 {
+.order-card h2,
+.order-card h3 {
     color: var(--primary-color);
 }
 
@@ -85,7 +91,6 @@
     margin: 24px 0 12px;
     padding-top: 16px;
     border-top: 1px solid var(--border-color);
-    color: var(--primary-color);
     font-size: 20px;
 }
 
@@ -122,6 +127,7 @@
     gap: 12px;
     padding: 10px 0;
     border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
 }
 
 .order-product:last-child {

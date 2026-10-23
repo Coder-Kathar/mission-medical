@@ -51,7 +51,12 @@ function Navbar() {
     return (
         <nav className="navbar">
             <Link to="/" className="logo" onClick={closeMenus}>
-                Makkal Marunthagam
+                <img
+                    src="/makkal-marunthagam-hd-logo.png"
+                    alt="Makkal Marunthagam logo"
+                    className="logo-image"
+                />
+                <span className="logo-name">Makkal Marunthagam</span>
             </Link>
 
             <div className="search-box">

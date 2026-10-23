@@ -4,6 +4,9 @@
     justify-content: center;
     align-items: center;
     padding: 48px 20px;
+    background: var(--background-color);
+    color: var(--text-color);
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .login-selection-container {
@@ -13,12 +16,13 @@
 }
 
 .login-selection-container > h1 {
-    color: #0F6B4F;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }
 
 .login-selection-container > p {
-    color: #6b7280;
+    color: var(--text-color);
+    opacity: 0.75;
     margin-bottom: 32px;
 }
 
@@ -33,18 +37,21 @@
     flex-direction: column;
     align-items: center;
     padding: 32px 24px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-    background: #ffffff;
-    color: #1f2937;
+    background: var(--white);
+    color: var(--text-color);
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--shadow);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 .login-selection-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 22px rgba(15, 107, 79, 0.12);
+    box-shadow: var(--shadow);
 }
 
 .login-selection-icon {
@@ -53,24 +60,35 @@
 }
 
 .login-selection-card h2 {
+    color: var(--text-color);
     font-size: 1.25rem;
     margin: 0 0 12px;
 }
 
 .login-selection-card p {
-    color: #6b7280;
+    color: var(--text-color);
+    opacity: 0.75;
     line-height: 1.6;
     flex: 1;
 }
 
 .login-selection-action {
     margin-top: 20px;
-    color: #0F6B4F;
+    color: var(--primary-color);
     font-weight: 600;
+}
+
+.login-selection-card:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 4px;
 }
 
 @media (max-width: 768px) {
     .login-selection-cards {
         grid-template-columns: 1fr;
+    }
+
+    .login-selection-page {
+        padding: 32px 16px;
     }
 }

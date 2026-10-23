@@ -4,24 +4,27 @@
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
-    background: #F8FAF9;
+    background: var(--background-color);
+    color: var(--text-color);
     font-family: "Poppins", sans-serif;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .login-card {
     width: 100%;
     max-width: 400px;
     padding: 35px 30px;
-    border: 1px solid #DCE7E1;
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-    background: #FFFFFF;
-    box-shadow: 0 8px 25px rgba(15, 107, 79, 0.08);
+    background: var(--white);
+    color: var(--text-color);
+    box-shadow: var(--shadow);
     box-sizing: border-box;
 }
 
 .login-card h1 {
     text-align: center;
-    color: #0F6B4F;
+    color: var(--primary-color);
     font-size: 28px;
     margin: 0 0 28px;
 }
@@ -35,25 +38,32 @@
 .login-form input {
     width: 100%;
     padding: 13px 14px;
-    border: 1px solid #D1D5DB;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 15px;
     font-family: inherit;
+    color: var(--text-color);
+    background: var(--background-color);
     box-sizing: border-box;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.login-form input::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
 .login-form input:focus {
-    border-color: #159A7C;
-    box-shadow: 0 0 0 3px rgba(21, 154, 124, 0.12);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(21, 154, 124, 0.15);
 }
 
 .login-form button {
     padding: 13px;
     border: none;
     border-radius: 8px;
-    background: #0F6B4F;
+    background: var(--primary-color);
     color: #FFFFFF;
     font-size: 16px;
     font-weight: 600;
@@ -63,7 +73,7 @@
 }
 
 .login-form button:hover {
-    background: #0B543E;
+    background: var(--accent-color);
 }
 
 .login-form button:active {
@@ -72,13 +82,14 @@
 
 .login-card p {
     text-align: center;
-    color: #64748B;
+    color: var(--text-color);
+    opacity: 0.8;
     font-size: 14px;
     margin-top: 22px;
 }
 
 .login-card p a {
-    color: #0F6B4F;
+    color: var(--primary-color);
     font-weight: 600;
     text-decoration: none;
 }
