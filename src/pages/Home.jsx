@@ -7,19 +7,32 @@ function Home(){
     return (
         <main>
 
-            {/* This is beginning view of page */}
-            <section className="hero">
-                <div className="hero-content">
-                    <h1>Your Health, Our Priority</h1>
+        {/* Hero Section */}
+        <section className="hero">
+            <div className="hero-content">
+                <h1>
+                    Your Health,
+                    <span>Our Priority</span>
+                </h1>
 
-                    <p>
-                        Quality medicines and healthcare products delivered 
-                        right to your doorstep.
-                    </p>
+                <p>
+                    Quality medicines and healthcare products delivered
+                    right to your doorstep.
+                </p>
 
-                    <Link to="/products" className="shop-button">Shop Medicines</Link>
-                </div>
-            </section>
+                <Link to="/products" className="shop-button">
+                    Shop Medicines <span aria-hidden="true">→</span>
+                </Link>
+            </div>
+
+            <div className="hero-image-container">
+                <img
+                    src="/pm-modi-transparent.png"
+                    alt="Prime Minister Narendra Modi"
+                    className="hero-image"
+                />
+            </div>
+        </section>
 
             {/* Divied by Categories */}
             <section className="categories">

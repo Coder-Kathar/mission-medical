@@ -1,177 +1,435 @@
-/* main view css code */
+/* ========================================
+   HERO SECTION
+======================================== */
 
-.hero{
-    min-height: 70vh;
+.hero {
+    position: relative;
+    min-height: 570px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 20px;
-    background-color: var(--secondary-color);
+    justify-content: space-between;
+    gap: 30px;
+    padding: 45px 6%;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 75% 45%,
+            rgba(21, 154, 124, 0.16),
+            transparent 48%
+        ),
+        var(--secondary-color);
+
+    transition: background-color 0.25s ease;
 }
 
-.hero-content{
-    max-width: 750px;
+.hero-content {
+    position: relative;
+    z-index: 2;
+    flex: 1 1 55%;
+    max-width: 720px;
+    text-align: left;
 }
 
-.hero h1{
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-}
+.hero h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin: 0 0 22px;
 
-.hero p{
-    font-size: 18px;
-    line-height: 1.7;
     color: var(--text-color);
-    margin-bottom: 30px;
+    font-size: clamp(42px, 5vw, 70px);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -1.5px;
 }
 
-.hero button{
-    padding: 12px 28px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
+.hero h1 span {
+    color: var(--accent-color);
+}
+
+.hero p {
+    max-width: 600px;
+    margin: 0 0 30px;
+
+    color: var(--text-color);
+    font-size: 19px;
+    line-height: 1.7;
+}
+
+/* Hero image */
+
+.hero-image-container {
+    position: relative;
+    align-self: stretch;
+    flex: 0 1 43%;
+    min-width: 0;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.hero-image {
+    display: block;
+    width: 100%;
+    max-width: 430px;
+    max-height: 525px;
+
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+/* Hero button */
+
+.hero .shop-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    padding: 15px 28px;
     border: none;
     border-radius: var(--button-radius);
+
     background-color: var(--primary-color);
     color: var(--white);
-    transition: background-color 0.2s ease;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
-.hero button:hover{
+.hero .shop-button:hover {
     background-color: var(--accent-color);
+    transform: translateY(-2px);
 }
 
-/* category view css code */
-.categories{
+.hero .shop-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+}
+
+/* ========================================
+   CATEGORY SECTION
+======================================== */
+
+.categories {
     padding: 60px 20px;
     text-align: center;
     background-color: var(--white);
 }
 
-.categories h2{
+.categories h2 {
     font-size: 32px;
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: 35px;
 }
 
-.category-container{
-    display:flex;
+.category-container {
+    display: flex;
     justify-content: center;
     gap: 25px;
     flex-wrap: wrap;
 }
 
-.category-card{
+.category-card {
     width: 220px;
     padding: 30px 25px;
+    box-sizing: border-box;
+
     background-color: var(--secondary-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
+
     text-decoration: none;
     color: var(--text-color);
+
     box-shadow: var(--shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.category-card:hover{
+.category-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.category-card h3{
+.category-card h3 {
     color: var(--primary-color);
     margin-bottom: 10px;
     font-size: 19px;
     font-weight: 600;
 }
 
-.category-card p{
+.category-card p {
     margin: 0;
     font-size: 14px;
+    color: var(--text-color);
 }
 
-/* Product view css code */
-.products{
+/* ========================================
+   FREQUENTLY REQUESTED PRODUCTS
+======================================== */
+
+.products {
     padding: 60px 20px;
     text-align: center;
     background-color: var(--background-color);
 }
 
-.products h2{
+.products h2 {
     font-size: 32px;
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: 35px;
 }
 
-.product-container{
+.product-container {
     display: flex;
     justify-content: center;
+    align-items: stretch;
     gap: 25px;
     flex-wrap: wrap;
 }
 
-.product-card{
+.product-card {
     width: 220px;
     padding: 25px;
+    box-sizing: border-box;
+
     background-color: var(--white);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
+
     box-shadow: var(--shadow);
-    text-align: left;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.product-card:hover{
+.product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0,0,0.12);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.product-card h3{
-    margin-bottom: 10px;
+.product-card h3 {
+    margin: 0 0 10px;
     color: var(--primary-color);
     font-size: 18px;
     font-weight: 600;
 }
 
-.product-card p{
+.product-card p {
     font-size: 14px;
     color: var(--text-color);
-    margin-bottom: 20px;
+    line-height: 1.5;
+    margin: 0 0 20px;
+    min-height: 42px;
 }
 
-.product-card button{
+/* Align product buttons at the bottom */
+
+.product-card .shop-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    align-self: center;
+    margin-top: auto;
+
+    padding: 12px 24px;
+    border-radius: var(--button-radius);
+
+    background-color: var(--primary-color);
+    color: var(--white);
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.product-card .shop-button:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.product-card .shop-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+}
+
+/* Keep compatibility with actual buttons, if used */
+
+.product-card button {
     padding: 10px 18px;
     border: none;
     border-radius: var(--button-radius);
+
     background-color: var(--primary-color);
     color: var(--white);
+
     font-family: inherit;
     cursor: pointer;
 }
 
-.product-card button:hover{
+.product-card button:hover {
     background-color: var(--accent-color);
 }
 
-/* Style for Shooping Button */
-.shop-button{
+/* ========================================
+   SHARED SHOP BUTTON
+======================================== */
+
+.shop-button {
     display: inline-block;
     padding: 12px 24px;
+
     font-size: 16px;
     font-weight: 500;
+    font-family: inherit;
     text-decoration: none;
+
     border-radius: var(--button-radius);
     background-color: var(--primary-color);
     color: var(--white);
+
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
-.shop-button:hover{
+.shop-button:hover {
     background-color: var(--accent-color);
+}
+
+/* ========================================
+   RESPONSIVE HERO
+======================================== */
+
+/* Keep hero text and image side by side on mobile */
+
+@media (max-width: 760px) {
+    .hero {
+        min-height: 300px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 28px 14px;
+    }
+
+    .hero-content {
+        flex: 1 1 58%;
+        min-width: 0;
+        text-align: left;
+    }
+
+    .hero h1 {
+        align-items: flex-start;
+        font-size: clamp(22px, 5.5vw, 38px);
+        line-height: 1.12;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+    }
+
+    .hero p {
+        font-size: clamp(12px, 3vw, 15px);
+        line-height: 1.5;
+        margin-bottom: 16px;
+    }
+
+    .hero .shop-button {
+        padding: 10px 14px;
+        gap: 6px;
+        font-size: 12px;
+    }
+
+    .hero-image-container {
+        flex: 0 1 42%;
+        width: auto;
+        height: auto;
+        align-self: stretch;
+        min-width: 0;
+    }
+
+    .hero-image {
+        width: 100%;
+        max-width: 230px;
+        max-height: 300px;
+        object-fit: contain;
+        object-position: center bottom;
+    }
+}
+
+/* Small mobile screens */
+
+@media (max-width: 380px) {
+    .hero {
+        padding: 22px 10px;
+        gap: 5px;
+    }
+
+    .hero h1 {
+        font-size: 22px;
+    }
+
+    .hero p {
+        font-size: 11px;
+    }
+
+    .hero .shop-button {
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+
+    .categories h2,
+    .products h2 {
+        font-size: 27px;
+    }
+
+    .category-card {
+        width: 100%;
+        max-width: 340px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .hero,
+    .hero .shop-button,
+    .category-card,
+    .product-card,
+    .shop-button {
+        transition: none;
+    }
+
+    .hero .shop-button:hover,
+    .category-card:hover,
+    .product-card:hover,
+    .product-card .shop-button:hover {
+        transform: none;
+    }
 }

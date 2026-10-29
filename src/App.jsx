@@ -12,6 +12,8 @@ import AdminProducts from "./pages/AdminProducts";
 import LoginSelection from "./pages/LoginSelection";
 import AdminLogin from "./pages/AdminLogin";
 import WorkerLogin from "./pages/WorkerLogin";
+import FloatingContact from "./components/FloatingContact";
+import OfferBar from "./components/OfferBar";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -31,6 +33,7 @@ function App() {
       <AuthProvider>
           <BrowserRouter>
             <Navbar />
+            <OfferBar/>
 
             <Routes>
               <Route path="/" element={<Home />} />
@@ -68,6 +71,8 @@ function App() {
             </Routes>
 
             <Footer/>
+
+            <FloatingContact/>
           </BrowserRouter>
       </AuthProvider>
     </ProductProvider>
