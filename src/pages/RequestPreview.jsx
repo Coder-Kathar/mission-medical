@@ -184,38 +184,44 @@ function RequestPreview(){
                         </p>
                     ))}
 
-                    <Link to="/products">Continue Shopping</Link>
+                    <Link to="/products" className="request-action-button">Continue Shopping</Link>
                 </div>
             )}
 
             {requestItems.length === 0  && !isSubmitted ? (
                 <>
                     <p>Your request is empty.</p>
-                    <Link to="/products">Browse Products</Link>
+                    <Link to="/products" className="request-action-button">Browse Products</Link>
                 </>
             ) : (
                 <>
                     {!isSubmitted && (
-                        requestItems.map((item, index) => (
-                            <div className="request-item" key={index}>
-                                <h3>{item.name}</h3>
+                        <div className="request-item current-request-card">
+                            <h2>Your Current Request</h2>
 
-                                <p>
-                                    Quantity Type: {item.quantityType}
-                                </p>
+                            {requestItems.map((item, index) => (
+                                <div className="current-request-product" key={`${item.id}-${item.quantityType}-${index}`}>
+                                    <div className="current-request-product-info">
+                                        <h3>{item.name}</h3>
 
-                                <p>
-                                    Quantity: {item.quantity}
-                                </p>
+                                        <p>
+                                            Quantity Type: {item.quantityType}
+                                        </p>
 
-                                {item.quantityType === "strip" && (
-                                    <p>
-                                        Total Tablets:{" "}
-                                        {item.quantity * item.tabletsPerStrip}
-                                    </p>
-                                )}
-                            </div>
-                        ))
+                                        <p>
+                                            Quantity: {item.quantity}
+                                        </p>
+
+                                        {item.quantityType === "strip" && (
+                                            <p>
+                                                Total Tablets:{" "}
+                                                {item.quantity * item.tabletsPerStrip}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     )}
                     
 
@@ -276,7 +282,10 @@ function RequestPreview(){
                     )}
                     
                     {!isSubmitted && (
-                      <Link to="/request">Back to Edit Request</Link>  
+                        <Link to="/request" 
+                            className="request-action-button secondary-action">
+                            Back to Edit Request
+                        </Link>  
                     )}
                     
                 </>

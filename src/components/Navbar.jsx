@@ -1,17 +1,30 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "./Navbar.css";
 import { useContext, useState } from "react";
+import { RequestContext } from "../context/RequestContext";
 import { AuthContext } from "../context/AuthContext";
 import { UserRound } from "lucide-react";
 import { Sun, Moon } from "lucide-react";
 import { useEffect } from "react";
 
 function Navbar() {
+
+    const navigate = useNavigate();
     const { user, logout } = useContext(AuthContext);
+    const { requestItems } = useContext(RequestContext);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
+
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (searchParams.get("clearSearch") === "true") {
+            setSearchTerm("");
+            navigate("/products", { replace: true });
+        }
+    }, [searchParams, navigate]);
 
     const [theme, setTheme] = useState(
         () => localStorage.getItem("theme") || "light"
@@ -28,7 +41,6 @@ function Navbar() {
         );
     };
 
-    const navigate = useNavigate();
 
     const handleSearch = () => {
         if (searchTerm.trim() !== "") {
@@ -56,7 +68,10 @@ function Navbar() {
                     alt="Makkal Marunthagam logo"
                     className="logo-image"
                 />
-                <span className="logo-name">Makkal Marunthagam</span>
+                <span className="logo-name">
+                    <span>Makkal</span>
+                    <span>Marunthagam</span>
+                </span>
             </Link>
 
             <div className="search-box">
@@ -133,7 +148,7 @@ function Navbar() {
 
                 <button
                     type="button"
-                    className="menu-toggle"
+                    className={`menu-toggle ${requestItems.length > 0 ? "has-notification" : ""}`}
                     aria-label="Toggle navigation menu"
                     aria-expanded={menuOpen}
                     onClick={() => {
@@ -144,6 +159,10 @@ function Navbar() {
                     <span></span>
                     <span></span>
                     <span></span>
+
+                    {requestItems.length > 0 && (
+                        <span className="notification-dot" aria-label="Items in Request Cart"></span>
+                    )}
                 </button>
             </div>
 
@@ -154,7 +173,20 @@ function Navbar() {
 
                     {user && (
                         <>
-                            <Link to="/request" onClick={closeMenus}>Request Cart</Link>
+                            <Link
+                                to="/request"
+                                className="request-cart-link"
+                                onClick={closeMenus}
+                            >
+                                <span>Request Cart</span>
+
+                                {requestItems.length > 0 && (
+                                    <span
+                                        className="request-notification-dot"
+                                        aria-label="Items waiting in Request Cart"
+                                    />
+                                )}
+                            </Link>
                         </>
                     )}
                 </div>

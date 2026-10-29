@@ -20,3 +20,26 @@
     flex-wrap: wrap;
     margin-top: 30px;
 }
+
+.clear-search-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--button-radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin: 10px 0 20px;
+}
+
+.clear-search-button:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.clear-search-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}

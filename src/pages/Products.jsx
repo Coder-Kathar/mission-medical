@@ -33,7 +33,9 @@ function Products(){
             <p>Browse our medicines and our healthcare products.</p>
 
             {searchTerm && (
-                <button onClick={() => navigate("/products")}>Clear Search</button>
+                <button
+                className="clear-search-button" 
+                onClick={() => navigate("/products?clearSearch=true")}>Clear Search</button>
             )}
 
             <div className="product-container">

@@ -1,5 +1,6 @@
 import "./ProductCard.css";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { RequestContext } from "../context/RequestContext";
 
 function ProductCard({ id, name, description, image, ...productDetails }) {
@@ -21,13 +22,18 @@ function ProductCard({ id, name, description, image, ...productDetails }) {
 
     return (
         <div className="product-card">
-            <img
-                src={image}
-                alt={name}
-                className="product-image"
-            />
+            <Link
+                to={`/products/${id}`}
+                aria-label={`View details for ${name}`}
+            >
+                <img
+                    src={image}
+                    alt={name}
+                    className="product-image"
+                />
+                <h3>{name}</h3>
+            </Link>
 
-            <h3>{name}</h3>
             <p>{description}</p>
 
             <button onClick={handleRequest}>

@@ -1,3 +1,6 @@
+/* =========================
+   REQUEST PREVIEW PAGE
+========================= */
 
 .request-preview-page {
     max-width: 900px;
@@ -13,12 +16,18 @@
 }
 
 .request-preview-page h1 {
-    margin-bottom: 10px;
+    margin: 0 0 10px;
     font-size: 32px;
+    line-height: 1.25;
 }
+
+/* =========================
+   CARDS
+========================= */
 
 .request-preview-page section,
 .request-preview-page .request-item {
+    box-sizing: border-box;
     background: var(--white);
     color: var(--text-color);
     padding: 24px;
@@ -28,15 +37,74 @@
     box-shadow: var(--shadow);
 }
 
+.request-preview-page .request-item h2 {
+    margin: 0 0 16px;
+    font-size: 24px;
+}
+
+.request-preview-page .request-item h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+}
+
+/* =========================
+   CURRENT REQUEST CARD
+========================= */
+
+.request-preview-page .current-request-card {
+    padding: 24px;
+}
+
+.current-request-card > h2 {
+    margin-bottom: 18px;
+}
+
+.current-request-product {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.current-request-product:first-of-type {
+    border-top: 1px solid var(--border-color);
+}
+
+.current-request-product:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.current-request-product-info {
+    min-width: 0;
+}
+
+.current-request-product-info h3 {
+    overflow-wrap: anywhere;
+}
+
+.current-request-product-info p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+/* =========================
+   TEXT
+========================= */
+
 .request-preview-page p {
     color: var(--text-color);
     margin: 8px 0;
+    line-height: 1.5;
 }
+
+/* =========================
+   FORM INPUTS
+========================= */
 
 .request-preview-page input:not([type="file"]),
 .request-preview-page textarea,
 .request-preview-page select {
     box-sizing: border-box;
+    display: block;
     width: 100%;
     padding: 12px 14px;
     margin: 8px 0;
@@ -45,6 +113,11 @@
     font: inherit;
     background: var(--background-color);
     color: var(--text-color);
+}
+
+.request-preview-page textarea {
+    min-height: 100px;
+    resize: vertical;
 }
 
 .request-preview-page input::placeholder,
@@ -60,6 +133,10 @@
     outline-offset: 1px;
 }
 
+/* =========================
+   PRESCRIPTION UPLOAD
+========================= */
+
 .request-preview-page input[type="file"] {
     display: block;
     max-width: 100%;
@@ -73,6 +150,15 @@
     color: var(--text-color);
 }
 
+.request-preview-page .prescription-file-name {
+    overflow-wrap: anywhere;
+    color: var(--text-color);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
 .request-preview-page button {
     padding: 11px 18px;
     margin: 8px 8px 8px 0;
@@ -83,6 +169,7 @@
     font: inherit;
     font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .request-preview-page button:hover {
@@ -94,21 +181,91 @@
     cursor: not-allowed;
 }
 
+/* =========================
+   LINKS
+========================= */
+
 .request-preview-page a {
     display: inline-block;
     margin: 10px 8px 10px 0;
     color: var(--accent-color);
     text-decoration: underline;
+    overflow-wrap: anywhere;
 }
 
 .request-preview-page a:hover {
     color: var(--primary-color);
 }
 
-.request-preview-page .prescription-file-name {
-    overflow-wrap: anywhere;
-    color: var(--text-color);
+/* =========================
+   REQUEST ACTION BUTTONS
+========================= */
+
+.request-preview-page a.request-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 18px;
+    margin: 10px 8px 10px 0;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: #FFFFFF;
+    font: inherit;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
+.request-preview-page a.request-action-button:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #FFFFFF;
+}
+
+.request-preview-page a.request-action-button.secondary-action {
+    background: transparent;
+    color: var(--primary-color);
+}
+
+.request-preview-page a.request-action-button.secondary-action:hover {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+@media (max-width: 600px) {
+    .request-preview-page a.request-action-button {
+        margin: 8px 6px 8px 0;
+        padding: 10px 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .request-preview-page a.request-action-button {
+        transition: none;
+    }
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+    .request-preview-page {
+        max-width: 100%;
+        margin: 28px auto;
+        padding: 0 18px 32px;
+    }
+
+    .request-preview-page h1 {
+        font-size: 29px;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
     .request-preview-page {
@@ -119,9 +276,41 @@
     .request-preview-page section,
     .request-preview-page .request-item {
         padding: 18px;
+        margin: 16px 0;
+        border-radius: 12px;
     }
 
     .request-preview-page h1 {
         font-size: 26px;
+    }
+
+    .request-preview-page .request-item h2 {
+        font-size: 21px;
+    }
+
+    .request-preview-page .request-item h3 {
+        font-size: 17px;
+    }
+
+    .current-request-product {
+        padding: 14px 0;
+    }
+
+    .current-request-product-info p {
+        font-size: 13px;
+    }
+
+    .request-preview-page button {
+        max-width: 100%;
+    }
+}
+
+/* =========================
+   ACCESSIBILITY
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .request-preview-page button {
+        transition: none;
     }
 }
