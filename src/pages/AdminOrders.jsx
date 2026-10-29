@@ -14,9 +14,9 @@ function AdminOrders() {
         const matchesStatus =
             filter === "All" || order.status === filter;
 
-        const matchesOrderId = order.id
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
+        const matchesOrderId = String(order.id ?? "")
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase());
 
         return matchesStatus && matchesOrderId;
     });

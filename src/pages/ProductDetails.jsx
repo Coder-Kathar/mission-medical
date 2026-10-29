@@ -4,61 +4,95 @@ import "./ProductDetails.css";
 import { useState, useContext } from "react";
 import { RequestContext } from "../context/RequestContext";
 
-function ProductDetails(){
-
+function ProductDetails() {
     const [quantity, setQuantity] = useState(1);
     const [quantityType, setQuantityType] = useState("tablet");
 
-    const {id} = useParams();
-
-    const {addToRequest} = useContext(RequestContext);
+    const { id } = useParams();
+    const { addToRequest } = useContext(RequestContext);
 
     const product = products.find(
         (product) => product.id === Number(id)
     );
 
-    if(!product){
+    if (!product) {
         return (
-            <main>
+            <main className="product-not-found">
                 <h1>Product Not Found</h1>
                 <p>The product you are looking for does not exist.</p>
+                <Link to="/products" className="back-link">
+                    ← Back to Products
+                </Link>
             </main>
         );
     }
+
+    const isTabletProduct = product.quantityType === "tablet";
+    const selectedType = isTabletProduct
+        ? quantityType
+        : product.quantityType;
+
+    const totalTablets =
+        quantityType === "strip" && isTabletProduct
+            ? quantity * (product.tabletsPerStrip || 1)
+            : quantity;
+
     return (
         <main className="product-details">
-
             <Link to="/products" className="back-link">
-                ← Back to Products
+                <span>←</span> Back to Products
             </Link>
 
-            <img src={product.image} alt={product.name} className="product-details-image"/>
+            <div className="product-details-image-wrapper">
+                <img
+                    src={product.image}
+                    alt={product.name}
+                    className="product-details-image"
+                />
+            </div>
 
             <div className="product-details-info">
-
                 <h1>{product.name}</h1>
-                <p>{product.description}</p>
+
+                <p className="product-description">
+                    {product.description}
+                </p>
 
                 <p>
                     <strong>Usage:</strong> {product.usage}
                 </p>
 
-                <p>
+                <p className="quantity-type-label">
                     <strong>Quantity Type:</strong>{" "}
-                    {product.quantityType === "tablet" ? "Tablets" : "Pieces"}
+                    {selectedType === "tablet"
+                        ? "Tablets"
+                        : selectedType === "strip"
+                        ? "Strips"
+                        : "Pieces"}
                 </p>
 
-                {product.quantityType === "tablet" && (
-                    <div className="quantity-type-selection">
+                {isTabletProduct && (
+                    <div
+                        className="quantity-type-selection"
+                        aria-label="Choose quantity type"
+                    >
                         <button
-                            className={quantityType === "tablet" ? "selected" : ""}
+                            type="button"
+                            className={
+                                quantityType === "tablet" ? "selected" : ""
+                            }
+                            aria-pressed={quantityType === "tablet"}
                             onClick={() => setQuantityType("tablet")}
                         >
                             Tablets
                         </button>
 
                         <button
-                            className={quantityType === "strip" ? "selected" : ""}
+                            type="button"
+                            className={
+                                quantityType === "strip" ? "selected" : ""
+                            }
+                            aria-pressed={quantityType === "strip"}
                             onClick={() => setQuantityType("strip")}
                         >
                             Strips
@@ -67,40 +101,56 @@ function ProductDetails(){
                 )}
 
                 <div className="quantity-controls">
-
-                    <button onClick={() => {
-                        if(quantity > 1){
-                            setQuantity(quantity - 1);
+                    <button
+                        type="button"
+                        aria-label="Decrease quantity"
+                        disabled={quantity <= 1}
+                        onClick={() =>
+                            setQuantity((previous) =>
+                                Math.max(1, previous - 1)
+                            )
                         }
-                    }}>-</button>
+                    >
+                        −
+                    </button>
 
                     <span>{quantity}</span>
 
-                    <button onClick={() => setQuantity(quantity + 1)}>+</button>
-
+                    <button
+                        type="button"
+                        aria-label="Increase quantity"
+                        onClick={() =>
+                            setQuantity((previous) => previous + 1)
+                        }
+                    >
+                        +
+                    </button>
                 </div>
 
-                {product.quantityType === "tablet" && (
-                    <p>
-                        <strong>Total Tablets:</strong>{" "}
-                        {quantityType === "strip"
-                            ? quantity * product.tabletsPerStrip
-                            : quantity}
+                {isTabletProduct && (
+                    <p className="total-tablets">
+                        <strong>
+                            {quantityType === "strip"
+                                ? "Total Tablets:"
+                                : "Total Tablets:"}
+                        </strong>{" "}
+                        {totalTablets}
                     </p>
                 )}
 
-                <button 
+                <button
+                    type="button"
                     className="request-button"
-                    onClick={() => 
+                    onClick={() =>
                         addToRequest(product, quantity, quantityType)
-                    }>
+                    }
+                >
                     Add to Request
                 </button>
 
                 <Link to="/request" className="view-request-link">
-                    View Request
+                    View Request <span>→</span>
                 </Link>
-
             </div>
         </main>
     );

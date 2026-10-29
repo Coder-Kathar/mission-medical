@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     padding: 24px;
-    background: #F8FAF9;
+    background: var(--background-color);
 }
 
 .otp-card {
@@ -12,24 +12,26 @@
     max-width: 400px;
     padding: 32px;
     text-align: center;
-    background: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    background: var(--white);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow);
 }
 
 .otp-card h1 {
-    color: #0F6B4F;
+    color: var(--primary-color);
     font-size: 28px;
 }
 
 .otp-card p {
-    color: #4B5563;
+    color: var(--text-color);
     line-height: 1.6;
 }
 
 .otp-mobile {
     font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
 .otp-card form {
@@ -43,22 +45,74 @@
     width: 100%;
     box-sizing: border-box;
     padding: 14px;
+    font: inherit;
     font-size: 18px;
     letter-spacing: 4px;
     text-align: center;
-    border: 1px solid #D1D5DB;
+    color: var(--text-color);
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
+}
+
+.otp-card input::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+    letter-spacing: normal;
+}
+
+.otp-card input:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
 .otp-card button {
     padding: 14px;
-    color: white;
-    background: #0F6B4F;
-    border: none;
+    color: #fff;
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
     border-radius: 8px;
+    font: inherit;
+    font-weight: 500;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .otp-card button:hover {
-    background: #0B543E;
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.otp-card button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+.otp-card a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.otp-card a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .otp-page {
+        padding: 20px 14px;
+    }
+
+    .otp-card {
+        padding: 26px 20px;
+    }
+
+    .otp-card h1 {
+        font-size: 24px;
+    }
+}
+
+.otp-card form + p {
+    margin-top: 20px;
 }

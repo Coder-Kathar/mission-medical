@@ -305,3 +305,93 @@
     color: #64748B;
     margin-bottom: 20px;
 }
+
+/* Mission Medical — Manage Products theme support */
+
+.admin-products-page {
+    color: var(--text-color);
+}
+
+.admin-products-page h1 {
+    color: var(--primary-color);
+}
+
+.admin-product-card,
+.product-overview-card,
+.admin-product-form,
+.products-empty-state {
+    background: var(--white);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.admin-product-card h3,
+.admin-product-form label {
+    color: var(--text-color);
+}
+
+.admin-product-card p,
+.product-overview-card span,
+.product-pagination p,
+.pagination-buttons span,
+.products-empty-state p {
+    color: var(--text-color);
+    opacity: 0.78;
+}
+
+.product-overview-card h2,
+.products-empty-state h2 {
+    color: var(--primary-color);
+}
+
+.product-filters input,
+.product-filters select,
+.admin-product-form input:not([type="checkbox"]):not([type="file"]),
+.admin-product-form select {
+    background: var(--white);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.product-filters input::placeholder,
+.admin-product-form input::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+.admin-product-form input[type="file"] {
+    color: var(--text-color);
+}
+
+.image-preview img {
+    background: var(--white);
+    border-color: var(--border-color);
+}
+
+.pagination-buttons button {
+    background: var(--white);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pagination-buttons button:hover:not(:disabled),
+.pagination-buttons button.active-page {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.admin-products-page button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.admin-product-form input[type="checkbox"] {
+    accent-color: var(--primary-color);
+}
+
+.admin-products-page input:focus-visible,
+.admin-products-page select:focus-visible,
+.admin-products-page button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}

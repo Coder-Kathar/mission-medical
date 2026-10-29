@@ -253,3 +253,46 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Orders pagination */
+.orders-page .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 28px 0;
+    color: var(--text-color);
+}
+
+.orders-page .pagination button {
+    padding: 10px 18px;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                opacity 0.2s ease;
+}
+
+.orders-page .pagination button:hover:not(:disabled) {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.orders-page .pagination button:disabled {
+    background: var(--white);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.orders-page .pagination button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}

@@ -763,3 +763,380 @@
         padding: 14px;
     }
 }
+
+/* Admin Dashboard — theme support */
+
+.admin-page {
+    color: var(--text-color);
+}
+
+.admin-page h1 {
+    color: var(--accent-color);
+}
+
+.admin-card {
+    background: var(--white);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.admin-card h3 {
+    color: var(--text-color);
+}
+
+.admin-card p {
+    color: var(--primary-color);
+}
+
+/* Dashboard navigation cards */
+
+.admin-navigation-card {
+    background: var(--white);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.admin-navigation-card h3 {
+    color: var(--text-color);
+}
+
+.admin-navigation-card p {
+    color: var(--text-color);
+    opacity: 0.75;
+}
+
+.admin-navigation-action {
+    color: var(--accent-color);
+}
+
+.admin-navigation-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow);
+}
+
+
+/* =====================================
+   ADMIN PAGE — LIGHT/DARK THEME SUPPORT
+   ===================================== */
+
+.admin-page {
+    color: var(--text-color);
+}
+
+.admin-page h1,
+.admin-page h2,
+.admin-page h3 {
+    color: var(--text-color);
+}
+
+.admin-page h1,
+.admin-page .chart-heading h2,
+.admin-page .admin-product-row h3,
+.admin-page .analytics-chart-panel h3,
+.admin-page .empty-orders h3 {
+    color: var(--primary-color);
+}
+
+.admin-page > p,
+.admin-navigation-card p,
+.chart-heading p,
+.analytics-chart-panel > p {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Dashboard and navigation cards */
+
+.admin-card,
+.order-chart-card,
+.analytics-card,
+.analytics-chart-panel {
+    background: var(--white);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.admin-card h3 {
+    color: var(--text-color);
+}
+
+.admin-card p {
+    color: var(--primary-color);
+}
+
+.admin-navigation-card {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.admin-navigation-card p {
+    color: var(--text-color);
+    opacity: 0.75;
+}
+
+.admin-navigation-action {
+    color: var(--accent-color);
+}
+
+.admin-navigation-card:hover {
+    border-color: var(--accent-color);
+}
+
+/* Product rows */
+
+.admin-product-row {
+    border-bottom-color: var(--border-color);
+}
+
+.admin-product-row p {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Inputs, search bars and dropdowns */
+
+.admin-card form input:not([type="checkbox"]),
+.admin-card form textarea,
+.admin-card form select,
+.admin-products-toolbar input,
+.admin-products-toolbar select,
+.orders-header select,
+.analytics-date-inputs input {
+    background: var(--white);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.admin-card form input::placeholder,
+.admin-products-toolbar input::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+.admin-card form input:focus,
+.admin-card form textarea:focus,
+.admin-card form select:focus,
+.admin-products-toolbar input:focus,
+.admin-products-toolbar select:focus,
+.orders-header select:focus,
+.analytics-date-inputs input:focus {
+    border-color: var(--accent-color);
+    outline-color: var(--accent-color);
+}
+
+.analytics-date-inputs label {
+    color: var(--text-color);
+}
+
+/* Customer orders and product tables */
+
+.admin-products-table-wrapper {
+    border-color: var(--border-color);
+}
+
+.admin-products-table {
+    background: var(--white);
+}
+
+.admin-products-table thead {
+    background: var(--secondary-color);
+}
+
+.admin-products-table th {
+    color: var(--primary-color);
+}
+
+.admin-products-table td {
+    color: var(--text-color);
+    border-top-color: var(--border-color);
+}
+
+.admin-products-table tbody tr:hover {
+    background: var(--background-color);
+}
+
+.admin-products-table .product-name {
+    color: var(--primary-color);
+}
+
+/* Product actions and pagination */
+
+.admin-product-actions button,
+.admin-products-pagination button,
+.view-details-button {
+    background: var(--white);
+    color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.admin-product-actions button:hover,
+.admin-products-pagination button:hover:not(:disabled),
+.view-details-button:hover {
+    background: var(--secondary-color);
+    border-color: var(--accent-color);
+}
+
+.admin-product-actions .delete-button {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+.admin-products-pagination button:disabled {
+    opacity: 0.45;
+}
+
+/* Order status badges retain their status colors */
+
+.order-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.order-delivered {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* Empty orders message */
+
+.empty-orders {
+    color: var(--text-color);
+}
+
+.empty-orders p {
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+/* Order details modal */
+
+.order-modal {
+    background: var(--white);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.order-modal h2,
+.order-item-details strong {
+    color: var(--primary-color);
+}
+
+.order-modal h2,
+.order-item-details {
+    border-color: var(--border-color);
+}
+
+.order-modal h3,
+.order-modal p,
+.order-item-details span {
+    color: var(--text-color);
+}
+
+.order-modal p strong {
+    color: var(--text-color);
+}
+
+.order-item-details {
+    background: var(--background-color);
+}
+
+.order-modal button {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.order-modal button:hover {
+    background: var(--accent-color);
+}
+
+/* Order status chart */
+
+.order-chart-card {
+    background: var(--white);
+}
+
+.chart-heading h2 {
+    color: var(--primary-color);
+}
+
+.chart-heading p,
+.chart-legend {
+    color: var(--text-color);
+}
+
+.chart-total {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.chart-legend {
+    border-top-color: var(--border-color);
+}
+
+/* Analytics filters */
+
+.analytics-filters button {
+    background: var(--white);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.analytics-filters button:hover {
+    border-color: var(--accent-color);
+}
+
+.analytics-filters button.active {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+/* Analytics summary metrics */
+
+.analytics-metric {
+    background: var(--secondary-color);
+}
+
+.analytics-metric span {
+    color: var(--text-color);
+}
+
+.analytics-metric strong {
+    color: var(--primary-color);
+}
+
+/* Recharts SVG labels and grid lines */
+
+.admin-page .recharts-cartesian-axis-tick-value {
+    fill: var(--text-color) !important;
+}
+
+.admin-page .recharts-cartesian-grid line {
+    stroke: var(--border-color) !important;
+}
+
+.admin-page .recharts-legend-item-text {
+    color: var(--text-color) !important;
+}
+
+/* Chart tooltip */
+
+.admin-page .recharts-default-tooltip {
+    background: var(--white) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+.admin-page .recharts-tooltip-label,
+.admin-page .recharts-tooltip-item {
+    color: var(--text-color) !important;
+}
+
+/* Fix existing malformed transition declaration */
+.order-modal button {
+    transition: background 0.2s ease;
+}
