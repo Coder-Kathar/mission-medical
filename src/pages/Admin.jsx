@@ -100,6 +100,15 @@ function Admin() {
         return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
     };
 
+    const todayRequests = orders.filter((order) => {
+        const orderDate = getOrderDate(order);
+
+        return(
+            orderDate && 
+            orderDate.toDateString() === new Date().toDateString()
+        );
+    }).length;
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -283,8 +292,8 @@ function Admin() {
                 </div>
 
                 <div className="admin-card">
-                    <h3>Total Products</h3>
-                    <p>{products.length}</p>
+                    <h3>Today's Request</h3>
+                    <p>{todayRequests}</p>
                 </div>
             </section>
 

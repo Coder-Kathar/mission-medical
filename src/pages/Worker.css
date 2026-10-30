@@ -1,66 +1,307 @@
 .worker-page {
-    max-width: 800px;
+    max-width: 1200px;
     min-height: 400px;
     margin: 40px auto;
     padding: 24px;
+    color: var(--text-color);
 }
 
 .worker-page h1 {
-    color: #0F6B4F;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }
 
-.worker-page form {
+.worker-page > p {
+    color: var(--text-color);
+    margin-bottom: 24px;
+}
+
+/* Search and date picker */
+.worker-toolbar {
     display: flex;
+    align-items: center;
     gap: 12px;
     margin: 24px 0;
 }
 
-.worker-page input {
+.worker-search-form {
+    display: flex;
     flex: 1;
+    gap: 12px;
+    margin: 0 !important;
+}
+
+.worker-page input,
+.worker-page select {
     min-width: 0;
     padding: 12px;
-    border: 1px solid #d1d5db;
+    color: var(--text-color);
+    background: var(--white);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
 }
 
+.worker-search-form input {
+    flex: 1;
+}
+
+.worker-page input::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+.worker-page input:focus,
+.worker-page select:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.worker-date-picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.worker-date-picker input {
+    border: none;
+    outline: none;
+    padding: 10px 4px;
+}
+
+/* Buttons */
 .worker-page button {
     padding: 12px 18px;
-    background: #0F6B4F;
-    color: white;
+    background: var(--primary-color);
+    color: #FFFFFF;
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-.worker-order {
-    margin-top: 24px;
+.worker-page button:hover:not(:disabled) {
+    background: var(--accent-color);
+}
+
+.worker-page button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Orders section */
+.worker-orders-section {
+    margin-top: 30px;
     padding: 20px;
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: var(--white);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
+    box-shadow: var(--shadow);
 }
 
-.worker-order h2 {
-    color: #0F6B4F;
-    margin-bottom: 16px;
+.worker-orders-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-.worker-order p {
+.worker-orders-header h2 {
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.worker-orders-header select {
+    cursor: pointer;
+}
+
+/* Orders table */
+.worker-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.worker-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.worker-orders-table th,
+.worker-orders-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+.worker-orders-table th {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.worker-orders-table tbody tr:hover {
+    background: var(--secondary-color);
+}
+
+.worker-view-button {
+    padding: 8px 14px !important;
+}
+
+/* Empty state */
+.worker-empty-orders {
+    padding: 35px 15px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.worker-empty-orders h3 {
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+/* Pagination */
+.worker-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 20px;
+    color: var(--text-color);
+}
+
+.worker-pagination-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.worker-pagination-actions button {
+    padding: 9px 14px;
+}
+
+/* Order details modal */
+.worker-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.worker-modal {
+    width: 100%;
+    max-width: 550px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 28px;
+    color: var(--text-color);
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.worker-modal h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.worker-modal h3 {
+    color: var(--primary-color);
+    margin: 22px 0 12px;
+}
+
+.worker-modal p {
     margin: 12px 0;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
-@media (max-width: 600px) {
+.worker-order-item {
+    padding: 10px;
+    background: var(--secondary-color);
+    border-radius: 6px;
+}
+
+.worker-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.worker-close-button {
+    background: #6B7280 !important;
+}
+
+.worker-close-button:hover {
+    background: #4B5563 !important;
+}
+
+/* Responsive layout */
+@media (max-width: 700px) {
     .worker-page {
         margin: 20px auto;
         padding: 16px;
     }
 
-    .worker-page form {
+    .worker-toolbar {
+        align-items: stretch;
         flex-direction: column;
     }
 
-    .worker-page button {
+    .worker-search-form {
+        flex-direction: column;
+    }
+
+    .worker-date-picker {
+        justify-content: space-between;
+    }
+
+    .worker-orders-header,
+    .worker-pagination {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .worker-orders-header select {
         width: 100%;
     }
+
+    .worker-pagination-actions {
+        justify-content: space-between;
+    }
+
+    .worker-modal {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .worker-modal-actions {
+        flex-direction: column;
+    }
+
+    .worker-modal-actions button {
+        width: 100%;
+    }
+}
+
+.worker-search-button {
+    width: 46px;
+    min-width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px !important;
+    font-size: 18px;
 }
