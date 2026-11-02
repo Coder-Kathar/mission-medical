@@ -395,3 +395,20 @@
     outline: 2px solid var(--accent-color);
     outline-offset: 2px;
 }
+
+.admin-product-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font: inherit;
+    background: var(--white);
+    color: var(--text-color);
+    resize: vertical;
+}
+
+.admin-product-form textarea::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}

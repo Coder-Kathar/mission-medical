@@ -65,7 +65,7 @@ function RequestPreview(){
 
         const newOrder = {
             id: `MM${Date.now()}`,
-            date: new Date().toLocaleString(),
+            date: new Date().toISOString(),
             customerName,
             mobileNumber,
             deliveryAddress,

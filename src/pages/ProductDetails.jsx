@@ -1,18 +1,20 @@
 import { useParams, Link } from "react-router-dom";
-import products from "../data/products";
 import "./ProductDetails.css";
 import { useState, useContext } from "react";
 import { RequestContext } from "../context/RequestContext";
+import { ProductContext } from "../context/ProductContext";
 
 function ProductDetails() {
     const [quantity, setQuantity] = useState(1);
     const [quantityType, setQuantityType] = useState("tablet");
 
     const { id } = useParams();
+
     const { addToRequest } = useContext(RequestContext);
+    const { products } = useContext(ProductContext);
 
     const product = products.find(
-        (product) => product.id === Number(id)
+        (product) => String(product.id) === id
     );
 
     if (!product) {
@@ -28,6 +30,7 @@ function ProductDetails() {
     }
 
     const isTabletProduct = product.quantityType === "tablet";
+
     const selectedType = isTabletProduct
         ? quantityType
         : product.quantityType;
@@ -59,7 +62,7 @@ function ProductDetails() {
                 </p>
 
                 <p>
-                    <strong>Usage:</strong> {product.usage}
+                    <strong>Usage:</strong> {product.usage || "Not specified"}
                 </p>
 
                 <p className="quantity-type-label">
@@ -129,12 +132,7 @@ function ProductDetails() {
 
                 {isTabletProduct && (
                     <p className="total-tablets">
-                        <strong>
-                            {quantityType === "strip"
-                                ? "Total Tablets:"
-                                : "Total Tablets:"}
-                        </strong>{" "}
-                        {totalTablets}
+                        <strong>Total Tablets:</strong> {totalTablets}
                     </p>
                 )}
 

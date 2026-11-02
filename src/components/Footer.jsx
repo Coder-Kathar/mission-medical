@@ -16,6 +16,10 @@ function Footer() {
 
                     <p>All Quality Generic Medicine</p>
 
+                    <p className="footer-availability">
+                        All type of medicines are available
+                    </p>
+
                     <p className="footer-discount">
                         Discount from 30% to 90%
                     </p>

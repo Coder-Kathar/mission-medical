@@ -30,6 +30,13 @@
     letter-spacing: 0.4px;
 }
 
+/* Highlighted Discount Offer */
+.offer-discount {
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: 0.6px;
+}
+
 .offer-separator {
     color: var(--accent-color);
 }
@@ -45,6 +52,12 @@
 
     to {
         transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 600px) {
+    .offer-discount {
+        font-size: 16px;
     }
 }
 

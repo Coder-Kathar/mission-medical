@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react";
-import products from "../data/products";
+import { useEffect, useState, useContext } from "react";
+import { ProductContext } from "../context/ProductContext";
 import "./AdminProducts.css";
 
 function AdminProducts() {
-    const [productList, setProductList] = useState(() => {
-        const savedProducts = localStorage.getItem("adminProducts");
-        return savedProducts ? JSON.parse(savedProducts) : products;
-    });
+    const {
+        products: productList,
+        addProduct,
+        updateProduct,
+        deleteProduct,
+    } = useContext(ProductContext);
 
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState("");
+    const [removeExistingImage, setRemoveExistingImage] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("all");
@@ -22,6 +25,8 @@ function AdminProducts() {
 
     const initialFormData = {
         name: "",
+        description: "",
+        usage: "",
         category: "",
         quantityType: "piece",
         tabletsPerStrip: "",
@@ -30,14 +35,7 @@ function AdminProducts() {
 
     const [formData, setFormData] = useState(initialFormData);
 
-    useEffect(() => {
-        return () => {
-            if (imagePreview.startsWith("blob:")) {
-                URL.revokeObjectURL(imagePreview);
-            }
-        };
-    }, [imagePreview]);
-
+    // Reset pagination when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [searchTerm, categoryFilter, prescriptionFilter]);
@@ -48,6 +46,7 @@ function AdminProducts() {
         ),
     ];
 
+    // Filter products
     const filteredProducts = productList.filter((product) => {
         const matchesSearch = product.name
             .toLowerCase()
@@ -66,7 +65,10 @@ function AdminProducts() {
         return matchesSearch && matchesCategory && matchesPrescription;
     });
 
-    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    // Pagination
+    const totalPages = Math.ceil(
+        filteredProducts.length / productsPerPage
+    );
 
     const startIndex = (currentPage - 1) * productsPerPage;
 
@@ -83,28 +85,34 @@ function AdminProducts() {
         (product) => product.requiresPrescription === true
     ).length;
 
+    // Reset form
     const resetForm = () => {
         setFormData(initialFormData);
         setEditingId(null);
         setImageFile(null);
         setImagePreview("");
+        setRemoveExistingImage(false);
         setShowForm(false);
     };
 
+    // Handle quantity type change
     const handleQuantityTypeChange = (e) => {
         const quantityType = e.target.value;
 
         setFormData((previous) => ({
             ...previous,
             quantityType,
-            tabletsPerStrip: quantityType === "tablet"
-                ? previous.tabletsPerStrip
-                : "",
+            tabletsPerStrip:
+                quantityType === "tablet"
+                    ? previous.tabletsPerStrip
+                    : "",
         }));
     };
 
+    // Handle image selection
     const handleImageChange = (e) => {
         const file = e.target.files?.[0];
+
         if (!file) return;
 
         if (!file.type.startsWith("image/")) {
@@ -119,50 +127,76 @@ function AdminProducts() {
             return;
         }
 
-        setImageFile(file);
-        setImagePreview(URL.createObjectURL(file));
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            if (reader.error) {
+                alert("Unable to read the selected image.");
+                return;
+            }
+
+            setImageFile(file);
+            setImagePreview(reader.result);
+            setRemoveExistingImage(false);
+        };
+
+        reader.onerror = () => {
+            alert("Unable to read the selected image.");
+        };
+
+        reader.readAsDataURL(file);
     };
 
+    // Add product
     const handleAddProduct = (e) => {
         e.preventDefault();
 
         const newProduct = {
-            id: Date.now(),
             ...formData,
-            tabletsPerStrip: formData.quantityType === "tablet"
-                ? Number(formData.tabletsPerStrip)
-                : null,
-            description: "",
-            usage: "",
-            image: "",
+            name: formData.name.trim(),
+            description: formData.description.trim(),
+            usage: formData.usage.trim(),
+            category: formData.category.trim(),
+            tabletsPerStrip:
+                formData.quantityType === "tablet"
+                    ? Number(formData.tabletsPerStrip)
+                    : null,
+            image: imagePreview || "",
         };
 
-        const updatedProducts = [...productList, newProduct];
-
-        setProductList(updatedProducts);
-        localStorage.setItem("adminProducts", JSON.stringify(updatedProducts));
+        addProduct(newProduct);
 
         resetForm();
     };
 
+    // Edit product
     const handleEditProduct = (product) => {
         setEditingId(product.id);
 
         setFormData({
             name: product.name || "",
+            description: product.description || "",
+            usage: product.usage || "",
             category: product.category || "",
-            quantityType: product.quantityType === "tablet" ? "tablet" : "piece",
-            tabletsPerStrip: product.quantityType === "tablet"
-                ? product.tabletsPerStrip ?? ""
-                : "",
-            requiresPrescription: product.requiresPrescription === true,
+            quantityType:
+                product.quantityType === "tablet"
+                    ? "tablet"
+                    : "piece",
+            tabletsPerStrip:
+                product.quantityType === "tablet"
+                    ? product.tabletsPerStrip ?? ""
+                    : "",
+            requiresPrescription:
+                product.requiresPrescription === true,
         });
 
         setImageFile(null);
         setImagePreview(product.image || "");
+        setRemoveExistingImage(false);
         setShowForm(true);
     };
 
+    // Save edited product
     const handleSaveProduct = (e) => {
         e.preventDefault();
 
@@ -175,38 +209,44 @@ function AdminProducts() {
             (product) => product.id === editingId
         );
 
-        const updatedProducts = productList.map((product) =>
-            product.id === editingId
-                ? {
-                    ...product,
-                    ...formData,
-                    tabletsPerStrip: formData.quantityType === "tablet"
-                        ? Number(formData.tabletsPerStrip)
-                        : null,
-                    image: imageFile ? "" : existingProduct.image || "",
-                }
-                : product
-        );
+        if (!existingProduct) {
+            alert("Product not found.");
+            return;
+        }
 
-        setProductList(updatedProducts);
-        localStorage.setItem("adminProducts", JSON.stringify(updatedProducts));
+        const updatedProduct = {
+            ...existingProduct,
+            ...formData,
+            name: formData.name.trim(),
+            description: formData.description.trim(),
+            usage: formData.usage.trim(),
+            category: formData.category.trim(),
+            tabletsPerStrip:
+                formData.quantityType === "tablet"
+                    ? Number(formData.tabletsPerStrip)
+                    : null,
+            image: imageFile
+                ? imagePreview
+                : removeExistingImage
+                    ? ""
+                    : existingProduct.image || "",
+        };
+
+        updateProduct(updatedProduct);
 
         resetForm();
     };
 
+    // Delete product
     const handleDeleteProduct = (product) => {
         if (!window.confirm(`Delete ${product.name}?`)) return;
 
-        const updatedProducts = productList.filter(
-            (item) => item.id !== product.id
-        );
-
-        setProductList(updatedProducts);
-        localStorage.setItem("adminProducts", JSON.stringify(updatedProducts));
+        deleteProduct(product.id);
     };
 
     return (
         <main className="admin-products-page">
+
             <h1>Admin — Manage Products</h1>
 
             <button
@@ -222,11 +262,14 @@ function AdminProducts() {
                 {showForm ? "Cancel" : "+ Add Product"}
             </button>
 
+            {/* Add / Edit Product Form */}
             {showForm && (
                 <form
                     className="admin-product-form"
                     onSubmit={handleSaveProduct}
                 >
+
+                    {/* Product Name */}
                     <input
                         type="text"
                         placeholder="Product Name"
@@ -240,6 +283,73 @@ function AdminProducts() {
                         required
                     />
 
+                    {/* Product Description */}
+                    <textarea
+                        placeholder="Product Description"
+                        value={formData.description}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                description: e.target.value,
+                            })
+                        }
+                        rows="3"
+                        required
+                    />
+
+                    {/* Product Usage */}
+                    <textarea
+                        placeholder="Product Usage"
+                        value={formData.usage}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                usage: e.target.value,
+                            })
+                        }
+                        rows="3"
+                        required
+                    />
+
+                    {/* Product Image Upload */}
+                    <div className="product-image-upload">
+
+                        <label htmlFor="productImage">
+                            Product Image
+                        </label>
+
+                        <input
+                            id="productImage"
+                            type="file"
+                            accept="image/png, image/jpeg, image/webp"
+                            onChange={handleImageChange}
+                        />
+
+                        {imagePreview && (
+                            <div className="image-preview">
+
+                                <img
+                                    src={imagePreview}
+                                    alt="Product preview"
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setImageFile(null);
+                                        setImagePreview("");
+                                        setRemoveExistingImage(true);
+                                    }}
+                                >
+                                    Remove Image
+                                </button>
+
+                            </div>
+                        )}
+
+                    </div>
+
+                    {/* Category */}
                     <input
                         type="text"
                         placeholder="Category"
@@ -253,7 +363,11 @@ function AdminProducts() {
                         required
                     />
 
-                    <label htmlFor="quantityType">Quantity Type</label>
+                    {/* Quantity Type */}
+                    <label htmlFor="quantityType">
+                        Quantity Type
+                    </label>
+
                     <select
                         id="quantityType"
                         value={formData.quantityType}
@@ -280,6 +394,7 @@ function AdminProducts() {
                         />
                     )}
 
+                    {/* Prescription */}
                     <label className="prescription-checkbox">
                         <input
                             type="checkbox"
@@ -294,41 +409,18 @@ function AdminProducts() {
                         Prescription Required
                     </label>
 
-                    <div className="product-image-upload">
-                        <label htmlFor="productImage">Product Image</label>
-                        <input
-                            id="productImage"
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                        />
-
-                        {imagePreview && (
-                            <div className="image-preview">
-                                <img
-                                    src={imagePreview}
-                                    alt="Product preview"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setImageFile(null);
-                                        setImagePreview("");
-                                    }}
-                                >
-                                    Remove Image
-                                </button>
-                            </div>
-                        )}
-                    </div>
-
                     <button type="submit">
-                        {editingId === null ? "Save Product" : "Update Product"}
+                        {editingId === null
+                            ? "Save Product"
+                            : "Update Product"}
                     </button>
+
                 </form>
             )}
 
+            {/* Product Overview */}
             <section className="product-overview">
+
                 <div className="product-overview-card">
                     <span>Total Products</span>
                     <h2>{productList.length}</h2>
@@ -343,9 +435,12 @@ function AdminProducts() {
                     <span>Prescription-Required Products</span>
                     <h2>{prescriptionProductCount}</h2>
                 </div>
+
             </section>
 
+            {/* Product Filters */}
             <section className="product-filters">
+
                 <input
                     type="text"
                     placeholder="Search products..."
@@ -358,6 +453,7 @@ function AdminProducts() {
                     onChange={(e) => setCategoryFilter(e.target.value)}
                 >
                     <option value="all">All Categories</option>
+
                     {categories.map((category) => (
                         <option key={category} value={category}>
                             {category}
@@ -373,10 +469,14 @@ function AdminProducts() {
                     <option value="yes">Prescription Required</option>
                     <option value="no">No Prescription Required</option>
                 </select>
+
             </section>
 
+            {/* Product List */}
             {filteredProducts.length === 0 ? (
+
                 <div className="products-empty-state">
+
                     <h2>
                         {productList.length === 0
                             ? "No products yet"
@@ -390,13 +490,16 @@ function AdminProducts() {
                     </p>
 
                     {productList.length === 0 ? (
+
                         <button
                             type="button"
                             onClick={() => setShowForm(true)}
                         >
                             + Add Product
                         </button>
+
                     ) : (
+
                         <button
                             type="button"
                             onClick={() => {
@@ -408,19 +511,35 @@ function AdminProducts() {
                         >
                             Clear Search & Filters
                         </button>
+
                     )}
+
                 </div>
+
             ) : (
+
                 <div className="admin-products-list">
+
                     {currentProducts.map((product) => (
-                        <div className="admin-product-card" key={product.id}>
+
+                        <div
+                            className="admin-product-card"
+                            key={product.id}
+                        >
+
                             {product.image && (
-                                <img src={product.image} alt={product.name} />
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                />
                             )}
 
                             <div>
+
                                 <h3>{product.name}</h3>
+
                                 <p>Category: {product.category}</p>
+
                                 <p>
                                     Quantity Type: {product.quantityType}
                                 </p>
@@ -433,7 +552,9 @@ function AdminProducts() {
 
                                 <p>
                                     Prescription Required:{" "}
-                                    {product.requiresPrescription ? "Yes" : "No"}
+                                    {product.requiresPrescription
+                                        ? "Yes"
+                                        : "No"}
                                 </p>
 
                                 <button
@@ -449,20 +570,33 @@ function AdminProducts() {
                                 >
                                     Delete
                                 </button>
+
                             </div>
+
                         </div>
+
                     ))}
+
                 </div>
+
             )}
+
+            {/* Pagination */}
             {filteredProducts.length > 0 && (
+
                 <div className="product-pagination">
+
                     <p>
                         Showing {startIndex + 1}–
-                        {Math.min(startIndex + productsPerPage, filteredProducts.length)}
+                        {Math.min(
+                            startIndex + productsPerPage,
+                            filteredProducts.length
+                        )}
                         {" "}of {filteredProducts.length} products
                     </p>
 
                     <div className="pagination-buttons">
+
                         <button
                             type="button"
                             disabled={currentPage === 1}
@@ -471,13 +605,17 @@ function AdminProducts() {
                             Previous
                         </button>
 
-                        {Array.from({ length: totalPages }, (_, index) => index + 1)
+                        {Array.from(
+                            { length: totalPages },
+                            (_, index) => index + 1
+                        )
                             .filter((page) =>
                                 page === 1 ||
                                 page === totalPages ||
                                 Math.abs(page - currentPage) <= 1
                             )
                             .reduce((pages, page, index, visiblePages) => {
+
                                 if (
                                     index > 0 &&
                                     page - visiblePages[index - 1] > 1
@@ -487,34 +625,50 @@ function AdminProducts() {
 
                                 pages.push(page);
                                 return pages;
+
                             }, [])
                             .map((page, index) =>
                                 page === "..." ? (
-                                    <span key={`ellipsis-${index}`}>...</span>
+
+                                    <span key={`ellipsis-${index}`}>
+                                        ...
+                                    </span>
+
                                 ) : (
+
                                     <button
                                         type="button"
                                         key={page}
                                         className={
-                                            currentPage === page ? "active-page" : ""
+                                            currentPage === page
+                                                ? "active-page"
+                                                : ""
                                         }
                                         onClick={() => goToPage(page)}
                                     >
                                         {page}
                                     </button>
+
                                 )
                             )}
 
                         <button
                             type="button"
-                            disabled={currentPage === totalPages || totalPages === 0}
+                            disabled={
+                                currentPage === totalPages ||
+                                totalPages === 0
+                            }
                             onClick={() => goToPage(currentPage + 1)}
                         >
                             Next
                         </button>
+
                     </div>
+
                 </div>
+
             )}
+
         </main>
     );
 }

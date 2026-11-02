@@ -1,10 +1,11 @@
 import "./ProductCard.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { RequestContext } from "../context/RequestContext";
 
 function ProductCard({ id, name, description, image, ...productDetails }) {
     const { addToRequest } = useContext(RequestContext);
+    const [isRequested, setIsRequested] = useState(false);
 
     const handleRequest = () => {
         addToRequest(
@@ -18,6 +19,8 @@ function ProductCard({ id, name, description, image, ...productDetails }) {
             1,
             productDetails.quantityType || "piece"
         );
+
+        setIsRequested(true);
     };
 
     return (
@@ -36,7 +39,10 @@ function ProductCard({ id, name, description, image, ...productDetails }) {
 
             <p>{description}</p>
 
-            <button onClick={handleRequest}>
+            <button
+                onClick={handleRequest}
+                className={isRequested ? "requested-button" : ""}
+            >
                 Request Product
             </button>
         </div>

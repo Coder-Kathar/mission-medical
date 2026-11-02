@@ -18,7 +18,10 @@ function OfferBar() {
                         aria-hidden={group === 1}
                     >
                         {offers.map((offer, index) => (
-                            <span className="offer-item" key={index}>
+                            <span
+                                className={`offer-item ${index === 1 ? "offer-discount" : ""}`}
+                                key={index}
+                            >
                                 {offer}
                                 <span className="offer-separator">✦</span>
                             </span>

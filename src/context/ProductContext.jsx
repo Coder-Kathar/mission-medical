@@ -6,20 +6,26 @@ export const ProductContext = createContext();
 export function ProductProvider({ children }) {
 
     const [products, setProducts] = useState(() => {
+        const adminProducts = localStorage.getItem("adminProducts");
+
+        if (adminProducts) {
+            return JSON.parse(adminProducts);
+        }
+
         const savedProducts = localStorage.getItem("missionMedicalProducts");
-        
+
         return savedProducts
-        ? JSON.parse(savedProducts)
-        : initialProducts;
+            ? JSON.parse(savedProducts)
+            : initialProducts;
     });
-    
+
     useEffect(() => {
         localStorage.setItem(
-            "missionMedicalProducts",
+            "adminProducts",
             JSON.stringify(products)
         );
     }, [products]);
-    
+
     const addProduct = (newProduct) => {
         setProducts((currentProducts) => [
             ...currentProducts,
@@ -37,17 +43,19 @@ export function ProductProvider({ children }) {
     };
 
     const updateProduct = (updatedProduct) => {
-        setProducts((currentProducts) => 
-            currentProducts.map((product) => 
+        setProducts((currentProducts) =>
+            currentProducts.map((product) =>
                 product.id === updatedProduct.id
-                ? {...product, ...updatedProduct}
-                : product
+                    ? { ...product, ...updatedProduct }
+                    : product
             )
         );
     };
 
     return (
-        <ProductContext.Provider value={{ products, addProduct, deleteProduct, updateProduct }}>
+        <ProductContext.Provider
+            value={{ products, addProduct, deleteProduct, updateProduct }}
+        >
             {children}
         </ProductContext.Provider>
     );

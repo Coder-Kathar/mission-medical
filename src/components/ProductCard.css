@@ -54,3 +54,16 @@
 .product-details-link:hover h3 {
     color: var(--accent-color);
 }
+
+.product-card button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.product-card button.requested-button {
+    background-color: #16a34a;
+    color: white;
+}
