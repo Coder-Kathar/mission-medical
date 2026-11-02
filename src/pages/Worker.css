@@ -248,23 +248,51 @@
 }
 
 /* Responsive layout */
+
 @media (max-width: 700px) {
     .worker-page {
-        margin: 20px auto;
-        padding: 16px;
+        width: 100%;
+        margin: 16px auto;
+        padding: 12px;
     }
 
     .worker-toolbar {
-        align-items: stretch;
+        display: flex;
         flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
     }
 
     .worker-search-form {
-        flex-direction: column;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .worker-search-form input {
+        flex: 1;
+        width: 0;
+    }
+
+    .worker-search-button {
+        width: 46px;
+        min-width: 46px;
     }
 
     .worker-date-picker {
+        width: 100%;
+        box-sizing: border-box;
         justify-content: space-between;
+    }
+
+    .worker-date-picker input {
+        flex: 1;
+        width: 100%;
+    }
+
+    .worker-orders-section {
+        padding: 12px;
     }
 
     .worker-orders-header,
@@ -277,14 +305,32 @@
         width: 100%;
     }
 
+    .worker-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .worker-orders-table {
+        min-width: 650px;
+    }
+
+    .worker-orders-table th,
+    .worker-orders-table td {
+        padding: 12px 10px;
+        white-space: nowrap;
+    }
+
     .worker-pagination-actions {
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .worker-modal {
         padding: 20px;
     }
 }
+
 
 @media (max-width: 400px) {
     .worker-modal-actions {

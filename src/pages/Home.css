@@ -4,6 +4,7 @@
 
 .hero {
     position: relative;
+    isolation: isolate;
     min-height: 570px;
     display: flex;
     align-items: center;
@@ -12,15 +13,36 @@
     padding: 45px 6%;
     overflow: hidden;
 
-    background:
-        radial-gradient(
-            ellipse at 75% 45%,
-            rgba(21, 154, 124, 0.16),
-            transparent 48%
-        ),
-        var(--secondary-color);
+    background-image: url("/ind-flag-with-pm.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 
-    transition: background-color 0.25s ease;
+/* Theme-aware overlay */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.62) 0%,
+        rgba(0, 0, 0, 0.38) 42%,
+        rgba(0, 0, 0, 0.08) 78%
+    );
+}
+
+/* Stronger overlay in dark theme */
+[data-theme="dark"] .hero::before {
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.76) 0%,
+        rgba(0, 0, 0, 0.48) 45%,
+        rgba(0, 0, 0, 0.20) 80%
+    );
 }
 
 .hero-content {
@@ -31,6 +53,14 @@
     text-align: left;
 }
 
+.hero-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 620px;
+}
+
 .hero h1 {
     display: flex;
     flex-direction: column;
@@ -38,50 +68,33 @@
     gap: 0;
     margin: 0 0 22px;
 
-    color: var(--text-color);
+    color: #ffffff;
     font-size: clamp(42px, 5vw, 70px);
     line-height: 1.08;
     font-weight: 800;
     letter-spacing: -1.5px;
+
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .hero h1 span {
-    color: var(--accent-color);
+    color: #19c6a0;
 }
 
 .hero p {
     max-width: 600px;
     margin: 0 0 30px;
 
-    color: var(--text-color);
+    color: #ffffff;
     font-size: 19px;
     line-height: 1.7;
+
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
 }
 
-/* Hero image */
-
-.hero-image-container {
-    position: relative;
-    align-self: stretch;
-    flex: 0 1 43%;
-    min-width: 0;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.hero-image {
-    display: block;
-    width: 100%;
-    max-width: 430px;
-    max-height: 525px;
-
-    object-fit: contain;
-    object-position: center bottom;
-}
-
-/* Hero button */
+/* ========================================
+   HERO BUTTON
+======================================== */
 
 .hero .shop-button {
     display: inline-flex;
@@ -244,7 +257,6 @@
 }
 
 /* Align product buttons at the bottom */
-
 .product-card .shop-button {
     display: inline-flex;
     align-items: center;
@@ -279,8 +291,7 @@
     outline-offset: 4px;
 }
 
-/* Keep compatibility with actual buttons, if used */
-
+/* Compatibility with actual buttons */
 .product-card button {
     padding: 10px 18px;
     border: none;
@@ -323,70 +334,85 @@
 }
 
 /* ========================================
-   RESPONSIVE HERO
+   RESPONSIVE DESIGN
 ======================================== */
-
-/* Keep hero text and image side by side on mobile */
 
 @media (max-width: 760px) {
     .hero {
         min-height: 300px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
         padding: 28px 14px;
+        gap: 8px;
+
+        background-size: auto 100%;
+        background-position: right center;
+        background-repeat: no-repeat;
     }
 
     .hero-content {
-        flex: 1 1 58%;
+        width: 58%;
+        max-width: 58%;
+        flex: 0 0 58%;
         min-width: 0;
         text-align: left;
     }
 
+    .hero-text-group {
+        width: 100%;
+        max-width: 100%;
+    }
+
     .hero h1 {
         align-items: flex-start;
-        font-size: clamp(22px, 5.5vw, 38px);
-        line-height: 1.12;
+        font-size: clamp(22px, 5.5vw, 34px);
+        line-height: 1.15;
         letter-spacing: -0.5px;
         margin-bottom: 12px;
     }
 
     .hero p {
-        font-size: clamp(12px, 3vw, 15px);
+        font-size: 13px;
         line-height: 1.5;
         margin-bottom: 16px;
     }
 
     .hero .shop-button {
         padding: 10px 14px;
-        gap: 6px;
         font-size: 12px;
+        gap: 6px;
     }
 
-    .hero-image-container {
-        flex: 0 1 42%;
-        width: auto;
-        height: auto;
-        align-self: stretch;
-        min-width: 0;
+    .hero::before {
+        background: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.78) 0%,
+            rgba(0, 0, 0, 0.48) 65%,
+            rgba(0, 0, 0, 0.20) 100%
+        );
     }
 
-    .hero-image {
-        width: 100%;
-        max-width: 230px;
-        max-height: 300px;
-        object-fit: contain;
-        object-position: center bottom;
+    [data-theme="dark"] .hero::before {
+        background: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.84) 0%,
+            rgba(0, 0, 0, 0.58) 65%,
+            rgba(0, 0, 0, 0.30) 100%
+        );
     }
 }
 
 /* Small mobile screens */
-
 @media (max-width: 380px) {
     .hero {
+        min-height: 280px;
         padding: 22px 10px;
         gap: 5px;
+        background-position: 68% center;
+    }
+
+    .hero-content {
+        flex-basis: 68%;
+        width: 68%;
+        max-width: 68%;
     }
 
     .hero h1 {

@@ -2,39 +2,31 @@ import "./Home.css";
 import products from "../data/products";
 import { Link } from "react-router-dom";
 
-function Home(){
-
+function Home() {
     return (
         <main>
+            {/* Hero Section */}
+            <section className="hero">
+                <div className="hero-content">
+                    <div className="hero-text-group">
+                        <h1>
+                            Your Health,
+                            <span>Our Priority</span>
+                        </h1>
 
-        {/* Hero Section */}
-        <section className="hero">
-            <div className="hero-content">
-                <h1>
-                    Your Health,
-                    <span>Our Priority</span>
-                </h1>
+                        <p>
+                            Quality medicines and healthcare products delivered
+                            right to your doorstep.
+                        </p>
 
-                <p>
-                    Quality medicines and healthcare products delivered
-                    right to your doorstep.
-                </p>
+                        <Link to="/products" className="shop-button">
+                            Shop Medicines <span aria-hidden="true">→</span>
+                        </Link>
+                    </div>
+                </div>
+            </section>
 
-                <Link to="/products" className="shop-button">
-                    Shop Medicines <span aria-hidden="true">→</span>
-                </Link>
-            </div>
-
-            <div className="hero-image-container">
-                <img
-                    src="/pm-modi-transparent.png"
-                    alt="Prime Minister Narendra Modi"
-                    className="hero-image"
-                />
-            </div>
-        </section>
-
-            {/* Divied by Categories */}
+            {/* Categories Section */}
             <section className="categories">
                 <h2>Shop by Category</h2>
 
@@ -43,14 +35,17 @@ function Home(){
                         <h3>Medicines</h3>
                         <p>Essential medicines</p>
                     </Link>
+
                     <Link to="/products?category=vitamins" className="category-card">
                         <h3>Vitamins & Supplements</h3>
                         <p>Support your health</p>
                     </Link>
+
                     <Link to="/products?category=personal-care" className="category-card">
                         <h3>Personal Care</h3>
                         <p>Everyday personal care</p>
                     </Link>
+
                     <Link to="/products?category=baby-care" className="category-card">
                         <h3>Baby Care</h3>
                         <p>Products for your little ones</p>
@@ -58,7 +53,7 @@ function Home(){
                 </div>
             </section>
 
-            {/* Popular Products */}
+            {/* Frequently Requested Products */}
             <section className="products">
                 <h2>Frequently Requested Medicines</h2>
 
