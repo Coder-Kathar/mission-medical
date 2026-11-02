@@ -19,6 +19,26 @@ function getOrderDate(order) {
     return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
 }
 
+function getOrderStatus(order) {
+    return (order.status || "Pending").toLowerCase() === "delivered"
+        ? "Delivered"
+        : "Pending";
+}
+
+function getCustomerCity(order) {
+    return order.city?.trim() || "N/A";
+}
+
+function getContactNumber(order) {
+    return (
+        order.mobileNumber ||
+        order.contactNumber ||
+        order.phoneNumber ||
+        order.phone ||
+        "N/A"
+    );
+}
+
 function Worker() {
     const [orders, setOrders] = useState(() =>
         JSON.parse(localStorage.getItem("orders") || "[]")
@@ -54,8 +74,12 @@ function Worker() {
 
     // Update an order's status to Delivered
     const handleMarkDelivered = () => {
+        if (!selectedOrder || getOrderStatus(selectedOrder) !== "Pending") {
+            return;
+        }
+
         const updatedOrders = orders.map((item) =>
-            item.id === selectedOrder.id
+            String(item.id) === String(selectedOrder.id)
                 ? { ...item, status: "Delivered" }
                 : item
         );
@@ -84,13 +108,11 @@ function Worker() {
 
             const matchesStatus =
                 filterStatus === "all" ||
-                (order.status || "Pending") === filterStatus;
+                getOrderStatus(order) === filterStatus;
 
             return matchesDate && matchesStatus;
         })
-        .sort((a, b) => {
-            return getOrderDate(b) - getOrderDate(a);
-        });
+        .sort((a, b) => getOrderDate(b) - getOrderDate(a));
 
     // Pagination
     const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
@@ -105,10 +127,14 @@ function Worker() {
     const formatTimestamp = (order) => {
         const date = getOrderDate(order);
 
-        return date
-            ? date.toLocaleString("en-IN")
-            : "N/A";
+        return date ? date.toLocaleString("en-IN") : "N/A";
     };
+
+    // Get products from the order
+    const requestedProducts =
+        selectedOrder?.requestItems ||
+        selectedOrder?.items ||
+        [];
 
     return (
         <main className="worker-page">
@@ -183,21 +209,41 @@ function Worker() {
                             <table className="worker-orders-table">
                                 <thead>
                                     <tr>
-                                        <th>Order ID</th>
-                                        <th>Timestamp</th>
                                         <th>Customer Name</th>
-                                        <th>View Details</th>
+                                        <th>Contact Number</th>
+                                        <th>City</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     {currentOrders.map((order) => (
                                         <tr key={order.id}>
-                                            <td>{order.id}</td>
-                                            <td>{formatTimestamp(order)}</td>
                                             <td>
                                                 {order.customerName || "N/A"}
                                             </td>
+
+                                            <td>
+                                                {getContactNumber(order)}
+                                            </td>
+
+                                            <td>
+                                                {getCustomerCity(order)}
+                                            </td>
+
+                                            <td>
+                                                <span
+                                                    className={`worker-status-badge ${
+                                                        getOrderStatus(order) === "Delivered"
+                                                            ? "delivered"
+                                                            : "pending"
+                                                    }`}
+                                                >
+                                                    {getOrderStatus(order)}
+                                                </span>
+                                            </td>
+
                                             <td>
                                                 <button
                                                     type="button"
@@ -206,7 +252,7 @@ function Worker() {
                                                         setSelectedOrder(order)
                                                     }
                                                 >
-                                                    View Details
+                                                    View Request
                                                 </button>
                                             </td>
                                         </tr>
@@ -256,54 +302,94 @@ function Worker() {
                 )}
             </section>
 
-            {/* Order Details Modal */}
+            {/* View Request Modal */}
             {selectedOrder && (
-                <div className="worker-modal-overlay">
-                    <div className="worker-modal">
-                        <h2>Order Details</h2>
+                <div
+                    className="worker-modal-overlay"
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
+                            setSelectedOrder(null);
+                        }
+                    }}
+                >
+                    <div
+                        className="worker-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="worker-modal-title"
+                    >
+                        <h2 id="worker-modal-title">Customer Request</h2>
 
                         <p>
                             <strong>Order ID:</strong> {selectedOrder.id}
                         </p>
+
                         <p>
                             <strong>Customer:</strong>{" "}
                             {selectedOrder.customerName || "N/A"}
                         </p>
+
                         <p>
-                            <strong>Mobile:</strong>{" "}
-                            {selectedOrder.mobileNumber || "N/A"}
+                            <strong>Contact Number:</strong>{" "}
+                            {getContactNumber(selectedOrder)}
                         </p>
+
+                        <p>
+                            <strong>City:</strong>{" "}
+                            {getCustomerCity(selectedOrder)}
+                        </p>
+
                         <p>
                             <strong>Address:</strong>{" "}
-                            {selectedOrder.deliveryAddress || "N/A"}
+                            {typeof selectedOrder.deliveryAddress === "string"
+                                ? selectedOrder.deliveryAddress
+                                : selectedOrder.deliveryAddress?.address || "N/A"}
                         </p>
+
                         <p>
-                            <strong>Timestamp:</strong>{" "}
+                            <strong>Order Date:</strong>{" "}
                             {formatTimestamp(selectedOrder)}
                         </p>
+
                         <p>
                             <strong>Status:</strong>{" "}
-                            {selectedOrder.status || "Pending"}
+                            <span
+                                className={`worker-status-badge ${
+                                    getOrderStatus(selectedOrder) === "Delivered"
+                                        ? "delivered"
+                                        : "pending"
+                                }`}
+                            >
+                                {getOrderStatus(selectedOrder)}
+                            </span>
                         </p>
 
                         <h3>Requested Products</h3>
 
-                        {(selectedOrder.requestItems ||
-                            selectedOrder.items ||
-                            []).map((item, index) => (
-                            <p className="worker-order-item" key={item.id || index}>
-                                <strong>
-                                    {item.name || item.productName || "Product"}
-                                </strong>
-                                {" — Quantity: "}
-                                {item.quantity}
-                                {" "}
-                                {item.quantityType || "pieces"}
-                            </p>
-                        ))}
+                        {requestedProducts.length > 0 ? (
+                            requestedProducts.map((item, index) => (
+                                <div
+                                    className="worker-order-item"
+                                    key={item.id || index}
+                                >
+                                    <strong>
+                                        {item.name ||
+                                            item.productName ||
+                                            "Product"}
+                                    </strong>
+
+                                    <p>
+                                        Quantity: {item.quantity ?? 1}{" "}
+                                        {item.quantityType || "pieces"}
+                                    </p>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No product details available.</p>
+                        )}
 
                         <div className="worker-modal-actions">
-                            {(selectedOrder.status || "Pending") === "Pending" && (
+                            {getOrderStatus(selectedOrder) === "Pending" && (
                                 <button
                                     type="button"
                                     onClick={handleMarkDelivered}

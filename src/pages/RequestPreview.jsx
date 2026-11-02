@@ -14,6 +14,7 @@ function RequestPreview(){
     const [customerName, setCustomerName] = useState("");
     const [mobileNumber, setMobileNumber] = useState("");
     const [deliveryAddress, setDeliveryAddress] = useState("");
+    const [city, setCity] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [orderId, setOrderId] = useState("");
     const [prescription, setPrescription] = useState(null);
@@ -52,6 +53,11 @@ function RequestPreview(){
             return;
         }
 
+        if(!city.trim()){
+            alert("Please enter your city.");
+            return;
+        }
+
         if(needsPrescription && !prescription){
             alert("Please upload a prescription for Drug product");
             return;
@@ -63,6 +69,7 @@ function RequestPreview(){
             customerName,
             mobileNumber,
             deliveryAddress,
+            city: city.trim(),
             requestItems,
             prescriptionName: prescription?.name || null,
             status: "Pending"
@@ -81,6 +88,7 @@ function RequestPreview(){
             JSON.stringify({
                 customerName,
                 mobileNumber,
+                city: city.trim(),
                 deliveryAddress,
                 requestItems,
                 createdAt: new Date().toISOString()
@@ -90,6 +98,7 @@ function RequestPreview(){
         setLastRequest({
             customerName,
             mobileNumber,
+            city: city.trim(),
             deliveryAddress,
             requestItems,
             createdAt: new Date().toISOString()
@@ -111,6 +120,7 @@ function RequestPreview(){
 
                     <p>Customer: {lastRequest.customerName}</p>
                     <p>Mobile: {lastRequest.mobileNumber}</p>
+                    <p>City: {lastRequest.city || "Not Provided"}</p>
                     <p>Address: {lastRequest.deliveryAddress}</p>
 
                     <h3>Products</h3>
@@ -126,6 +136,7 @@ function RequestPreview(){
                         onClick={() => {
                             setCustomerName(lastRequest.customerName);
                             setMobileNumber(lastRequest.mobileNumber);
+                            setCity(lastRequest.city || "");
                             setDeliveryAddress(lastRequest.deliveryAddress);
                             setShowConfirmation(true);
                         }}>
@@ -172,6 +183,7 @@ function RequestPreview(){
                     </p>
                     <p><strong>Customer Name: </strong>{customerName}</p>
                     <p><strong>Mobile Number: </strong>{mobileNumber}</p>
+                    <p><strong>City: </strong>{city}</p>
                     <p><strong>Delivery Address: </strong>{deliveryAddress}</p>
 
                     <h3>Requested Products</h3>
@@ -241,6 +253,13 @@ function RequestPreview(){
                                 placeholder="Mobile Number"
                                 value={mobileNumber}
                                 onChange={(e) => setMobileNumber(e.target.value)}
+                                required />
+
+                            <input
+                                type="text"
+                                placeholder="Enter your locality"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
                                 required />
 
                             <textarea 

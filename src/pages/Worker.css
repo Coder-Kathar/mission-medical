@@ -1,3 +1,7 @@
+/* ========================================
+   WORKER PAGE
+======================================== */
+
 .worker-page {
     max-width: 1200px;
     min-height: 400px;
@@ -16,7 +20,10 @@
     margin-bottom: 24px;
 }
 
-/* Search and date picker */
+/* ========================================
+   SEARCH AND DATE PICKER
+======================================== */
+
 .worker-toolbar {
     display: flex;
     align-items: center;
@@ -72,7 +79,10 @@
     padding: 10px 4px;
 }
 
-/* Buttons */
+/* ========================================
+   BUTTONS
+======================================== */
+
 .worker-page button {
     padding: 12px 18px;
     background: var(--primary-color);
@@ -80,7 +90,7 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .worker-page button:hover:not(:disabled) {
@@ -92,7 +102,24 @@
     cursor: not-allowed;
 }
 
-/* Orders section */
+.worker-search-button {
+    width: 46px;
+    min-width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px !important;
+    font-size: 18px;
+}
+
+.worker-view-button {
+    padding: 8px 14px !important;
+}
+
+/* ========================================
+   ORDERS SECTION
+======================================== */
+
 .worker-orders-section {
     margin-top: 30px;
     padding: 20px;
@@ -119,10 +146,14 @@
     cursor: pointer;
 }
 
-/* Orders table */
+/* ========================================
+   ORDERS TABLE
+======================================== */
+
 .worker-table-wrapper {
     width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .worker-orders-table {
@@ -149,11 +180,37 @@
     background: var(--secondary-color);
 }
 
-.worker-view-button {
-    padding: 8px 14px !important;
+/* ========================================
+   ORDER STATUS BADGES
+======================================== */
+
+.worker-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-/* Empty state */
+.worker-status-badge.pending {
+    color: #92400E;
+    background: #FEF3C7;
+    border: 1px solid #FCD34D;
+}
+
+.worker-status-badge.delivered {
+    color: #166534;
+    background: #DCFCE7;
+    border: 1px solid #86EFAC;
+}
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
 .worker-empty-orders {
     padding: 35px 15px;
     text-align: center;
@@ -165,7 +222,10 @@
     margin-bottom: 8px;
 }
 
-/* Pagination */
+/* ========================================
+   PAGINATION
+======================================== */
+
 .worker-pagination {
     display: flex;
     align-items: center;
@@ -185,7 +245,10 @@
     padding: 9px 14px;
 }
 
-/* Order details modal */
+/* ========================================
+   ORDER DETAILS MODAL
+======================================== */
+
 .worker-modal-overlay {
     position: fixed;
     inset: 0;
@@ -227,9 +290,15 @@
 }
 
 .worker-order-item {
+    margin-bottom: 10px;
     padding: 10px;
     background: var(--secondary-color);
     border-radius: 6px;
+}
+
+.worker-order-item p {
+    margin: 6px 0 0;
+    font-size: 14px;
 }
 
 .worker-modal-actions {
@@ -247,17 +316,19 @@
     background: #4B5563 !important;
 }
 
-/* Responsive layout */
+/* ========================================
+   RESPONSIVE LAYOUT
+======================================== */
 
 @media (max-width: 700px) {
     .worker-page {
         width: 100%;
+        box-sizing: border-box;
         margin: 16px auto;
         padding: 12px;
     }
 
     .worker-toolbar {
-        display: flex;
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
@@ -305,12 +376,6 @@
         width: 100%;
     }
 
-    .worker-table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
     .worker-orders-table {
         min-width: 650px;
     }
@@ -331,7 +396,6 @@
     }
 }
 
-
 @media (max-width: 400px) {
     .worker-modal-actions {
         flex-direction: column;
@@ -340,14 +404,4 @@
     .worker-modal-actions button {
         width: 100%;
     }
-}
-
-.worker-search-button {
-    width: 46px;
-    min-width: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px !important;
-    font-size: 18px;
 }
