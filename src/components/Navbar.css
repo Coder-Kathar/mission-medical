@@ -29,13 +29,22 @@
 }
 
 .logo-image {
-    display: block;
     width: 68px;
     height: 68px;
+    aspect-ratio: 1 / 1;
+    display: block;
+    flex-shrink: 0;
+
     object-fit: contain;
     object-position: center;
+
     border-radius: 50%;
-    flex-shrink: 0;
+    padding: 3px;
+    box-sizing: border-box;
+
+    /* Keep the logo visible in both themes */
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
 }
 
 .logo-name {

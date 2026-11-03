@@ -10,7 +10,6 @@ import { AuthContext } from "../context/AuthContext";
 import { UserRound, Sun, Moon } from "lucide-react";
 
 function Navbar() {
-
     const navigate = useNavigate();
 
     const { user, logout } = useContext(AuthContext);
@@ -71,10 +70,10 @@ function Navbar() {
     return (
         <nav className="navbar">
 
-            {/* Logo */}
+            {/* Official Client Logo */}
             <Link to="/" className="logo" onClick={closeMenus}>
                 <img
-                    src="/makkal-marunthagam-hd-logo.png"
+                    src="/Final-medical-logo.jpeg"
                     alt="Makkal Marunthagam logo"
                     className="logo-image"
                 />
@@ -185,7 +184,6 @@ function Navbar() {
 
                             </div>
                         )}
-
                     </div>
                 ) : (
                     <Link to="/login" className="navbar-login">
