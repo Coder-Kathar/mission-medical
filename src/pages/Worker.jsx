@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ScrollReveal from "../components/ScrollReveal";
 import "./Worker.css";
 
 function getLocalDateString(date) {
@@ -138,171 +139,179 @@ function Worker() {
 
     return (
         <main className="worker-page">
-            <h1>Worker Portal</h1>
-            <p>Search orders or manage daily customer requests.</p>
+
+            {/* Worker Page Heading */}
+            <ScrollReveal>
+                <h1>Worker Portal</h1>
+                <p>Search orders or manage daily customer requests.</p>
+            </ScrollReveal>
 
             {/* Order ID Search and Date Picker */}
-            <div className="worker-toolbar">
-                <form onSubmit={handleSearch} className="worker-search-form">
-                    <input
-                        type="text"
-                        placeholder="Enter Order ID"
-                        value={orderId}
-                        onChange={(e) => setOrderId(e.target.value)}
-                        required
-                    />
+            <ScrollReveal delay={0.1}>
+                <div className="worker-toolbar">
+                    <form onSubmit={handleSearch} className="worker-search-form">
+                        <input
+                            type="text"
+                            placeholder="Enter Order ID"
+                            value={orderId}
+                            onChange={(e) => setOrderId(e.target.value)}
+                            required
+                        />
 
-                    <button
-                        type="submit"
-                        className="worker-search-button"
-                        aria-label="Search order"
-                        title="Search order"
-                    >
-                        🔍
-                    </button>
-                </form>
+                        <button
+                            type="submit"
+                            className="worker-search-button"
+                            aria-label="Search order"
+                            title="Search order"
+                        >
+                            🔍
+                        </button>
+                    </form>
 
-                <label className="worker-date-picker">
-                    <span className="calendar-icon">📅</span>
-                    <input
-                        type="date"
-                        value={selectedDate}
-                        onChange={(e) => {
-                            setSelectedDate(e.target.value);
-                            setCurrentPage(1);
-                        }}
-                        aria-label="Select order date"
-                    />
-                </label>
-            </div>
+                    <label className="worker-date-picker">
+                        <span className="calendar-icon">📅</span>
+                        <input
+                            type="date"
+                            value={selectedDate}
+                            onChange={(e) => {
+                                setSelectedDate(e.target.value);
+                                setCurrentPage(1);
+                            }}
+                            aria-label="Select order date"
+                        />
+                    </label>
+                </div>
+            </ScrollReveal>
 
             {/* Daily Orders Table */}
-            <section className="worker-orders-section">
-                <div className="worker-orders-header">
-                    <h2>Daily Customer Orders</h2>
+            <ScrollReveal delay={0.15}>
+                <section className="worker-orders-section">
+                    <div className="worker-orders-header">
+                        <h2>Daily Customer Orders</h2>
 
-                    <select
-                        value={filterStatus}
-                        onChange={(e) => {
-                            setFilterStatus(e.target.value);
-                            setCurrentPage(1);
-                        }}
-                        aria-label="Filter orders by status"
-                    >
-                        <option value="all">All Orders</option>
-                        <option value="Pending">Pending Orders</option>
-                        <option value="Delivered">Delivered Orders</option>
-                    </select>
-                </div>
-
-                {filteredOrders.length === 0 ? (
-                    <div className="worker-empty-orders">
-                        <h3>No orders found</h3>
-                        <p>
-                            No orders are available for the selected date
-                            and status.
-                        </p>
+                        <select
+                            value={filterStatus}
+                            onChange={(e) => {
+                                setFilterStatus(e.target.value);
+                                setCurrentPage(1);
+                            }}
+                            aria-label="Filter orders by status"
+                        >
+                            <option value="all">All Orders</option>
+                            <option value="Pending">Pending Orders</option>
+                            <option value="Delivered">Delivered Orders</option>
+                        </select>
                     </div>
-                ) : (
-                    <>
-                        <div className="worker-table-wrapper">
-                            <table className="worker-orders-table">
-                                <thead>
-                                    <tr>
-                                        <th>Customer Name</th>
-                                        <th>Contact Number</th>
-                                        <th>City</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
 
-                                <tbody>
-                                    {currentOrders.map((order) => (
-                                        <tr key={order.id}>
-                                            <td>
-                                                {order.customerName || "N/A"}
-                                            </td>
-
-                                            <td>
-                                                {getContactNumber(order)}
-                                            </td>
-
-                                            <td>
-                                                {getCustomerCity(order)}
-                                            </td>
-
-                                            <td>
-                                                <span
-                                                    className={`worker-status-badge ${
-                                                        getOrderStatus(order) === "Delivered"
-                                                            ? "delivered"
-                                                            : "pending"
-                                                    }`}
-                                                >
-                                                    {getOrderStatus(order)}
-                                                </span>
-                                            </td>
-
-                                            <td>
-                                                <button
-                                                    type="button"
-                                                    className="worker-view-button"
-                                                    onClick={() =>
-                                                        setSelectedOrder(order)
-                                                    }
-                                                >
-                                                    View Request
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                    {filteredOrders.length === 0 ? (
+                        <div className="worker-empty-orders">
+                            <h3>No orders found</h3>
+                            <p>
+                                No orders are available for the selected date
+                                and status.
+                            </p>
                         </div>
+                    ) : (
+                        <>
+                            <div className="worker-table-wrapper">
+                                <table className="worker-orders-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer Name</th>
+                                            <th>Contact Number</th>
+                                            <th>City</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
 
-                        {/* Pagination */}
-                        <div className="worker-pagination">
-                            <span>
-                                Showing {startIndex + 1}–
-                                {Math.min(
-                                    startIndex + ordersPerPage,
-                                    filteredOrders.length
-                                )}{" "}
-                                of {filteredOrders.length} orders
-                            </span>
+                                    <tbody>
+                                        {currentOrders.map((order) => (
+                                            <tr key={order.id}>
+                                                <td>
+                                                    {order.customerName || "N/A"}
+                                                </td>
 
-                            <div className="worker-pagination-actions">
-                                <button
-                                    type="button"
-                                    disabled={currentPage <= 1}
-                                    onClick={() =>
-                                        setCurrentPage((page) => page - 1)
-                                    }
-                                >
-                                    Previous
-                                </button>
+                                                <td>
+                                                    {getContactNumber(order)}
+                                                </td>
 
+                                                <td>
+                                                    {getCustomerCity(order)}
+                                                </td>
+
+                                                <td>
+                                                    <span
+                                                        className={`worker-status-badge ${
+                                                            getOrderStatus(order) === "Delivered"
+                                                                ? "delivered"
+                                                                : "pending"
+                                                        }`}
+                                                    >
+                                                        {getOrderStatus(order)}
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <button
+                                                        type="button"
+                                                        className="worker-view-button"
+                                                        onClick={() =>
+                                                            setSelectedOrder(order)
+                                                        }
+                                                    >
+                                                        View Request
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Pagination */}
+                            <div className="worker-pagination">
                                 <span>
-                                    Page {currentPage} of {totalPages}
+                                    Showing {startIndex + 1}–
+                                    {Math.min(
+                                        startIndex + ordersPerPage,
+                                        filteredOrders.length
+                                    )}{" "}
+                                    of {filteredOrders.length} orders
                                 </span>
 
-                                <button
-                                    type="button"
-                                    disabled={currentPage >= totalPages}
-                                    onClick={() =>
-                                        setCurrentPage((page) => page + 1)
-                                    }
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        </div>
-                    </>
-                )}
-            </section>
+                                <div className="worker-pagination-actions">
+                                    <button
+                                        type="button"
+                                        disabled={currentPage <= 1}
+                                        onClick={() =>
+                                            setCurrentPage((page) => page - 1)
+                                        }
+                                    >
+                                        Previous
+                                    </button>
 
-            {/* View Request Modal */}
+                                    <span>
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        disabled={currentPage >= totalPages}
+                                        onClick={() =>
+                                            setCurrentPage((page) => page + 1)
+                                        }
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </section>
+            </ScrollReveal>
+
+            {/* View Request Modal - No Scroll Reveal */}
             {selectedOrder && (
                 <div
                     className="worker-modal-overlay"

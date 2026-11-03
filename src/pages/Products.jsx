@@ -1,6 +1,8 @@
 import "./Products.css";
 import "../RequestButton.css";
 import ProductCard from "../components/ProductCard";
+import ScrollReveal from "../components/ScrollReveal";
+
 import { useContext, useState, useEffect } from "react";
 import { ProductContext } from "../context/ProductContext";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -50,71 +52,88 @@ function Products() {
 
     return (
         <main className="products-page">
-            <h1>All Products</h1>
 
-            <p>Browse our medicines and our healthcare products.</p>
+            {/* Page Heading */}
+            <ScrollReveal>
+                <h1>All Products</h1>
 
+                <p>
+                    Browse our medicines and our healthcare products.
+                </p>
+            </ScrollReveal>
+
+            {/* Clear Search Button */}
             {searchTerm && (
-                <button
-                    className="clear-search-button"
-                    onClick={() => navigate("/products")}
-                >
-                    Clear Search
-                </button>
+                <ScrollReveal>
+                    <button
+                        className="clear-search-button"
+                        onClick={() => navigate("/products")}
+                    >
+                        Clear Search
+                    </button>
+                </ScrollReveal>
             )}
 
+            {/* Product Listing */}
             <div className="product-container">
                 {currentProducts.length > 0 ? (
-                    currentProducts.map((product) => (
-                        <ProductCard
+                    currentProducts.map((product, index) => (
+                        <ScrollReveal
                             key={product.id}
-                            {...product}
-                        />
+                            delay={index * 0.05}
+                        >
+                            <ProductCard {...product} />
+                        </ScrollReveal>
                     ))
                 ) : (
-                    <p>No Products Found.</p>
+                    <ScrollReveal>
+                        <p>No Products Found.</p>
+                    </ScrollReveal>
                 )}
             </div>
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div className="pagination">
+                <ScrollReveal>
+                    <div className="pagination">
 
-                    <button
-                        disabled={currentPage === 1}
-                        onClick={() =>
-                            setCurrentPage((prev) => prev - 1)
-                        }
-                    >
-                        Previous
-                    </button>
-
-                    {Array.from(
-                        { length: totalPages },
-                        (_, index) => index + 1
-                    ).map((page) => (
                         <button
-                            key={page}
-                            className={
-                                currentPage === page ? "active" : ""
+                            disabled={currentPage === 1}
+                            onClick={() =>
+                                setCurrentPage((prev) => prev - 1)
                             }
-                            onClick={() => setCurrentPage(page)}
                         >
-                            {page}
+                            Previous
                         </button>
-                    ))}
 
-                    <button
-                        disabled={currentPage === totalPages}
-                        onClick={() =>
-                            setCurrentPage((prev) => prev + 1)
-                        }
-                    >
-                        Next
-                    </button>
+                        {Array.from(
+                            { length: totalPages },
+                            (_, index) => index + 1
+                        ).map((page) => (
+                            <button
+                                key={page}
+                                className={
+                                    currentPage === page ? "active" : ""
+                                }
+                                onClick={() => setCurrentPage(page)}
+                            >
+                                {page}
+                            </button>
+                        ))}
 
-                </div>
+                        <button
+                            disabled={currentPage === totalPages}
+                            onClick={() =>
+                                setCurrentPage((prev) => prev + 1)
+                            }
+                        >
+                            Next
+                        </button>
+
+                    </div>
+                </ScrollReveal>
             )}
+
         </main>
     );
 }

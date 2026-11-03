@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { RequestContext } from "../context/RequestContext";
+import ScrollReveal from "../components/ScrollReveal";
 import "./Orders.css";
 
 const ORDERS_PER_PAGE = 30;
@@ -22,8 +23,7 @@ function Orders() {
 
     // Re-Order functionality
     const handleReOrder = (order) => {
-        const previousItems =
-            order.requestItems || order.products || [];
+        const previousItems = order.requestItems || order.products || [];
 
         if (previousItems.length === 0) {
             alert("No products found in this request.");
@@ -150,223 +150,240 @@ function Orders() {
 
     return (
         <main className="orders-page">
-            <h1>My Requests</h1>
+
+            <ScrollReveal>
+                <h1>My Requests</h1>
+            </ScrollReveal>
 
             {orders.length > 0 && (
-                <div className="customer-order-filters">
-                    <div className="filter-group">
-                        <label htmlFor="dateMode">Date Filter</label>
+                <ScrollReveal delay={0.1}>
+                    <div className="customer-order-filters">
 
-                        <select
-                            id="dateMode"
-                            value={dateMode}
-                            onChange={(e) => {
-                                setDateMode(e.target.value);
+                        <div className="filter-group">
+                            <label htmlFor="dateMode">Date Filter</label>
+
+                            <select
+                                id="dateMode"
+                                value={dateMode}
+                                onChange={(e) => {
+                                    setDateMode(e.target.value);
+                                    setSelectedDate("");
+                                    setFromDate("");
+                                    setToDate("");
+                                    setCurrentPage(1);
+                                }}
+                            >
+                                <option value="single">Single Date</option>
+                                <option value="range">Date Range</option>
+                            </select>
+                        </div>
+
+                        {dateMode === "single" ? (
+                            <div className="filter-group">
+                                <label htmlFor="selectedDate">
+                                    Select Date
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="selectedDate"
+                                    value={selectedDate}
+                                    onChange={(e) =>
+                                        resetPage(() =>
+                                            setSelectedDate(e.target.value)
+                                        )
+                                    }
+                                />
+                            </div>
+                        ) : (
+                            <>
+                                <div className="filter-group">
+                                    <label htmlFor="fromDate">
+                                        From Date
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        id="fromDate"
+                                        value={fromDate}
+                                        max={toDate || undefined}
+                                        onChange={(e) =>
+                                            resetPage(() =>
+                                                setFromDate(e.target.value)
+                                            )
+                                        }
+                                    />
+                                </div>
+
+                                <div className="filter-group">
+                                    <label htmlFor="toDate">
+                                        To Date
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        id="toDate"
+                                        value={toDate}
+                                        min={fromDate || undefined}
+                                        onChange={(e) =>
+                                            resetPage(() =>
+                                                setToDate(e.target.value)
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </>
+                        )}
+
+                        <div className="filter-group">
+                            <label htmlFor="statusFilter">
+                                Order Status
+                            </label>
+
+                            <select
+                                id="statusFilter"
+                                value={statusFilter}
+                                onChange={(e) =>
+                                    resetPage(() =>
+                                        setStatusFilter(e.target.value)
+                                    )
+                                }
+                            >
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="delivered">Delivered</option>
+                            </select>
+                        </div>
+
+                        <button
+                            type="button"
+                            className="clear-order-filters"
+                            onClick={() => {
+                                setDateMode("single");
                                 setSelectedDate("");
                                 setFromDate("");
                                 setToDate("");
+                                setStatusFilter("all");
                                 setCurrentPage(1);
                             }}
                         >
-                            <option value="single">Single Date</option>
-                            <option value="range">Date Range</option>
-                        </select>
+                            Clear Filters
+                        </button>
+
                     </div>
-
-                    {dateMode === "single" ? (
-                        <div className="filter-group">
-                            <label htmlFor="selectedDate">
-                                Select Date
-                            </label>
-
-                            <input
-                                type="date"
-                                id="selectedDate"
-                                value={selectedDate}
-                                onChange={(e) =>
-                                    resetPage(() =>
-                                        setSelectedDate(e.target.value)
-                                    )
-                                }
-                            />
-                        </div>
-                    ) : (
-                        <>
-                            <div className="filter-group">
-                                <label htmlFor="fromDate">
-                                    From Date
-                                </label>
-
-                                <input
-                                    type="date"
-                                    id="fromDate"
-                                    value={fromDate}
-                                    max={toDate || undefined}
-                                    onChange={(e) =>
-                                        resetPage(() =>
-                                            setFromDate(e.target.value)
-                                        )
-                                    }
-                                />
-                            </div>
-
-                            <div className="filter-group">
-                                <label htmlFor="toDate">
-                                    To Date
-                                </label>
-
-                                <input
-                                    type="date"
-                                    id="toDate"
-                                    value={toDate}
-                                    min={fromDate || undefined}
-                                    onChange={(e) =>
-                                        resetPage(() =>
-                                            setToDate(e.target.value)
-                                        )
-                                    }
-                                />
-                            </div>
-                        </>
-                    )}
-
-                    <div className="filter-group">
-                        <label htmlFor="statusFilter">
-                            Order Status
-                        </label>
-
-                        <select
-                            id="statusFilter"
-                            value={statusFilter}
-                            onChange={(e) =>
-                                resetPage(() =>
-                                    setStatusFilter(e.target.value)
-                                )
-                            }
-                        >
-                            <option value="all">All Status</option>
-                            <option value="pending">Pending</option>
-                            <option value="delivered">Delivered</option>
-                        </select>
-                    </div>
-
-                    <button
-                        type="button"
-                        className="clear-order-filters"
-                        onClick={() => {
-                            setDateMode("single");
-                            setSelectedDate("");
-                            setFromDate("");
-                            setToDate("");
-                            setStatusFilter("all");
-                            setCurrentPage(1);
-                        }}
-                    >
-                        Clear Filters
-                    </button>
-                </div>
+                </ScrollReveal>
             )}
 
             {orders.length === 0 ? (
-                <p className="empty-orders">No requests found.</p>
+                <ScrollReveal>
+                    <p className="empty-orders">No requests found.</p>
+                </ScrollReveal>
             ) : filteredOrders.length === 0 ? (
-                <p className="empty-orders">
-                    No requests match the selected filters.
-                </p>
+                <ScrollReveal>
+                    <p className="empty-orders">
+                        No requests match the selected filters.
+                    </p>
+                </ScrollReveal>
             ) : (
                 <>
-                    <div className="orders-table-container">
-                        <table className="customer-orders-table">
-                            <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Date of Order</th>
-                                    <th>Status</th>
-                                    <th>View</th>
-                                    <th>Order</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {currentOrders.map((order) => (
-                                    <tr key={order.id}>
-                                        <td>{order.id}</td>
-
-                                        <td>
-                                            {formatOrderDate(order.date)}
-                                        </td>
-
-                                        <td>
-                                            <span
-                                                className={`customer-order-status ${
-                                                    order.status?.toLowerCase() === "delivered"
-                                                        ? "delivered"
-                                                        : "pending"
-                                                }`}
-                                            >
-                                                {order.status || "Pending"}
-                                            </span>
-                                        </td>
-
-                                        <td>
-                                            <button
-                                                className="view-product-button"
-                                                onClick={() =>
-                                                    setSelectedOrder(order)
-                                                }
-                                            >
-                                                View Request
-                                            </button>
-                                        </td>
-
-                                        <td>
-                                            <button
-                                                className="reorder-button"
-                                                onClick={() =>
-                                                    handleReOrder(order)
-                                                }
-                                            >
-                                                Re-Order
-                                            </button>
-                                        </td>
+                    <ScrollReveal delay={0.15}>
+                        <div className="orders-table-container">
+                            <table className="customer-orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Date of Order</th>
+                                        <th>Status</th>
+                                        <th>View</th>
+                                        <th>Order</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
 
-                    <div className="orders-result-count">
-                        Showing {startIndex + 1}–
-                        {Math.min(
-                            startIndex + ORDERS_PER_PAGE,
-                            filteredOrders.length
-                        )} of {filteredOrders.length} requests
-                    </div>
+                                <tbody>
+                                    {currentOrders.map((order) => (
+                                        <tr key={order.id}>
+                                            <td>{order.id}</td>
+
+                                            <td>
+                                                {formatOrderDate(order.date)}
+                                            </td>
+
+                                            <td>
+                                                <span
+                                                    className={`customer-order-status ${
+                                                        order.status?.toLowerCase() === "delivered"
+                                                            ? "delivered"
+                                                            : "pending"
+                                                    }`}
+                                                >
+                                                    {order.status || "Pending"}
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    className="view-product-button"
+                                                    onClick={() =>
+                                                        setSelectedOrder(order)
+                                                    }
+                                                >
+                                                    View Request
+                                                </button>
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    className="reorder-button"
+                                                    onClick={() =>
+                                                        handleReOrder(order)
+                                                    }
+                                                >
+                                                    Re-Order
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </ScrollReveal>
+
+                    <ScrollReveal delay={0.1}>
+                        <div className="orders-result-count">
+                            Showing {startIndex + 1}–
+                            {Math.min(
+                                startIndex + ORDERS_PER_PAGE,
+                                filteredOrders.length
+                            )} of {filteredOrders.length} requests
+                        </div>
+                    </ScrollReveal>
 
                     {totalPages > 1 && (
-                        <div className="pagination">
-                            <button
-                                onClick={() =>
-                                    setCurrentPage((page) => page - 1)
-                                }
-                                disabled={currentPage === 1}
-                            >
-                                Previous
-                            </button>
+                        <ScrollReveal delay={0.15}>
+                            <div className="pagination">
+                                <button
+                                    onClick={() =>
+                                        setCurrentPage((page) => page - 1)
+                                    }
+                                    disabled={currentPage === 1}
+                                >
+                                    Previous
+                                </button>
 
-                            <span>
-                                Page {currentPage} of {totalPages}
-                            </span>
+                                <span>
+                                    Page {currentPage} of {totalPages}
+                                </span>
 
-                            <button
-                                onClick={() =>
-                                    setCurrentPage((page) => page + 1)
-                                }
-                                disabled={currentPage === totalPages}
-                            >
-                                Next
-                            </button>
-                        </div>
+                                <button
+                                    onClick={() =>
+                                        setCurrentPage((page) => page + 1)
+                                    }
+                                    disabled={currentPage === totalPages}
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </ScrollReveal>
                     )}
                 </>
             )}
@@ -409,6 +426,7 @@ function Orders() {
                     </div>
                 </div>
             )}
+
         </main>
     );
 }

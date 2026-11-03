@@ -2,6 +2,7 @@ import "./Home.css";
 import products from "../data/products";
 import { Link } from "react-router-dom";
 import OfferSlider from "../components/OfferSlider";
+import ScrollReveal from "../components/ScrollReveal";
 
 function Home() {
     // Display only the first 5 products
@@ -10,75 +11,86 @@ function Home() {
     return (
         <main>
             {/* Hero Section */}
-            <section className="hero">
-                <div className="hero-content">
-                    <div className="hero-text-group">
-                        <h1>
-                            Your Health,
-                            <span>Our Priority</span>
-                        </h1>
+            <ScrollReveal>
+                <section className="hero">
+                    <div className="hero-content">
+                        <div className="hero-text-group">
+                            <h1>
+                                Your Health,
+                                <span>Our Priority</span>
+                            </h1>
 
-                        <p>
-                            Quality medicines and healthcare products delivered
-                            right to your doorstep.
-                        </p>
+                            <p>
+                                Quality medicines and healthcare products delivered
+                                right to your doorstep.
+                            </p>
 
-                        <Link to="/products" className="shop-button">
-                            Shop Medicines <span aria-hidden="true">→</span>
-                        </Link>
+                            <Link to="/products" className="shop-button">
+                                Shop Medicines <span aria-hidden="true">→</span>
+                            </Link>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </ScrollReveal>
 
-            <OfferSlider />
+            {/* Promotional Offers */}
+            <ScrollReveal>
+                <OfferSlider />
+            </ScrollReveal>
 
             {/* Categories Section */}
-            <section className="categories">
-                <h2>Shop by Category</h2>
+            <ScrollReveal>
+                <section className="categories">
+                    <h2>Shop by Category</h2>
 
-                <div className="category-container">
-                    <Link to="/products?category=medicines" className="category-card">
-                        <h3>Medicines</h3>
-                        <p>Essential medicines</p>
-                    </Link>
+                    <div className="category-container">
+                        <Link to="/products?category=medicines" className="category-card">
+                            <h3>Medicines</h3>
+                            <p>Essential medicines</p>
+                        </Link>
 
-                    <Link to="/products?category=vitamins" className="category-card">
-                        <h3>Vitamins & Supplements</h3>
-                        <p>Support your health</p>
-                    </Link>
+                        <Link to="/products?category=vitamins" className="category-card">
+                            <h3>Vitamins & Supplements</h3>
+                            <p>Support your health</p>
+                        </Link>
 
-                    <Link to="/products?category=personal-care" className="category-card">
-                        <h3>Personal Care</h3>
-                        <p>Everyday personal care</p>
-                    </Link>
+                        <Link to="/products?category=personal-care" className="category-card">
+                            <h3>Personal Care</h3>
+                            <p>Everyday personal care</p>
+                        </Link>
 
-                    <Link to="/products?category=baby-care" className="category-card">
-                        <h3>Baby Care</h3>
-                        <p>Products for your little ones</p>
-                    </Link>
-                </div>
-            </section>
+                        <Link to="/products?category=baby-care" className="category-card">
+                            <h3>Baby Care</h3>
+                            <p>Products for your little ones</p>
+                        </Link>
+                    </div>
+                </section>
+            </ScrollReveal>
 
             {/* Frequently Requested Products */}
             <section className="products">
-                <h2>Frequently Requested Medicines</h2>
+                <ScrollReveal>
+                    <h2>Frequently Requested Medicines</h2>
+                </ScrollReveal>
 
                 <div className="frequently-requested-container">
-                    {frequentlyRequestedProducts.map((product) => (
-                        <div className="product-card" key={product.id}>
-                            <h3>{product.name}</h3>
+                    {frequentlyRequestedProducts.map((product, index) => (
+                        <ScrollReveal key={product.id} delay={index * 0.1}>
+                            <div className="product-card">
+                                <h3>{product.name}</h3>
 
-                            <p>
-                                {product.description || "Healthcare product"}
-                            </p>
+                                <p>
+                                    {product.description || "Healthcare product"}
+                                </p>
 
-                            <Link
-                                to={`/products/${product.id}`}
-                                className="shop-button"
-                            >
-                                View Product
-                            </Link>
-                        </div>
+                                <Link
+                                    to={`/products/${product.id}`}
+                                    className="shop-button"
+                                >
+                                    View Product
+                                </Link>
+                            </div>
+                        </ScrollReveal>
                     ))}
                 </div>
             </section>
