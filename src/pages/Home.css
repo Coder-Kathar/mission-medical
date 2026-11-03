@@ -208,6 +208,7 @@
     margin-bottom: 35px;
 }
 
+/* General product container */
 .product-container {
     display: flex;
     justify-content: center;
@@ -216,6 +217,7 @@
     flex-wrap: wrap;
 }
 
+/* General product card */
 .product-card {
     width: 220px;
     padding: 25px;
@@ -256,7 +258,7 @@
     min-height: 42px;
 }
 
-/* Align product buttons at the bottom */
+/* General product button */
 .product-card .shop-button {
     display: inline-flex;
     align-items: center;
@@ -457,5 +459,57 @@
     .product-card:hover,
     .product-card .shop-button:hover {
         transform: none;
+    }
+}
+
+/* ========================================
+   FREQUENTLY REQUESTED PRODUCTS
+   COMPACT FIVE-CARD LAYOUT
+======================================== */
+
+.frequently-requested-container {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+/* Compact cards only in frequently requested section */
+.frequently-requested-container .product-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 20px 15px;
+}
+
+/* Product name */
+.frequently-requested-container .product-card h3 {
+    margin: 0 0 10px;
+}
+
+/* Product description */
+.frequently-requested-container .product-card p {
+    margin: 10px 0 20px;
+    min-height: 0;
+}
+
+/* View Product button */
+.frequently-requested-container .product-card .shop-button {
+    margin-top: 0;
+    align-self: center;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .frequently-requested-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+    .frequently-requested-container {
+        grid-template-columns: 1fr;
     }
 }

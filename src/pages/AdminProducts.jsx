@@ -2,6 +2,33 @@ import { useEffect, useState, useContext } from "react";
 import { ProductContext } from "../context/ProductContext";
 import "./AdminProducts.css";
 
+// Product categories provided by the client.
+// Original spellings are preserved.
+const PRODUCT_CATEGORIES = [
+    "Tablet",
+    "Capsule",
+    "Syrup",
+    "Oilment",
+    "Create",
+    "Facewash",
+    "Powder",
+    "Diaper",
+    "Soap",
+    "Injection",
+    "Insulin",
+    "Lotion",
+    "Cotton",
+    "Gause",
+    "Spray",
+    "Drops",
+    "IV",
+    "Cream",
+    "Liquid",
+    "Gel",
+    "Plaster",
+    "Others",
+];
+
 function AdminProducts() {
     const {
         products: productList,
@@ -15,6 +42,10 @@ function AdminProducts() {
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState("");
     const [removeExistingImage, setRemoveExistingImage] = useState(false);
+
+    // Category states
+    const [categorySelection, setCategorySelection] = useState("");
+    const [customCategory, setCustomCategory] = useState("");
 
     const [searchTerm, setSearchTerm] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("all");
@@ -92,6 +123,8 @@ function AdminProducts() {
         setImageFile(null);
         setImagePreview("");
         setRemoveExistingImage(false);
+        setCategorySelection("");
+        setCustomCategory("");
         setShowForm(false);
     };
 
@@ -147,16 +180,47 @@ function AdminProducts() {
         reader.readAsDataURL(file);
     };
 
+    // Handle category selection
+    const handleCategoryChange = (e) => {
+        const selectedCategory = e.target.value;
+
+        setCategorySelection(selectedCategory);
+
+        if (selectedCategory === "Others") {
+            setFormData((previous) => ({
+                ...previous,
+                category: "",
+            }));
+        } else {
+            setCustomCategory("");
+
+            setFormData((previous) => ({
+                ...previous,
+                category: selectedCategory,
+            }));
+        }
+    };
+
     // Add product
     const handleAddProduct = (e) => {
         e.preventDefault();
+
+        const finalCategory =
+            categorySelection === "Others"
+                ? customCategory.trim()
+                : categorySelection.trim();
+
+        if (!finalCategory) {
+            alert("Please select or enter a product category.");
+            return;
+        }
 
         const newProduct = {
             ...formData,
             name: formData.name.trim(),
             description: formData.description.trim(),
             usage: formData.usage.trim(),
-            category: formData.category.trim(),
+            category: finalCategory,
             tabletsPerStrip:
                 formData.quantityType === "tablet"
                     ? Number(formData.tabletsPerStrip)
@@ -172,6 +236,18 @@ function AdminProducts() {
     // Edit product
     const handleEditProduct = (product) => {
         setEditingId(product.id);
+
+        const isPredefinedCategory =
+            PRODUCT_CATEGORIES.includes(product.category) &&
+            product.category !== "Others";
+
+        setCategorySelection(
+            isPredefinedCategory ? product.category : "Others"
+        );
+
+        setCustomCategory(
+            isPredefinedCategory ? "" : product.category || ""
+        );
 
         setFormData({
             name: product.name || "",
@@ -214,13 +290,23 @@ function AdminProducts() {
             return;
         }
 
+        const finalCategory =
+            categorySelection === "Others"
+                ? customCategory.trim()
+                : categorySelection.trim();
+
+        if (!finalCategory) {
+            alert("Please select or enter a product category.");
+            return;
+        }
+
         const updatedProduct = {
             ...existingProduct,
             ...formData,
             name: formData.name.trim(),
             description: formData.description.trim(),
             usage: formData.usage.trim(),
-            category: formData.category.trim(),
+            category: finalCategory,
             tabletsPerStrip:
                 formData.quantityType === "tablet"
                     ? Number(formData.tabletsPerStrip)
@@ -349,19 +435,45 @@ function AdminProducts() {
 
                     </div>
 
-                    {/* Category */}
-                    <input
-                        type="text"
-                        placeholder="Category"
-                        value={formData.category}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                category: e.target.value,
-                            })
-                        }
+                    {/* Product Category */}
+                    <label htmlFor="productCategory">
+                        Product Category
+                    </label>
+
+                    <select
+                        id="productCategory"
+                        value={categorySelection}
+                        onChange={handleCategoryChange}
                         required
-                    />
+                    >
+                        <option value="">Select Category</option>
+
+                        {PRODUCT_CATEGORIES.map((category) => (
+                            <option key={category} value={category}>
+                                {category}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Custom Category */}
+                    {categorySelection === "Others" && (
+                        <input
+                            type="text"
+                            placeholder="Enter custom category"
+                            value={customCategory}
+                            onChange={(e) => {
+                                const value = e.target.value;
+
+                                setCustomCategory(value);
+
+                                setFormData((previous) => ({
+                                    ...previous,
+                                    category: value,
+                                }));
+                            }}
+                            required
+                        />
+                    )}
 
                     {/* Quantity Type */}
                     <label htmlFor="quantityType">

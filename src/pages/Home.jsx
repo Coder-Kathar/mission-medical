@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import OfferSlider from "../components/OfferSlider";
 
 function Home() {
+    // Display only the first 5 products
+    const frequentlyRequestedProducts = products.slice(0, 5);
+
     return (
         <main>
             {/* Hero Section */}
@@ -60,8 +63,8 @@ function Home() {
             <section className="products">
                 <h2>Frequently Requested Medicines</h2>
 
-                <div className="product-container">
-                    {products.map((product) => (
+                <div className="frequently-requested-container">
+                    {frequentlyRequestedProducts.map((product) => (
                         <div className="product-card" key={product.id}>
                             <h3>{product.name}</h3>
 
