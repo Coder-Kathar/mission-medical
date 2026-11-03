@@ -14,6 +14,7 @@ import AdminLogin from "./pages/AdminLogin";
 import WorkerLogin from "./pages/WorkerLogin";
 import FloatingContact from "./components/FloatingContact";
 import OfferBar from "./components/OfferBar";
+import AdminOffers from "./pages/AdminOffers";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -56,6 +57,7 @@ function App() {
               <Route path="/admin/products" element={<AdminProducts/>}/>
               <Route path="/admin-login" element={<AdminLogin />} />
               <Route path="/worker-login" element={<WorkerLogin />} />
+              <Route path="/admin/offers" element={<AdminOffers />}/>
               <Route path="/orders" 
                       element={
                           <ProtectedRoute>

@@ -1,0 +1,101 @@
+/* Promotional Offer Slider */
+.offer-slider {
+    width: 88%;
+    max-width: 1400px;
+    margin: 35px auto;
+    position: relative;
+}
+
+.offer-slide {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--secondary-color);
+    box-shadow: var(--shadow);
+}
+
+.offer-slide-image {
+    flex: 1 1 55%;
+    height: 280px;
+    overflow: hidden;
+}
+
+.offer-slide-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.offer-slide-content {
+    flex: 1 1 45%;
+    padding: 30px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.offer-slide-content h2 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 28px;
+}
+
+.offer-slide-content p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.offer-slider-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+    color: var(--text-color);
+}
+
+.offer-slider-controls button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: var(--white);
+    cursor: pointer;
+}
+
+.offer-slider-controls button:hover {
+    background: var(--accent-color);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .offer-slider {
+        width: 92%;
+    }
+
+    .offer-slide {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .offer-slide-image {
+        width: 100%;
+        flex: none;
+        height: 220px;
+    }
+
+    .offer-slide-content {
+        width: 100%;
+        padding: 22px;
+    }
+
+    .offer-slide-content h2 {
+        font-size: 22px;
+    }
+}

@@ -1,6 +1,7 @@
 import "./Home.css";
 import products from "../data/products";
 import { Link } from "react-router-dom";
+import OfferSlider from "../components/OfferSlider";
 
 function Home() {
     return (
@@ -25,6 +26,8 @@ function Home() {
                     </div>
                 </div>
             </section>
+
+            <OfferSlider />
 
             {/* Categories Section */}
             <section className="categories">

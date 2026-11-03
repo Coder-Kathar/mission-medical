@@ -326,6 +326,20 @@ function Admin() {
                         Open Orders →
                     </span>
                 </Link>
+
+                <Link
+                    to="/admin/offers"
+                    className="admin-card admin-navigation-card"
+                >
+                    <div>
+                        <h3>Manage Offers</h3>
+                        <p>Create, edit, publish, and delete promotional offers.</p>
+                    </div>
+
+                    <span className="admin-navigation-action">
+                        Open Offers →
+                    </span>
+                </Link>
             </section>
 
             {/* Customer Orders Table - Next Step */}
