@@ -314,3 +314,42 @@
         transition: none;
     }
 }
+
+.location-map {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.location-map p {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.location-map .leaflet-container {
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.location-map small {
+    display: block;
+    margin-top: 8px;
+}
+
+.current-location-button {
+    margin-bottom: 12px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--button-radius);
+    background-color: var(--primary-color);
+    color: var(--white);
+    cursor: pointer;
+}
+
+.current-location-button:hover {
+    background-color: var(--accent-color);
+}
+
+.location-error {
+    color: #dc2626;
+    font-size: 14px;
+}
