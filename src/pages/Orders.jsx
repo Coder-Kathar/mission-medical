@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { RequestContext } from "../context/RequestContext";
 import "./Orders.css";
 
 const ORDERS_PER_PAGE = 30;
 
 function Orders() {
     const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    const { addToRequest } = useContext(RequestContext);
+    const navigate = useNavigate();
 
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -14,6 +19,27 @@ function Orders() {
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
+
+    // Re-Order functionality
+    const handleReOrder = (order) => {
+        const previousItems =
+            order.requestItems || order.products || [];
+
+        if (previousItems.length === 0) {
+            alert("No products found in this request.");
+            return;
+        }
+
+        previousItems.forEach((item) => {
+            addToRequest(
+                item,
+                item.quantity,
+                item.quantityType
+            );
+        });
+
+        navigate("/request");
+    };
 
     // Supports both new ISO dates and older locale-formatted dates.
     const getOrderDate = (date) => {
@@ -31,6 +57,7 @@ function Orders() {
 
         if (match) {
             const [, day, month, year] = match;
+
             parsedDate = new Date(
                 Number(year),
                 Number(month) - 1,
@@ -66,19 +93,19 @@ function Orders() {
     };
 
     // Newest orders first.
-    const sortedOrders = [...orders].sort(
-        (a, b) => {
-            const dateA = getOrderDate(a.date)?.getTime() || 0;
-            const dateB = getOrderDate(b.date)?.getTime() || 0;
+    const sortedOrders = [...orders].sort((a, b) => {
+        const dateA = getOrderDate(a.date)?.getTime() || 0;
+        const dateB = getOrderDate(b.date)?.getTime() || 0;
 
-            return dateB - dateA;
-        }
-    );
+        return dateB - dateA;
+    });
 
     // Apply date and status filters together.
     const filteredOrders = sortedOrders.filter((order) => {
         const orderDate = getOrderDate(order.date);
-        const orderDateKey = orderDate ? getDateKey(orderDate) : "";
+        const orderDateKey = orderDate
+            ? getDateKey(orderDate)
+            : "";
 
         let matchesDate = true;
 
@@ -88,11 +115,13 @@ function Orders() {
 
         if (dateMode === "range") {
             if (fromDate) {
-                matchesDate = matchesDate && orderDateKey >= fromDate;
+                matchesDate =
+                    matchesDate && orderDateKey >= fromDate;
             }
 
             if (toDate) {
-                matchesDate = matchesDate && orderDateKey <= toDate;
+                matchesDate =
+                    matchesDate && orderDateKey <= toDate;
             }
         }
 
@@ -146,7 +175,9 @@ function Orders() {
 
                     {dateMode === "single" ? (
                         <div className="filter-group">
-                            <label htmlFor="selectedDate">Select Date</label>
+                            <label htmlFor="selectedDate">
+                                Select Date
+                            </label>
 
                             <input
                                 type="date"
@@ -162,7 +193,9 @@ function Orders() {
                     ) : (
                         <>
                             <div className="filter-group">
-                                <label htmlFor="fromDate">From Date</label>
+                                <label htmlFor="fromDate">
+                                    From Date
+                                </label>
 
                                 <input
                                     type="date"
@@ -178,7 +211,9 @@ function Orders() {
                             </div>
 
                             <div className="filter-group">
-                                <label htmlFor="toDate">To Date</label>
+                                <label htmlFor="toDate">
+                                    To Date
+                                </label>
 
                                 <input
                                     type="date"
@@ -196,7 +231,9 @@ function Orders() {
                     )}
 
                     <div className="filter-group">
-                        <label htmlFor="statusFilter">Order Status</label>
+                        <label htmlFor="statusFilter">
+                            Order Status
+                        </label>
 
                         <select
                             id="statusFilter"
@@ -254,7 +291,10 @@ function Orders() {
                                 {currentOrders.map((order) => (
                                     <tr key={order.id}>
                                         <td>{order.id}</td>
-                                        <td>{formatOrderDate(order.date)}</td>
+
+                                        <td>
+                                            {formatOrderDate(order.date)}
+                                        </td>
 
                                         <td>
                                             <span
@@ -282,7 +322,9 @@ function Orders() {
                                         <td>
                                             <button
                                                 className="reorder-button"
-                                                disabled
+                                                onClick={() =>
+                                                    handleReOrder(order)
+                                                }
                                             >
                                                 Re-Order
                                             </button>

@@ -1,9 +1,27 @@
-import { createContext, useState } from "react";
+
+import { createContext, useState, useEffect } from "react";
 
 export const RequestContext = createContext();
 
-export function RequestProvider({ children }){
-    const [requestItems, setRequestItems] = useState([]);
+export function RequestProvider({ children }) {
+    // Load saved cart items when the app starts.
+    const [requestItems, setRequestItems] = useState(() => {
+        try {
+            return JSON.parse(
+                localStorage.getItem("requestItems")
+            ) || [];
+        } catch {
+            return [];
+        }
+    });
+
+    // Save cart items whenever they change.
+    useEffect(() => {
+        localStorage.setItem(
+            "requestItems",
+            JSON.stringify(requestItems)
+        );
+    }, [requestItems]);
 
     const addToRequest = (product, quantity, quantityType) => {
         setRequestItems((currentItems) => {
@@ -29,19 +47,19 @@ export function RequestProvider({ children }){
     };
 
     const removeFromRequest = (index) => {
-        setRequestItems((currentItems) => 
+        setRequestItems((currentItems) =>
             currentItems.filter((_, itemIndex) => itemIndex !== index)
         );
     };
 
     const updateRequestQuantity = (index, newQuantity) => {
-        if(newQuantity < 1) return;
+        if (newQuantity < 1) return;
 
-        setRequestItems((currentItems) => 
+        setRequestItems((currentItems) =>
             currentItems.map((item, itemIndex) =>
-                itemIndex === index 
-                ? {...item, quantity: newQuantity} 
-                : item
+                itemIndex === index
+                    ? { ...item, quantity: newQuantity }
+                    : item
             )
         );
     };

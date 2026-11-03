@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import "./ProductDetails.css";
+import "../RequestButton.css";
 import { useState, useContext } from "react";
 import { RequestContext } from "../context/RequestContext";
 import { ProductContext } from "../context/ProductContext";
@@ -10,7 +11,7 @@ function ProductDetails() {
 
     const { id } = useParams();
 
-    const { addToRequest } = useContext(RequestContext);
+    const { requestItems, addToRequest } = useContext(RequestContext);
     const { products } = useContext(ProductContext);
 
     const product = products.find(
@@ -36,9 +37,20 @@ function ProductDetails() {
         : product.quantityType;
 
     const totalTablets =
-        quantityType === "strip" && isTabletProduct
+        selectedType === "strip" && isTabletProduct
             ? quantity * (product.tabletsPerStrip || 1)
             : quantity;
+
+    // Check whether the selected product and quantity type are in the cart.
+    const isAlreadyRequested = requestItems.some(
+        (item) =>
+            item.id === product.id &&
+            item.quantityType === selectedType
+    );
+
+    const handleAddToRequest = () => {
+        addToRequest(product, quantity, selectedType);
+    };
 
     return (
         <main className="product-details">
@@ -62,7 +74,8 @@ function ProductDetails() {
                 </p>
 
                 <p>
-                    <strong>Usage:</strong> {product.usage || "Not specified"}
+                    <strong>Usage:</strong>{" "}
+                    {product.usage || "Not specified"}
                 </p>
 
                 <p className="quantity-type-label">
@@ -138,12 +151,14 @@ function ProductDetails() {
 
                 <button
                     type="button"
-                    className="request-button"
-                    onClick={() =>
-                        addToRequest(product, quantity, quantityType)
-                    }
+                    className={`request-button ${
+                        isAlreadyRequested ? "added" : ""
+                    }`}
+                    onClick={handleAddToRequest}
                 >
-                    Add to Request
+                    {isAlreadyRequested
+                        ? "✓ Added to Request"
+                        : "Add to Request"}
                 </button>
 
                 <Link to="/request" className="view-request-link">

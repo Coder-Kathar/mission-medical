@@ -1,0 +1,14 @@
+.request-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    transition: background-color 0.2s ease;
+}
+
+.request-button:hover:not(.added) {
+    background-color: var(--accent-color);
+}
+
+.request-button.added {
+    background-color: #d1fae5;
+    color: #065f46;
+}

@@ -412,3 +412,14 @@
     color: var(--text-color);
     opacity: 0.6;
 }
+
+.request-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    transition: background-color 0.2s ease;
+}
+
+.request-button.added {
+    background-color: #d1fae5;
+    color: #065f46;
+}

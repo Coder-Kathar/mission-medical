@@ -1,11 +1,19 @@
 import "./ProductCard.css";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { RequestContext } from "../context/RequestContext";
+import "../RequestButton.css";
 
 function ProductCard({ id, name, description, image, ...productDetails }) {
-    const { addToRequest } = useContext(RequestContext);
-    const [isRequested, setIsRequested] = useState(false);
+    const { requestItems, addToRequest } = useContext(RequestContext);
+
+    const quantityType = productDetails.quantityType || "piece";
+
+    const isAlreadyRequested = requestItems.some(
+        (item) =>
+            item.id === id &&
+            item.quantityType === quantityType
+    );
 
     const handleRequest = () => {
         addToRequest(
@@ -17,10 +25,8 @@ function ProductCard({ id, name, description, image, ...productDetails }) {
                 image,
             },
             1,
-            productDetails.quantityType || "piece"
+            quantityType
         );
-
-        setIsRequested(true);
     };
 
     return (
@@ -40,10 +46,15 @@ function ProductCard({ id, name, description, image, ...productDetails }) {
             <p>{description}</p>
 
             <button
+                type="button"
                 onClick={handleRequest}
-                className={isRequested ? "requested-button" : ""}
+                className={`request-button ${
+                    isAlreadyRequested ? "added" : ""
+                }`}
             >
-                Request Product
+                {isAlreadyRequested
+                    ? "✓ Added to Request"
+                    : "Request Product"}
             </button>
         </div>
     );
