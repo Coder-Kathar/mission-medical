@@ -101,6 +101,27 @@ function Admin() {
         return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
     };
 
+    const formatOrderDate = (order) => {
+        const date = getOrderDate(order);
+
+        if (!date) return "N/A";
+
+        const formattedDate = date.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
+
+        const formattedTime = date.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+        });
+
+        return `${formattedDate}, ${formattedTime}`;
+    };
+
     const todayRequests = orders.filter((order) => {
         const orderDate = getOrderDate(order);
 
@@ -400,7 +421,7 @@ function Admin() {
                                                 <td>{order.id}</td>
                                                 <td>{order.customerName || "N/A"}</td>
                                                 <td>{order.mobileNumber || "N/A"}</td>
-                                                <td>{order.date || "N/A"}</td>
+                                                <td>{formatOrderDate(order)}</td>
                                                 <td>{getTotalItems(order)}</td>
                                                 <td>
                                                     <span
@@ -490,7 +511,7 @@ function Admin() {
                                 </p>
                                 <p>
                                     <strong>Date:</strong>{" "}
-                                    {selectedOrder.date || "N/A"}
+                                    {formatOrderDate(selectedOrder)}
                                 </p>
                                 <p>
                                     <strong>Status:</strong>{" "}
