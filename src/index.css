@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #0F6B4F;
-  --secondary-color: #E8F5EF;
-  --accent-color: #159A7C;
-  --background-color: #F8FAF9;
+  /* Light Theme - Logo Blue */
+  --primary-color: #2363b6;
+  --secondary-color: #EAF2FC;
+  --accent-color: #2878D0;
+  --background-color: #F8FAFD;
   --text-color: #1F2937;
   --white: #FFFFFF;
-  --border-color: #E5E7EB;
+  --border-color: #DCE5F0;
 
   --border-radius: 12px;
   --button-radius: 25px;
@@ -17,9 +18,9 @@
 
 /* Dark theme */
 [data-theme="dark"] {
-  --primary-color: #159A7C;
-  --secondary-color: #1F352F;
-  --accent-color: #34D399;
+  --primary-color: #5B9BE6;
+  --secondary-color: #1C3554;
+  --accent-color: #80B8F5;
   --background-color: #111827;
   --text-color: #F3F4F6;
   --white: #1F2937;

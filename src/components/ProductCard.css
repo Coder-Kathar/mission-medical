@@ -70,14 +70,18 @@
 
 /* Mobile */
 
-@media (max-width: 768px) {
+@media (max-width: 500px) {
     .product-card {
-        width: 100%;
-        max-width: 300px;
+        width: 300px;
+        max-width: calc(100vw - 40px);
+        height: 380px;
+        min-height: 380px;
+        box-sizing: border-box;
     }
 
     .product-image {
         width: 140px;
         height: 140px;
+        flex-shrink: 0;
     }
 }
